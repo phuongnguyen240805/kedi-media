@@ -1,0 +1,151 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin, getSupabaseAdminConfigError } from "@/lib/supabase-admin";
+import { fetchTagUsageCounts } from "../_page-tags";
+import { requireLandingPageOwner } from "../_ownership";
+import {
+  canManageTag,
+  deleteTagRow,
+  formatTag,
+  getTagById,
+  isValidTagId,
+  listVisibleTagsQuery,
+} from "./_utils";
+
+export const runtime = "nodejs";
+
+function jsonError(message: string, status = 400) {
+  return NextResponse.json({ error: message }, { status });
+}
+
+export async function GET(request: NextRequest) {
+  const auth = await requireLandingPageOwner(request);
+  if ("error" in auth) return auth.error;
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return jsonError(getSupabaseAdminConfigError() ?? "Supabase config missing.", 500);
+
+  const { data, error } = await listVisibleTagsQuery(supabase, auth.ownerId).order("updated_at", {
+    ascending: false,
+  });
+
+  if (error) return jsonError(error.message, 500);
+
+  const rows = data ?? [];
+  let usageCounts: Record<string, number> = {};
+  try {
+    usageCounts = await fetchTagUsageCounts(
+      supabase,
+      rows.map((row: Record<string, unknown>) => String(row.id)),
+    );
+  } catch (countErr) {
+    console.warn("Failed to load tag usage counts:", countErr);
+  }
+
+  const response = NextResponse.json({
+    tags: rows.map((row: Record<string, unknown>) =>
+      formatTag(row, usageCounts[String(row.id)] ?? 0),
+    ),
+  });
+  response.headers.set("Cache-Control", "private, max-age=60, stale-while-revalidate=300");
+  response.headers.set("Vary", "Cookie, Authorization");
+  return response;
+}
+
+export async function POST(request: NextRequest) {
+  const auth = await requireLandingPageOwner(request);
+  if ("error" in auth) return auth.error;
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return jsonError(getSupabaseAdminConfigError() ?? "Supabase config missing.", 500);
+
+  const payload = await request.json().catch(() => null);
+  const name = String(payload?.name ?? "").trim();
+  if (!name) return jsonError("Tag name is required.");
+
+  const now = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("landing_tags")
+    .insert([
+      {
+        name,
+        user_id: auth.ownerId,
+        status: "UNLOCKED",
+        created_at: now,
+        updated_at: now,
+      },
+    ])
+    .select()
+    .single();
+
+  if (error) return jsonError(error.message, 500);
+  return NextResponse.json({ tag: formatTag(data) });
+}
+
+export async function DELETE(request: NextRequest) {
+  const auth = await requireLandingPageOwner(request);
+  if ("error" in auth) return auth.error;
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return jsonError(getSupabaseAdminConfigError() ?? "Supabase config missing.", 500);
+
+  const payload = await request.json().catch(() => null);
+  const ids = Array.isArray(payload?.ids) ? payload.ids.filter(isValidTagId) : [];
+
+  if (ids.length === 0) return jsonError("No valid tag ids provided.");
+
+  for (const id of ids) {
+    const { data: existing, error: lookupError } = await getTagById(supabase, id);
+    if (lookupError) return jsonError(lookupError.message, 500);
+    if (!existing) return jsonError(`Tag not found: ${id}`, 404);
+    if (!canManageTag(existing, auth.ownerId, true)) {
+      return jsonError("Forbidden. You do not own this tag.", 403);
+    }
+    const { error } = await deleteTagRow(supabase, id);
+    if (error) return jsonError(error.message, 500);
+  }
+
+  return NextResponse.json({ deleted: ids });
+}
+
+export async function PATCH(request: NextRequest) {
+  const auth = await requireLandingPageOwner(request);
+  if ("error" in auth) return auth.error;
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return jsonError(getSupabaseAdminConfigError() ?? "Supabase config missing.", 500);
+
+  const payload = await request.json().catch(() => null);
+  const tagId = typeof payload?.id === "string" ? payload.id : "";
+  if (!isValidTagId(tagId)) return jsonError("Invalid tag id.");
+
+  const name = payload?.name !== undefined ? String(payload.name).trim() : undefined;
+  const status =
+    payload?.status === "LOCKED" || payload?.status === "UNLOCKED"
+      ? payload.status
+      : undefined;
+
+  if (!name && !status) return jsonError("Nothing to update.");
+  if (name === "") return jsonError("Tag name is required.");
+
+  const { data: existing, error: lookupError } = await getTagById(supabase, tagId);
+  if (lookupError) return jsonError(lookupError.message, 500);
+  if (!existing) return jsonError("Tag not found.", 404);
+  if (!canManageTag(existing, auth.ownerId, true)) {
+    return jsonError("Forbidden. You do not own this tag.", 403);
+  }
+
+  const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (name) patch.name = name;
+  if (status) patch.status = status;
+
+  const { data, error } = await supabase
+    .from("landing_tags")
+    .update(patch)
+    .eq("id", tagId)
+    .eq("user_id", auth.ownerId)
+    .select()
+    .single();
+
+  if (error) return jsonError(error.message, 500);
+  return NextResponse.json({ tag: formatTag(data) });
+}

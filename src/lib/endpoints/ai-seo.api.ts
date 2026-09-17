@@ -1,0 +1,282 @@
+import type {
+  CreateSeoProjectPayload,
+  KeywordResearchPayload,
+  LinkLandingPagePayload,
+  ScanProjectPayload,
+  SeoDashboardProjectsResponseDto,
+  SeoProjectDto,
+  SeoTaskDto,
+  SeoTrafficEnvelopeDto,
+  SeoTrafficHealthDto,
+  SeoTrafficMetricRowDto,
+  SeoTrafficMetricType,
+  SeoTrafficProvisionDto,
+  SeoTrafficRange,
+  SeoTrafficStatsDto,
+} from '@liora/api-types'
+
+import { apiDelete, apiGet, apiPatch, apiPost } from '../api-client'
+import type { NestJobDetails } from '../mappers/ai-seo.mapper'
+
+const PREFIX = '/ai-seo'
+
+export const aiSeoApi = {
+  listDashboardProjects(params?: {
+    page?: number
+    pageSize?: number
+    search?: string
+    status?: 'all' | 'scanning' | 'not_installed' | 'ready'
+    sort?: 'updated_desc' | 'updated_asc' | 'favorites'
+  }) {
+    return apiGet<SeoDashboardProjectsResponseDto>(`${PREFIX}/dashboard/projects`, {
+      params,
+    })
+  },
+
+  listProjects(params?: { page?: number; pageSize?: number; favorite?: boolean; search?: string }) {
+    return apiGet<SeoProjectDto[]>(`${PREFIX}/projects`, { params })
+  },
+
+  createProject(body: CreateSeoProjectPayload) {
+    return apiPost<SeoProjectDto>(`${PREFIX}/projects`, body)
+  },
+
+  getProject(id: string) {
+    return apiGet<SeoProjectDto>(`${PREFIX}/projects/${encodeURIComponent(id)}`)
+  },
+
+  updateProject(id: string, body: Partial<CreateSeoProjectPayload> & { isFavorite?: boolean }) {
+    return apiPatch<SeoProjectDto>(`${PREFIX}/projects/${encodeURIComponent(id)}`, body)
+  },
+
+  deleteProject(id: string) {
+    return apiDelete<{ success: boolean }>(`${PREFIX}/projects/${encodeURIComponent(id)}`)
+  },
+
+  toggleFavorite(id: string) {
+    return apiPatch<{ id: string; projectId: string; isFavorite: boolean }>(
+      `${PREFIX}/projects/${encodeURIComponent(id)}/favorite`
+    )
+  },
+
+  toggleAgent(id: string) {
+    return apiPatch<{ id: string; projectId: string; isEngaged: boolean }>(
+      `${PREFIX}/projects/${encodeURIComponent(id)}/agent-status`
+    )
+  },
+
+  scanProject(id: string, body?: ScanProjectPayload) {
+    return apiPost<{ jobId: string; status: string }>(
+      `${PREFIX}/projects/${encodeURIComponent(id)}/scan`,
+      body ?? {}
+    )
+  },
+
+  listLandingPages(projectId: string) {
+    return apiGet<Record<string, unknown>[]>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages`
+    )
+  },
+
+  linkLandingPage(projectId: string, body: LinkLandingPagePayload) {
+    return apiPost<Record<string, unknown>>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages`,
+      body
+    )
+  },
+
+  unlinkLandingPage(projectId: string, pageId: string) {
+    return apiDelete<void>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages/${encodeURIComponent(pageId)}`
+    )
+  },
+
+  scanLandingPage(projectId: string, pageId: string, body?: ScanProjectPayload) {
+    return apiPost<{ jobId: string; status: string; mode?: string; targetUrl?: string }>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages/${encodeURIComponent(pageId)}/scan`,
+      body ?? {}
+    )
+  },
+
+  /**
+   * Unlighthouse lab scan for landing pages.
+   * This endpoint may run inline in local/dev when BullMQ workers are disabled.
+   */
+  startLabScan(body: {
+    seoProjectId?: string
+    seoProjectPageId?: string
+    websitePageId?: string
+    targetUrl?: string
+    trigger?: 'editor' | 'list' | 'publish' | 'manual'
+    depth?: 'quick' | 'full'
+    allowLocal?: boolean
+    mock?: boolean
+    force?: boolean
+  }) {
+    return apiPost<{
+      jobId: string
+      status: string
+      targetUrl?: string
+      phase?: string
+      trigger?: string
+      result?: Record<string, unknown>
+      cached?: boolean
+    }>(`${PREFIX}/lab-scans`, body, { timeout: 210_000 })
+  },
+
+  getLabScan(jobId: string) {
+    return apiGet<{
+      jobId: string
+      status: string
+      progress?: number
+      error?: string
+      errorCode?: string
+      hint?: string
+      result?: Record<string, unknown>
+    }>(`${PREFIX}/lab-scans/${encodeURIComponent(jobId)}`, { timeout: 30_000 })
+  },
+
+  landingPageScores(projectId: string, pageId: string) {
+    return apiGet<Record<string, unknown>>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages/${encodeURIComponent(pageId)}/scores`
+    )
+  },
+
+  landingPageTasks(projectId: string, pageId: string) {
+    return apiGet<Record<string, unknown>[]>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/landing-pages/${encodeURIComponent(pageId)}/tasks`
+    )
+  },
+
+  getJob(jobId: string) {
+    return apiGet<NestJobDetails>(`${PREFIX}/jobs/${encodeURIComponent(jobId)}`)
+  },
+
+  getJobEvents(jobId: string) {
+    return apiGet<Array<Record<string, unknown>>>(`${PREFIX}/jobs/${encodeURIComponent(jobId)}/events`)
+  },
+
+  listTasks(projectId: string) {
+    return apiGet<SeoTaskDto[]>(`${PREFIX}/seo-projects/${encodeURIComponent(projectId)}/tasks`)
+  },
+
+  approveTask(taskId: string) {
+    return apiPost<SeoTaskDto>(`${PREFIX}/seo-tasks/${encodeURIComponent(taskId)}/approve`, {})
+  },
+
+  rejectTask(taskId: string) {
+    return apiPost<SeoTaskDto>(`${PREFIX}/seo-tasks/${encodeURIComponent(taskId)}/reject`, {})
+  },
+
+  deployTask(taskId: string) {
+    return apiPost<SeoTaskDto>(`${PREFIX}/seo-tasks/${encodeURIComponent(taskId)}/deploy`, {})
+  },
+
+  improveTask(taskId: string) {
+    return apiPost<SeoTaskDto>(`${PREFIX}/seo-tasks/${encodeURIComponent(taskId)}/improve`, {})
+  },
+
+  updateTask(taskId: string, body: { status: 'todo' | 'in_progress' | 'completed' }) {
+    return apiPatch<SeoTaskDto>(`${PREFIX}/seo-tasks/${encodeURIComponent(taskId)}`, body)
+  },
+
+  setupSeoProject(id: string, body?: Record<string, unknown>) {
+    return apiPost<SeoProjectDto>(`${PREFIX}/seo-projects/${encodeURIComponent(id)}/setup`, body ?? {})
+  },
+
+  getInstallation(id: string) {
+    return apiGet<{ projectId: string; pixelTagState: string; script: string; status?: string }>(
+      `${PREFIX}/seo-projects/${encodeURIComponent(id)}/installation`
+    )
+  },
+
+  checkInstallation(id: string) {
+    return apiPost<{ projectId: string; installed: boolean; pixelTagState: string }>(
+      `${PREFIX}/seo-projects/${encodeURIComponent(id)}/installation/check`,
+      {}
+    )
+  },
+
+  getGscConnectUrl(projectId: string) {
+    return apiGet<{ url: string; provider?: string; projectId?: string }>(
+      `${PREFIX}/integrations/google/gsc/connect-url`,
+      { params: { projectId } }
+    )
+  },
+
+  getGbpConnectUrl(projectId: string) {
+    return apiGet<{ url: string; provider?: string; projectId?: string }>(
+      `${PREFIX}/integrations/google/gbp/connect-url`,
+      { params: { projectId } }
+    )
+  },
+
+  listWebsiteProjects() {
+    return apiGet<Record<string, unknown>[]>(`${PREFIX}/website-projects`)
+  },
+
+  listWebsitePages(websiteProjectId: string) {
+    return apiGet<Record<string, unknown>[]>(
+      `${PREFIX}/website-projects/${encodeURIComponent(websiteProjectId)}/pages`
+    )
+  },
+
+  publishWebsitePage(websiteProjectId: string, pageId: string) {
+    return apiPost<Record<string, unknown>>(
+      `${PREFIX}/website-projects/${encodeURIComponent(websiteProjectId)}/pages/${encodeURIComponent(pageId)}/publish`,
+      {}
+    )
+  },
+
+  connectWebsitePageToAiSeo(websiteProjectId: string, pageId: string, aiSeoProjectId: string) {
+    return apiPost<Record<string, unknown>>(
+      `${PREFIX}/website-projects/${encodeURIComponent(websiteProjectId)}/pages/${encodeURIComponent(pageId)}/connect-ai-seo`,
+      { aiSeoProjectId }
+    )
+  },
+
+  listAgents() {
+    return apiGet<Record<string, unknown>[]>(`${PREFIX}/agents`)
+  },
+
+  researchKeywords(body: KeywordResearchPayload) {
+    return apiPost<Record<string, unknown>>(`${PREFIX}/keywords/research`, body)
+  },
+
+  /** Traffic (Umami via Nest adapter) — never call Umami from browser. */
+  trafficHealth() {
+    return apiGet<SeoTrafficHealthDto>(`${PREFIX}/traffic/health`)
+  },
+
+  getProjectTraffic(projectId: string, range: SeoTrafficRange = '7d') {
+    return apiGet<SeoTrafficEnvelopeDto<SeoTrafficStatsDto | null>>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/traffic`,
+      { params: { range } }
+    )
+  },
+
+  getProjectTrafficMetrics(
+    projectId: string,
+    type: SeoTrafficMetricType = 'referrer',
+    range: SeoTrafficRange = '7d'
+  ) {
+    return apiGet<SeoTrafficEnvelopeDto<SeoTrafficMetricRowDto[] | null>>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/traffic/metrics`,
+      { params: { type, range } }
+    )
+  },
+
+  getProjectTrafficTimeseries(projectId: string, range: SeoTrafficRange = '7d') {
+    return apiGet<SeoTrafficEnvelopeDto<SeoTrafficMetricRowDto[] | null>>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/traffic/timeseries`,
+      { params: { range } }
+    )
+  },
+
+  provisionProjectTraffic(projectId: string) {
+    return apiPost<SeoTrafficProvisionDto>(
+      `${PREFIX}/projects/${encodeURIComponent(projectId)}/traffic/provision`,
+      {}
+    )
+  },
+}

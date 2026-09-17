@@ -1,0 +1,94 @@
+"use client";
+
+import {
+  CheckCheck,
+  Clock3,
+  Mail,
+  MessageSquareMore,
+  MessagesSquare,
+  UserRoundX,
+} from "lucide-react";
+import {
+  useConversationUiStore,
+  type CustomerCareFilter,
+} from "@/features/customer-care/stores/conversation-ui.store";
+import { ChannelAccountSubmenu } from "@/components/customer-care/conversations/ChannelAccountSubmenu";
+
+const filters: Array<{
+  key: CustomerCareFilter;
+  label: string;
+  icon: React.ReactNode;
+}> = [
+  { key: "all", label: "Tất cả hội thoại", icon: <MessageSquareMore className="h-5 w-5" /> },
+  { key: "unread", label: "Chưa đọc", icon: <MessagesSquare className="h-5 w-5" /> },
+  { key: "open", label: "Đang mở", icon: <Mail className="h-5 w-5" /> },
+  { key: "pending", label: "Chờ xử lý", icon: <Clock3 className="h-5 w-5" /> },
+  { key: "resolved", label: "Đã xử lý", icon: <CheckCheck className="h-5 w-5" /> },
+  { key: "unassigned", label: "Chưa phân công", icon: <UserRoundX className="h-5 w-5" /> },
+];
+
+export function ConversationFilterRail() {
+  const filter = useConversationUiStore((state) => state.filter);
+  const setFilter = useConversationUiStore((state) => state.setFilter);
+
+  return (
+    <aside className="relative z-40 hidden w-[64px] shrink-0 flex-col border-r border-gray-200 bg-[#f4f4fa] py-2 dark:border-gray-800 dark:bg-[#13141f] xl:flex">
+      <div className="flex flex-col items-center gap-1.5 px-1.5">
+        {filters.map((item) => {
+          const active = item.key === filter;
+          return (
+            <button
+              key={item.key}
+              type="button"
+              title={item.label}
+              aria-label={item.label}
+              aria-pressed={active}
+              onClick={() => setFilter(item.key)}
+              className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors ${
+                active
+                  ? "bg-brand-50 text-[#3a5680] shadow-[inset_2px_0_0_#FFC629] dark:bg-kedi-yellow/15 dark:text-[#ffe08a] dark:shadow-[inset_2px_0_0_#FFC629]"
+                  : "text-slate-500 hover:bg-gray-200/70 hover:text-kedi-navy dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-kedi-yellow"
+              }`}
+            >
+              {item.icon}
+              <span className="pointer-events-none absolute left-[50px] top-1/2 z-[70] -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-950 px-2.5 py-1.5 font-sans text-xs font-medium leading-none tracking-normal text-white opacity-0 shadow-xl transition duration-150 group-hover:translate-x-1 group-hover:opacity-100">
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <ChannelAccountSubmenu />
+    </aside>
+  );
+}
+
+export function ConversationMobileFilters() {
+  const filter = useConversationUiStore((state) => state.filter);
+  const setFilter = useConversationUiStore((state) => state.setFilter);
+
+  return (
+    <div className="custom-scrollbar flex gap-1.5 overflow-x-auto px-2 py-2 xl:hidden">
+      {filters.map((item) => {
+        const active = item.key === filter;
+        return (
+          <button
+            key={item.key}
+            type="button"
+            aria-pressed={active}
+            onClick={() => setFilter(item.key)}
+            className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[11px] font-semibold transition [&>svg]:h-3.5 [&>svg]:w-3.5 ${
+              active
+                ? "border-kedi-yellow bg-brand-50 text-kedi-navy dark:border-kedi-yellow/30 dark:bg-kedi-yellow/10 dark:text-kedi-yellow"
+                : "border-slate-200 bg-white text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+            }`}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}

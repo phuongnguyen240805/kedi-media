@@ -1,0 +1,511 @@
+import { supabase } from "@/lib/supabase";
+import { getLandingApiHeaders, landingApiFetch } from "@/lib/landing-api-client";
+import { formatApiErrorBody } from "@/lib/format-api-error";
+import { loadBuilderPage } from "@/features/landing-builder/store/manual-save";
+import { EditorData, createDefaultPageSettings } from "../types";
+import { migrateEditorData, migrateTemplateFlatBlocks, CURRENT_EDITOR_SCHEMA_VERSION, getEditorDataFingerprint } from "./editor-migration";
+import { LandingEditorSnapshot, renderLandingPageHtml } from "./editor-export-html";
+import { instantiateTemplateBlocks } from "../template-library";
+
+export interface LocalAutosaveBackup {
+  pageId: string;
+  schemaVersion: number;
+  editorData: EditorData;
+  savedAt: string;
+  source: "local";
+}
+
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function isValidPageId(pageId: unknown): pageId is string {
+  return typeof pageId === "string" && UUID_PATTERN.test(pageId);
+}
+
+export function assertValidPageId(pageId: unknown): asserts pageId is string {
+  if (!isValidPageId(pageId)) {
+    throw new Error(`Invalid landing page id: ${String(pageId)}`);
+  }
+}
+
+export function getLocalBackupKey(pageId: string): string {
+  assertValidPageId(pageId);
+  return `landing-editor-autosave:${pageId}`;
+}
+
+export async function loadLandingPage(
+  pageId: string,
+  builderSessionToken?: string | null,
+): Promise<EditorData | null> {
+  assertValidPageId(pageId);
+  const localKey = getLocalBackupKey(pageId);
+
+  if (builderSessionToken) {
+    try {
+      const builderPage = await loadBuilderPage({ pageId, sessionToken: builderSessionToken });
+      if (builderPage?.editor_data) {
+        const editorData = migrateEditorData(
+          { pageName: builderPage.name, ...builderPage.editor_data },
+          pageId,
+        );
+        console.info("[LandingEditor Load]", {
+          routePageId: pageId,
+          source: "builder-bff",
+          fingerprint: getEditorDataFingerprint(editorData),
+        });
+        return editorData;
+      }
+      if (builderPage) {
+        console.info("[LandingEditor Load]", { routePageId: pageId, source: "builder-bff-empty-editor" });
+      }
+    } catch (err) {
+      console.warn("Builder BFF load failed, falling back to Supabase:", err);
+    }
+  }
+  const logLoad = (source: string, editorData: EditorData | null, extra?: Record<string, unknown>) => {
+    console.info("[LandingEditor Load]", {
+      routePageId: pageId,
+      localStorageKey: localKey,
+      source,
+      schemaVersion: editorData?.schemaVersion ?? null,
+      sectionsLength: editorData?.sections?.length ?? 0,
+      fingerprint: editorData ? getEditorDataFingerprint(editorData) : "null",
+      ...extra,
+    });
+  };
+
+  // 1. Try to load from Supabase if configured
+  let dbPage: any = null;
+  let dbError: any = null;
+
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("landing_pages")
+        .select("*")
+        .eq("id", pageId)
+        .maybeSingle();
+      if (error) {
+        dbError = error;
+      } else {
+        dbPage = data;
+      }
+    } catch (err) {
+      dbError = err;
+    }
+  }
+
+  // 2. Read from localStorage backup
+  let localBackup: LocalAutosaveBackup | null = null;
+  try {
+    const raw = localStorage.getItem(localKey);
+    if (raw) {
+      localBackup = JSON.parse(raw) as LocalAutosaveBackup;
+    }
+  } catch (err) {
+    console.warn("Failed to read local storage backup:", err);
+  }
+
+  // 3. Process outcomes
+  if (dbError) {
+    console.warn("Supabase load failed, falling back to local storage:", dbError);
+    if (localBackup) {
+      const localData = migrateEditorData(localBackup.editorData, pageId);
+      logLoad("local-backup-after-supabase-error", localData, { dbError: dbError?.message ?? String(dbError) });
+      return localData;
+    }
+    logLoad("supabase-error-no-local", null, { dbError: dbError?.message ?? String(dbError) });
+    return null;
+  }
+
+  if (dbPage) {
+    const dbData = migrateEditorData({ pageName: dbPage.name, ...(dbPage.editor_data || {}) }, pageId);
+    const templateId = dbPage.editor_data?.templateId;
+    if (
+      templateId === "herb-tea" &&
+      !dbData.sections.some((section) => section.type === "tea_landing")
+    ) {
+      dbData.sections = migrateTemplateFlatBlocks(instantiateTemplateBlocks("herb-tea"));
+      console.info("[LandingEditor Repair:template-core]", {
+        pageId,
+        templateId,
+        fingerprint: getEditorDataFingerprint(dbData),
+      });
+    }
+    
+    // If local backup is newer than database, we warn or return it
+    if (localBackup && localBackup.savedAt) {
+      const localTime = new Date(localBackup.savedAt).getTime();
+      const dbTime = new Date(dbPage.updated_at || dbPage.created_at).getTime();
+      
+      if (localTime > dbTime + 1000) {
+        console.info("A newer local backup was found compared to the database version.");
+        // We attach a temporary metadata flag so the UI can prompt the user to recover it
+        (dbData as any).hasNewerLocalBackup = true;
+        (dbData as any).localBackupData = localBackup.editorData;
+      }
+    }
+    logLoad("supabase", dbData, {
+      supabaseRowId: dbPage.id,
+      rowSchemaVersion: dbPage.editor_data?.schemaVersion ?? null,
+    });
+    return dbData;
+  }
+
+  if (supabase && !dbError && !dbPage) {
+    try {
+      localStorage.removeItem(localKey);
+      console.info("[LandingEditor Clean] Cleaned local storage backup for page not found in Supabase:", pageId);
+    } catch (err) {
+      console.warn("Failed to delete local storage key:", err);
+    }
+  }
+
+  if (!supabase && localBackup) {
+    const localData = migrateEditorData(localBackup.editorData, pageId);
+    logLoad("local-backup-no-supabase", localData);
+    return localData;
+  }
+
+  logLoad(supabase ? "page-not-found" : "no-data", null);
+  return null;
+}
+
+export async function saveLandingPage(pageId: string, editorData: EditorData): Promise<void> {
+  assertValidPageId(pageId);
+  const nowStr = new Date().toISOString();
+  
+  // 1. Always backup to localStorage
+  const backup: LocalAutosaveBackup = {
+    pageId,
+    schemaVersion: CURRENT_EDITOR_SCHEMA_VERSION,
+    editorData,
+    savedAt: nowStr,
+    source: "local",
+  };
+  try {
+    localStorage.setItem(getLocalBackupKey(pageId), JSON.stringify(backup));
+    console.info("[LandingEditor Save:local]", {
+      pageId,
+      localStorageKey: getLocalBackupKey(pageId),
+      fingerprint: getEditorDataFingerprint(editorData),
+    });
+  } catch (err) {
+    console.warn("Failed to write local backup:", err);
+  }
+
+  // 2. Try to save to Supabase if configured
+  if (supabase) {
+    try {
+      let renderedHtml = "";
+      if (editorData && Array.isArray(editorData.sections) && editorData.sections.length > 0) {
+        try {
+          renderedHtml = renderLandingPageHtml(editorData);
+        } catch (err) {
+          console.warn("Failed to render editorData HTML on save:", err);
+        }
+      }
+      if (renderedHtml) {
+        editorData.html = renderedHtml;
+      }
+
+      const updatePayload: any = {
+        id: pageId,
+        name: editorData.pageName || "Untitled Page",
+        slug: editorData.pageSettings?.slug || editorData.pageName?.toLowerCase().replace(/\s+/g, "-") || `page-${pageId}`,
+        status: "draft",
+        editor_data: editorData,
+        ...(renderedHtml ? { ai_source_html: renderedHtml } : {}),
+        updated_at: nowStr,
+      };
+
+      const headers = await getLandingApiHeaders();
+
+      const response = await fetch("/api/landing-pages", {
+        method: "PUT",
+        credentials: "include",
+        headers,
+        body: JSON.stringify(updatePayload),
+      });
+
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        const errMsg = formatApiErrorBody(result, "Supabase save failed.");
+        // Handle unauthorized errors gracefully during local preview/testing without session
+        if (response.status === 401 || errMsg.toLowerCase().includes("unauthorized") || errMsg.toLowerCase().includes("sign in")) {
+          console.warn("User is unauthorized. Design saved to LocalStorage backup only.");
+          return;
+        }
+        throw new Error(errMsg);
+      }
+
+      console.info("[LandingEditor Save:supabase]", {
+        pageId,
+        fingerprint: getEditorDataFingerprint(editorData),
+      });
+    } catch (err) {
+      console.error("Failed to save to Supabase, local backup remains intact:", err);
+      throw err;
+    }
+  } else {
+    console.warn("Supabase is not configured. Saved to LocalStorage only.");
+  }
+}
+
+export async function createLandingPage(input: {
+  id?: string;
+  name: string;
+  slug: string;
+  editor_data?: any;
+  tag_ids?: string[];
+}): Promise<any> {
+  const nowStr = new Date().toISOString();
+  const pageId = input.id || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "");
+  assertValidPageId(pageId);
+  const editorData = input.editor_data
+    ? migrateEditorData({ ...input.editor_data, pageId, pageName: input.editor_data.pageName || input.name }, pageId)
+    : {
+        pageId,
+        pageName: input.name,
+        sections: [],
+        pageSettings: {
+          ...createDefaultPageSettings(input.name),
+          seoDescription: "",
+          bgColor: "#ffffff",
+          fontFamily: "Arial, Helvetica, sans-serif",
+          maxWidth: 1200,
+        },
+        schemaVersion: CURRENT_EDITOR_SCHEMA_VERSION,
+      };
+
+  let renderedHtml = (input as any).ai_source_html || "";
+  if (!renderedHtml && editorData && Array.isArray(editorData.sections) && editorData.sections.length > 0) {
+    try {
+      renderedHtml = renderLandingPageHtml(editorData);
+    } catch (err) {
+      console.warn("Failed to render initial template HTML:", err);
+    }
+  }
+
+  if (renderedHtml) {
+    editorData.html = renderedHtml;
+  }
+
+  const pageData: any = {
+    id: pageId,
+    name: input.name,
+    slug: input.slug,
+    status: "draft",
+    editor_data: editorData,
+    ...(renderedHtml ? { ai_source_html: renderedHtml } : {}),
+    created_at: nowStr,
+    updated_at: nowStr,
+    ...(input.tag_ids?.length ? { tag_ids: input.tag_ids } : {}),
+  };
+
+  if (supabase) {
+    const headers = await getLandingApiHeaders();
+
+    const response = await fetch("/api/landing-pages", {
+      method: "POST",
+      credentials: "include",
+      headers,
+      body: JSON.stringify(pageData),
+    });
+
+    if (!response.ok) {
+      const result = await response.json().catch(() => null);
+      throw new Error(result?.error || "Supabase create failed.");
+    }
+
+    const result = await response.json();
+    return result.page;
+  }
+
+  // Local storage fallback for creation
+  const backup: LocalAutosaveBackup = {
+    pageId,
+    schemaVersion: CURRENT_EDITOR_SCHEMA_VERSION,
+    editorData,
+    savedAt: nowStr,
+    source: "local",
+  };
+  localStorage.setItem(getLocalBackupKey(pageId), JSON.stringify(backup));
+  return pageData;
+}
+
+/**
+ * @deprecated Use POST /api/landing-pages/:id/publish (Plan 1.5 L1).
+ * Client-side publish bypasses renderer registry, versioning, and AI-SEO hook.
+ */
+export async function publishLandingPage(
+  pageId: string,
+  html: string
+): Promise<void> {
+  assertValidPageId(pageId);
+  await landingApiFetch(`/api/landing-pages/${encodeURIComponent(pageId)}/publish`, {
+    method: "POST",
+    body: JSON.stringify({ draftOverride: html, preserveHtml: true }),
+  });
+}
+
+/**
+ * @deprecated Use DELETE /api/landing-pages/:id/publish (Plan 1.5 L1).
+ * Thu hồi xuất bản: đưa page về trạng thái draft/private.
+ */
+export async function unpublishLandingPage(pageId: string): Promise<void> {
+  assertValidPageId(pageId);
+  await landingApiFetch(`/api/landing-pages/${encodeURIComponent(pageId)}/publish`, {
+    method: "DELETE",
+  });
+}
+
+/**
+ * Lấy trạng thái bảo mật của page (status + visibility + slug).
+ * Dùng trong EditorTopBar để hiển thị badge và public link.
+ */
+export async function getPageSecurityInfo(
+  pageId: string
+): Promise<{ status: string; visibility: string; slug: string | null } | null> {
+  assertValidPageId(pageId);
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("landing_pages")
+    .select("status, visibility, slug")
+    .eq("id", pageId)
+    .maybeSingle();
+  if (error || !data) return null;
+  return data as { status: string; visibility: string; slug: string | null };
+}
+
+export async function createLandingPageVersion(
+  pageId: string,
+  editorData: EditorData,
+  versionName: string
+): Promise<void> {
+  assertValidPageId(pageId);
+  if (supabase) {
+    await landingApiFetch(`/api/landing-pages/${encodeURIComponent(pageId)}/versions`, {
+      method: "POST",
+      body: JSON.stringify({ editorData, versionName }),
+    });
+  } else {
+    // Local revision backup fallback
+    const key = `landing-revisions:${pageId}`;
+    let revisions: any[] = [];
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) revisions = JSON.parse(raw);
+    } catch {}
+    revisions.unshift({
+      id: Math.random().toString(36).substring(2, 9),
+      page_id: pageId,
+      editor_data: editorData,
+      version_name: versionName,
+      created_at: new Date().toISOString(),
+    });
+    localStorage.setItem(key, JSON.stringify(revisions.slice(0, 30)));
+  }
+}
+
+export async function listLandingPageVersions(pageId: string): Promise<any[]> {
+  assertValidPageId(pageId);
+  if (supabase) {
+    const result = await landingApiFetch<{ versions: any[] }>(
+      `/api/landing-pages/${encodeURIComponent(pageId)}/versions`,
+    );
+    return result.versions ?? [];
+  }
+
+  const key = `landing-revisions:${pageId}`;
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function restoreLandingPageVersion(
+  pageId: string,
+  versionId: string,
+  currentEditorData: EditorData
+): Promise<EditorData> {
+  assertValidPageId(pageId);
+  // 1. Create a backup first
+  await createLandingPageVersion(pageId, currentEditorData, "Before restore");
+
+  // 2. Load the target version
+  if (supabase) {
+    const result = await landingApiFetch<{ version: { editor_data: unknown } }>(
+      `/api/landing-pages/${encodeURIComponent(pageId)}/versions/${encodeURIComponent(versionId)}`,
+    );
+    return migrateEditorData(result.version.editor_data, pageId);
+  }
+
+  const key = `landing-revisions:${pageId}`;
+  const raw = localStorage.getItem(key);
+  if (raw) {
+    const revisions = JSON.parse(raw) as any[];
+    const rev = revisions.find((r) => r.id === versionId);
+    if (rev) {
+      return migrateEditorData(rev.editor_data, pageId);
+    }
+  }
+  throw new Error("Version not found");
+}
+
+export async function listLandingPages(): Promise<any[]> {
+  // Listing is handled by the authenticated Next.js BFF. The BFF uses the
+  // server-side Supabase service role, so this must not depend on whether the
+  // browser Supabase client was initialized.
+  const result = await landingApiFetch<{ pages: any[] }>("/api/landing-pages");
+  return result.pages ?? [];
+}
+
+export async function deleteLandingPage(pageId: string): Promise<void> {
+  assertValidPageId(pageId);
+  if (supabase) {
+    const headers = await getLandingApiHeaders();
+    const response = await fetch("/api/landing-pages", {
+      method: "DELETE",
+      credentials: "include",
+      headers,
+      body: JSON.stringify({ ids: [pageId] }),
+    });
+    if (!response.ok) {
+      const result = await response.json().catch(() => null);
+      throw new Error(result?.error || "Delete failed.");
+    }
+  }
+  try {
+    localStorage.removeItem(getLocalBackupKey(pageId));
+    console.info("[LandingEditor Delete] Deleted local storage backup for page:", pageId);
+  } catch (err) {
+    console.warn("Failed to delete local storage key:", err);
+  }
+}
+
+export async function deleteLandingPages(pageIds: string[]): Promise<void> {
+  if (pageIds.length === 0) return;
+  pageIds.forEach(assertValidPageId);
+  if (supabase) {
+    const headers = await getLandingApiHeaders();
+    const response = await fetch("/api/landing-pages", {
+      method: "DELETE",
+      credentials: "include",
+      headers,
+      body: JSON.stringify({ ids: pageIds }),
+    });
+    if (!response.ok) {
+      const result = await response.json().catch(() => null);
+      throw new Error(result?.error || "Delete failed.");
+    }
+  }
+  pageIds.forEach((id) => {
+    try {
+      localStorage.removeItem(getLocalBackupKey(id));
+    } catch (err) {
+      console.warn("Failed to delete local storage key for:", id, err);
+    }
+  });
+}

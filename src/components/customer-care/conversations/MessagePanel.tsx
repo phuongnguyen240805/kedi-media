@@ -1,0 +1,1010 @@
+"use client";
+
+import { assetUrl } from "@/lib/cdn";
+import type {
+  CustomerCareCapabilities,
+  CustomerCareChannelAccount,
+  CustomerCareConversation,
+  CustomerCareMessage,
+} from "@liora/api-types";
+import {
+  Archive,
+  ArrowLeft,
+  Bell,
+  BellOff,
+  Check,
+  CheckCheck,
+  CircleHelp,
+  ChevronUp,
+  Copy,
+  Forward,
+  ImagePlus,
+  Info,
+  LoaderCircle,
+  MessageSquareReply,
+  MoreHorizontal,
+  Paperclip,
+  Pin,
+  RefreshCw,
+  Reply,
+  Search,
+  Send,
+  Smile,
+  Sparkles,
+  Trash2,
+  UsersRound,
+  WifiOff,
+  X,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { CustomerCareEmptyState } from "@/components/customer-care/shared/CustomerCareEmptyState";
+import { CustomerCareSkeleton } from "@/components/customer-care/shared/CustomerCareSkeleton";
+import { ChannelBadge } from "@/components/customer-care/shared/ChannelBadge";
+import { ConversationTagBar } from "@/components/customer-care/conversations/ConversationTagBar";
+import { useConversationDraft, useCustomerCareChannels } from "@/features/customer-care/hooks/useCustomerCare";
+import { customerCareApi, type CustomerCareAiReplyResult } from "@/lib/endpoints/customer-care.api";
+import { customerCareQueryKey, useCustomerCareScopeKey } from "@/features/customer-care/session/customer-care-scope";
+import { useAuthStore } from "@/features/auth/stores/auth.store";
+import { formatCustomerPresence, isCustomerOnline, usePresenceNow } from "@/features/customer-care/presence";
+
+function formatTime(value: string) {
+  return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+}
+
+function formatDateKey(value: string) {
+  return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(value));
+}
+
+function formatDateLabel(value: string) {
+  const date = new Date(value);
+  const now = new Date();
+  if (date.toDateString() === now.toDateString()) return "Hôm nay";
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  if (date.toDateString() === yesterday.toDateString()) return "Hôm qua";
+  return formatDateKey(value);
+}
+
+function asProfileRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+}
+
+function firstProfileString(source: Record<string, unknown>, keys: string[]) {
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return undefined;
+}
+
+function channelAccountIdentity(account?: CustomerCareChannelAccount | null) {
+  if (!account) return null;
+  const root = asProfileRecord(account.status?.profile);
+  const nested = asProfileRecord(root.profile ?? root.data ?? root.user);
+  const source = { ...root, ...nested };
+
+  const picture = asProfileRecord(source.picture);
+  const pictureData = asProfileRecord(picture.data);
+
+  const avatar =
+    firstProfileString(source, [
+      "avatarUrl",
+      "avatar_url",
+      "avatar",
+      "profilePictureUrl",
+      "profile_picture_url",
+      "pictureUrl",
+      "picture_url",
+      "photoUrl",
+      "photo_url",
+    ]) ||
+    firstProfileString(pictureData, ["url"]);
+
+  const name =
+    firstProfileString(source, [
+      "displayName",
+      "display_name",
+      "name",
+      "username",
+      "zaloName",
+      "firstName",
+    ]) ||
+    account.name ||
+    (account.provider === "zalo_personal"
+      ? "Tài khoản Zalo"
+      : account.provider === "facebook_personal"
+        ? "Tài khoản Facebook"
+        : "Tài khoản hội thoại");
+
+  return { name, avatar };
+}
+
+const quickReplies = [
+  "Xin chào, Kedi có thể hỗ trợ gì cho bạn?",
+  "Cảm ơn bạn đã cung cấp thông tin. Chúng tôi đang kiểm tra ngay.",
+  "Bạn vui lòng để lại số điện thoại để đội ngũ tư vấn liên hệ nhé.",
+];
+const quickEmojis = ["👍", "❤️", "😊", "😮", "🙏", "🎉"];
+
+export function MessagePanel({
+  conversation,
+  conversations,
+  messages,
+  loading,
+  hasOlder,
+  loadingOlder,
+  onLoadOlder,
+  onSend,
+  onBack,
+  onToggleCustomerPanel,
+  sending,
+  online,
+  capabilities,
+  onTypingStart,
+  onTypingStop,
+  onAiSuggest,
+}: {
+  conversation: CustomerCareConversation | null;
+  conversations: CustomerCareConversation[];
+  messages: CustomerCareMessage[];
+  loading: boolean;
+  hasOlder: boolean;
+  loadingOlder: boolean;
+  onLoadOlder: () => Promise<void>;
+  sending: boolean;
+  realtimeConnected: boolean;
+  online: boolean;
+  capabilities?: CustomerCareCapabilities;
+  onSend: (content: string, replyToMessageId: string | undefined, files: File[]) => Promise<void>;
+  onBack: () => void;
+  onToggleCustomerPanel: () => void;
+  onTypingStart: (conversationId: string) => void;
+  onTypingStop: (conversationId: string) => void;
+  onAiSuggest: () => Promise<CustomerCareAiReplyResult>;
+}) {
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const previousConversationRef = useRef<string | null>(null);
+  const previousLastMessageRef = useRef<string | null>(null);
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const typingActiveRef = useRef(false);
+  const typingConversationIdRef = useRef<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const queryClient = useQueryClient();
+  const scopeKey = useCustomerCareScopeKey();
+  const [quickRepliesOpen, setQuickRepliesOpen] = useState(false);
+  const [emojiOpen, setEmojiOpen] = useState(false);
+  const [conversationMenuOpen, setConversationMenuOpen] = useState(false);
+  const [conversationActionBusy, setConversationActionBusy] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sendError, setSendError] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [replyTo, setReplyTo] = useState<CustomerCareMessage | null>(null);
+  const [forwardMessage, setForwardMessage] = useState<CustomerCareMessage | null>(null);
+  const [forwardTarget, setForwardTarget] = useState("");
+  const [forwardSearch, setForwardSearch] = useState("");
+  const [forwardBusy, setForwardBusy] = useState(false);
+  const [forwardError, setForwardError] = useState<string | null>(null);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiActionBusyId, setAiActionBusyId] = useState<string | null>(null);
+  const [aiSuggestion, setAiSuggestion] = useState<CustomerCareAiReplyResult | null>(null);
+  const { draft, setDraft, clearDraft } = useConversationDraft(conversation?.id ?? null);
+  const platformProfile = useAuthStore((state) => state.platform.profile);
+  const channelsQuery = useCustomerCareChannels();
+  const presenceNow = usePresenceNow();
+  const currentAgent = useMemo(() => ({
+    name: platformProfile?.nickname?.trim() || platformProfile?.username?.trim() || platformProfile?.email?.trim() || "Nhân viên CSKH",
+    avatar: platformProfile?.avatar?.trim() || assetUrl("/images/user/owner.jpg"),
+  }), [platformProfile?.avatar, platformProfile?.email, platformProfile?.nickname, platformProfile?.username]);
+
+  const channelAccount = useMemo(() => {
+    if (!conversation) return null;
+    const channels = channelsQuery.data ?? [];
+
+    if (conversation.channelAccountId) {
+      const accountKey = String(conversation.channelAccountId);
+      const exact = channels.find((item) =>
+        String(item.id) === accountKey ||
+        String(item.externalAccountId || "") === accountKey ||
+        String(item.status?.account_id || "") === accountKey
+      );
+      if (exact) return exact;
+    }
+
+    if (conversation.channelProvider) {
+      const byProvider = channels.filter((item) => item.provider === conversation.channelProvider);
+      if (byProvider.length === 1) return byProvider[0];
+    }
+
+    return null;
+  }, [channelsQuery.data, conversation]);
+
+  const channelIdentity = useMemo(
+    () => channelAccountIdentity(channelAccount),
+    [channelAccount],
+  );
+
+  const lastMessageId = messages.at(-1)?.id ?? null;
+  const lastReadOutgoingMessageId = useMemo(() => {
+    for (let index = messages.length - 1; index >= 0; index -= 1) {
+      const message = messages[index];
+      if (message.direction === "outgoing" && message.status === "read") return message.id;
+    }
+    return null;
+  }, [messages]);
+
+  /* eslint-disable react-hooks/set-state-in-effect -- switching conversations must clear ephemeral composer state */
+  useEffect(() => {
+    const conversationChanged = previousConversationRef.current !== (conversation?.id ?? null);
+    const newestMessageChanged = previousLastMessageRef.current !== lastMessageId;
+    if (conversationChanged || newestMessageChanged) {
+      requestAnimationFrame(() => {
+        bottomRef.current?.scrollIntoView({
+          behavior: conversationChanged ? "auto" : "smooth",
+        });
+      });
+    }
+    previousConversationRef.current = conversation?.id ?? null;
+    previousLastMessageRef.current = lastMessageId;
+  }, [conversation?.id, lastMessageId]);
+
+  const stopTyping = () => {
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = null;
+    const typingConversationId = typingConversationIdRef.current;
+    if (typingActiveRef.current && typingConversationId) {
+      typingActiveRef.current = false;
+      typingConversationIdRef.current = null;
+      onTypingStop(typingConversationId);
+    }
+  };
+
+  const signalTyping = () => {
+    const conversationId = conversation?.id;
+    if (!conversationId) return;
+    if (typingActiveRef.current && typingConversationIdRef.current !== conversationId) {
+      stopTyping();
+    }
+    if (!typingActiveRef.current) {
+      typingActiveRef.current = true;
+      typingConversationIdRef.current = conversationId;
+      onTypingStart(conversationId);
+    }
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = setTimeout(stopTyping, 1_500);
+  };
+
+  useEffect(() => {
+    setReplyTo(null);
+    setForwardMessage(null);
+    setForwardTarget("");
+    setForwardSearch("");
+    setForwardError(null);
+    setSelectedFiles([]);
+    setAiSuggestion(null);
+    stopTyping();
+    return stopTyping;
+    // Typing state must be reset when switching threads or unmounting.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conversation?.id]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  const visibleMessages = useMemo(() => {
+    const value = search.trim().toLocaleLowerCase("vi");
+    return value
+      ? messages.filter((message) => message.content.toLocaleLowerCase("vi").includes(value))
+      : messages;
+  }, [messages, search]);
+
+  const grouped = useMemo(() => {
+    const result: Array<{ key: string; label: string; messages: CustomerCareMessage[] }> = [];
+    for (const message of visibleMessages) {
+      const key = formatDateKey(message.createdAt);
+      const current = result[result.length - 1];
+      if (!current || current.key !== key) {
+        result.push({ key, label: formatDateLabel(message.createdAt), messages: [message] });
+      } else {
+        current.messages.push(message);
+      }
+    }
+    return result;
+  }, [visibleMessages]);
+
+  const forwardCandidates = useMemo(() => {
+    const currentConversationId = conversation?.id;
+    const value = forwardSearch.trim().toLocaleLowerCase("vi");
+    return conversations
+      .filter((item) => item.id !== currentConversationId && !item.archived)
+      .filter((item) => {
+        if (!value) return true;
+        return [item.customer.name, item.lastMessage, item.channelName]
+          .filter(Boolean)
+          .some((part) => String(part).toLocaleLowerCase("vi").includes(value));
+      })
+      .slice(0, 50);
+  }, [conversation?.id, conversations, forwardSearch]);
+
+  if (!conversation) {
+    return (
+      <section className="hidden min-w-0 flex-1 bg-slate-100 dark:bg-[#10141b] md:block">
+        <CustomerCareEmptyState
+          title="Chọn một hội thoại"
+          description="Nội dung tin nhắn, lịch sử chăm sóc và công cụ xử lý sẽ xuất hiện tại đây."
+        />
+      </section>
+    );
+  }
+
+  const requestAiSuggestion = async () => {
+    if (aiBusy || sending) return;
+    setAiBusy(true);
+    setSendError(null);
+    try {
+      const suggestion = await onAiSuggest();
+      const reply = suggestion.reply?.trim();
+      if (!reply) throw new Error("AI chưa tạo được nội dung trả lời.");
+      setDraft(reply);
+      setAiSuggestion(suggestion);
+    } catch (error) {
+      setSendError(error instanceof Error ? error.message : "Không thể tạo gợi ý AI.");
+    } finally {
+      setAiBusy(false);
+    }
+  };
+
+  const decideAiAction = async (actionId: string, decision: "approve" | "reject") => {
+    if (aiActionBusyId) return;
+    setAiActionBusyId(actionId);
+    setSendError(null);
+    try {
+      const updated = decision === "approve"
+        ? await customerCareApi.approveAiAction(actionId)
+        : await customerCareApi.rejectAiAction(actionId);
+      setAiSuggestion((current) => current ? {
+        ...current,
+        proposedActions: current.proposedActions?.map((item) => item.id === actionId ? updated : item),
+      } : current);
+    } catch (error) {
+      setSendError(error instanceof Error ? error.message : "Không thể xử lý đề xuất AI.");
+    } finally {
+      setAiActionBusyId(null);
+    }
+  };
+
+  const submit = async () => {
+    const content = draft.trim();
+    if ((!content && selectedFiles.length === 0) || sending) return;
+    setSendError(null);
+    try {
+      stopTyping();
+      await onSend(content, replyTo?.id, selectedFiles);
+      await clearDraft();
+      setSelectedFiles([]);
+      setReplyTo(null);
+      setAiSuggestion(null);
+    } catch (error) {
+      setSendError(error instanceof Error ? error.message : "Không thể gửi tin nhắn.");
+    }
+  };
+
+  const selectFiles = (files: FileList | null) => {
+    if (!files) return;
+    const next = [...files];
+    if (next.some((file) => file.size > 6 * 1024 * 1024)) {
+      setSendError("Mỗi tệp đính kèm không được vượt quá 6 MB.");
+      return;
+    }
+    if (selectedFiles.length + next.length > 5) {
+      setSendError("Mỗi tin nhắn được đính kèm tối đa 5 tệp.");
+      return;
+    }
+    setSelectedFiles((current) => [...current, ...next]);
+    setSendError(null);
+  };
+
+  const refreshMessages = () =>
+    scopeKey
+      ? queryClient.invalidateQueries({ queryKey: customerCareQueryKey(scopeKey, "messages", conversation.id) })
+      : Promise.resolve();
+
+  const updateConversation = async (patch: Record<string, unknown>) => {
+    setConversationActionBusy(true);
+    try {
+      await customerCareApi.updateConversation(conversation.id, patch);
+      if (scopeKey) await queryClient.invalidateQueries({ queryKey: customerCareQueryKey(scopeKey, "conversations") });
+      setConversationMenuOpen(false);
+    } finally {
+      setConversationActionBusy(false);
+    }
+  };
+
+  const openForward = (message: CustomerCareMessage) => {
+    setForwardMessage(message);
+    setForwardTarget("");
+    setForwardSearch("");
+    setForwardError(null);
+  };
+
+  const closeForward = () => {
+    if (forwardBusy) return;
+    setForwardMessage(null);
+    setForwardTarget("");
+    setForwardSearch("");
+    setForwardError(null);
+  };
+
+  const submitForward = async () => {
+    if (!forwardMessage || !forwardTarget || forwardBusy) return;
+    setForwardBusy(true);
+    setForwardError(null);
+    try {
+      await customerCareApi.forwardMessage(
+        conversation.id,
+        forwardMessage.id,
+        forwardTarget,
+        forwardMessage.content,
+      );
+      await Promise.all([
+        scopeKey ? queryClient.invalidateQueries({ queryKey: customerCareQueryKey(scopeKey, "conversations") }) : Promise.resolve(),
+        scopeKey ? queryClient.invalidateQueries({ queryKey: customerCareQueryKey(scopeKey, "messages", forwardTarget) }) : Promise.resolve(),
+      ]);
+      setForwardMessage(null);
+      setForwardTarget("");
+      setForwardSearch("");
+    } catch (error) {
+      setForwardError(error instanceof Error ? error.message : "Không thể chuyển tiếp tin nhắn.");
+    } finally {
+      setForwardBusy(false);
+    }
+  };
+
+  return (
+    <section className="relative flex min-w-0 flex-1 flex-col overflow-hidden bg-slate-100 dark:bg-[#10141b]">
+      <header className="flex h-[60px] shrink-0 items-center gap-2 border-b border-slate-200 bg-white px-2 dark:border-white/10 dark:bg-[#11151c] sm:h-[70px] sm:gap-3 sm:px-4">
+        <button type="button" onClick={onBack} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 md:hidden dark:hover:bg-white/5" aria-label="Quay lại danh sách">
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <div className="relative shrink-0">
+          <Avatar name={conversation.customer.name} src={conversation.customer.avatar} size="lg" />
+          {conversation.threadType !== "group" && isCustomerOnline(conversation.presence) ? (
+            <span
+              className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-[#11151c]"
+              title="Đang hoạt động"
+              aria-label="Khách hàng đang hoạt động"
+            />
+          ) : null}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <h2 className="truncate text-sm font-bold text-slate-900 dark:text-white">{conversation.customer.name}</h2>
+            {conversation.threadType === "group" ? <UsersRound className="h-3.5 w-3.5 text-slate-400" /> : null}
+          </div>
+          <div className="mt-1 flex min-w-0 items-center gap-1.5" aria-label={`Khách hàng ${conversation.channel}`}>
+            <span className={`min-w-0 truncate text-[10px] ${isCustomerOnline(conversation.presence) ? "font-medium text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-500"}`}>
+              {conversation.threadType === "group"
+                ? "Nhóm"
+                : formatCustomerPresence(conversation.presence, presenceNow) || "Khách hàng"}
+            </span>
+            <ChannelBadge channel={conversation.channel} />
+          </div>
+        </div>
+
+        <div className="ml-auto flex items-center gap-1 text-slate-500 dark:text-slate-300">
+          <button type="button" onClick={() => setSearchOpen((value) => !value)} className={`hidden h-9 w-9 items-center justify-center rounded-lg transition sm:flex ${searchOpen ? "bg-brand-50 text-kedi-navy dark:bg-kedi-yellow/10 dark:text-kedi-yellow" : "hover:bg-slate-100 dark:hover:bg-white/5"}`} title="Tìm trong hội thoại">
+            <Search className="h-5 w-5" />
+          </button>
+          <button type="button" onClick={() => void refreshMessages()} className="hidden h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-100 sm:flex dark:hover:bg-white/5" title="Đồng bộ lại tin nhắn">
+            <RefreshCw className="h-4.5 w-4.5" />
+          </button>
+          <button type="button" onClick={onToggleCustomerPanel} className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-slate-100 sm:h-9 sm:w-9 dark:hover:bg-white/5" title="Thông tin khách hàng">
+            <Info className="h-5 w-5" />
+          </button>
+          <div className="relative">
+            <button type="button" onClick={() => setConversationMenuOpen((value) => !value)} className={`flex h-10 w-10 items-center justify-center rounded-lg transition sm:h-9 sm:w-9 ${conversationMenuOpen ? "bg-slate-100 text-kedi-navy dark:bg-white/10 dark:text-kedi-yellow" : "hover:bg-slate-100 dark:hover:bg-white/5"}`} title="Thao tác hội thoại">
+              <MoreHorizontal className="h-5 w-5" />
+            </button>
+            {conversationMenuOpen ? (
+              <div className="absolute right-0 top-11 z-40 w-[min(16rem,calc(100vw-1rem))] rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-[#181d25]">
+                <div className="sm:hidden">
+                  <ConversationAction label="Tìm trong hội thoại" icon={<Search className="h-4 w-4" />} onClick={() => { setSearchOpen((value) => !value); setConversationMenuOpen(false); }} />
+                  <ConversationAction label="Đồng bộ lại tin nhắn" icon={<RefreshCw className="h-4 w-4" />} onClick={async () => { await refreshMessages(); setConversationMenuOpen(false); }} />
+                  <div className="my-1 h-px bg-slate-100 dark:bg-white/10" />
+                </div>
+                <ConversationAction label={conversation.pinned ? "Bỏ ghim hội thoại" : "Ghim hội thoại"} icon={<Pin className="h-4 w-4" />} disabled={conversationActionBusy} onClick={() => void updateConversation({ pinned: !conversation.pinned })} />
+                <ConversationAction label={conversation.muted ? "Bật thông báo" : "Tắt thông báo"} icon={conversation.muted ? <Bell className="h-4 w-4" /> : <BellOff className="h-4 w-4" />} disabled={conversationActionBusy} onClick={() => void updateConversation({ muted: !conversation.muted })} />
+                <div className="my-1 h-px bg-slate-100 dark:bg-white/10" />
+                <ConversationAction label="Đánh dấu đang mở" disabled={conversationActionBusy} onClick={() => void updateConversation({ status: "open" })} />
+                <ConversationAction label="Chuyển sang chờ xử lý" disabled={conversationActionBusy} onClick={() => void updateConversation({ status: "pending" })} />
+                <ConversationAction label="Đánh dấu đã xử lý" disabled={conversationActionBusy} onClick={() => void updateConversation({ status: "resolved" })} />
+                <ConversationAction label="Đánh dấu chưa đọc" disabled={conversationActionBusy} onClick={async () => { setConversationActionBusy(true); try { await customerCareApi.markUnread(conversation.id); if (scopeKey) await queryClient.invalidateQueries({ queryKey: customerCareQueryKey(scopeKey, "conversations") }); setConversationMenuOpen(false); } finally { setConversationActionBusy(false); } }} />
+                <div className="my-1 h-px bg-slate-100 dark:bg-white/10" />
+                <ConversationAction label={conversation.archived ? "Khôi phục hội thoại" : "Lưu trữ hội thoại"} icon={<Archive className="h-4 w-4" />} disabled={conversationActionBusy} danger={!conversation.archived} onClick={() => void updateConversation({ archived: !conversation.archived })} />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </header>
+
+      {searchOpen ? (
+        <div className="border-b border-slate-200 bg-white px-4 py-2 dark:border-white/10 dark:bg-[#11151c]">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+            <input autoFocus value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Tìm nội dung tin nhắn..." className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 pl-8 pr-9 text-base outline-none focus:border-kedi-yellow sm:h-9 sm:text-xs dark:border-white/10 dark:bg-white/5 dark:text-white" />
+            {search ? <button type="button" onClick={() => setSearch("")} className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-700"><X className="h-3.5 w-3.5" /></button> : null}
+          </div>
+        </div>
+      ) : null}
+
+      {!online ? (
+        <div className="flex items-center justify-center gap-2 border-b border-amber-200 bg-amber-50 px-3 py-1.5 text-[11px] text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200">
+          <WifiOff className="h-3.5 w-3.5" /> Mất kết nối mạng. Tin nhắn được lưu an toàn trên thiết bị và tự động gửi lại khi có mạng.
+        </div>
+      ) : null}
+
+      <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto px-2 py-3 sm:px-5 sm:py-4" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(100,116,139,0.08) 1px, transparent 0)", backgroundSize: "22px 22px" }}>
+        {loading ? (
+          <CustomerCareSkeleton rows={5} />
+        ) : grouped.length === 0 ? (
+          <CustomerCareEmptyState title={search ? "Không tìm thấy tin nhắn" : "Chưa có tin nhắn"} description={search ? "Thử từ khóa khác trong hội thoại này." : "Gửi tin nhắn đầu tiên để bắt đầu chăm sóc khách hàng."} />
+        ) : (
+          <div className="mx-auto max-w-4xl space-y-5">
+            {hasOlder ? (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  disabled={loadingOlder}
+                  onClick={() => void onLoadOlder()}
+                  className="inline-flex h-8 items-center gap-2 rounded-full border border-slate-200 bg-white px-3 text-[11px] font-semibold text-slate-600 shadow-sm transition hover:border-kedi-yellow hover:text-kedi-navy disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#181d25] dark:text-slate-300"
+                >
+                  {loadingOlder ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" /> : <ChevronUp className="h-3.5 w-3.5" />}
+                  {loadingOlder ? "Đang tải tin cũ…" : "Tải tin nhắn cũ hơn"}
+                </button>
+              </div>
+            ) : null}
+            {grouped.map((group) => (
+              <div key={group.key}>
+                <div className="mb-4 flex justify-center">
+                  <span className="rounded-full bg-slate-200/90 px-4 py-1 text-[11px] font-medium text-slate-600 dark:bg-black/30 dark:text-slate-300">{group.label}</span>
+                </div>
+                <div className="space-y-3.5">
+                  {group.messages.map((message) => (
+                    <MessageBubble
+                      key={message.id}
+                      message={message}
+                      conversation={conversation}
+                      capabilities={capabilities}
+                      currentAgent={currentAgent}
+                      channelIdentity={channelIdentity}
+                      showSeenAvatar={message.id === lastReadOutgoingMessageId}
+                      onReply={() => setReplyTo(message)}
+                      onForward={() => openForward(message)}
+                      onRetry={async () => {
+                        await customerCareApi.retryMessage(conversation.id, message.id);
+                        await refreshMessages();
+                      }}
+                      onRecall={async () => {
+                        await customerCareApi.recallMessage(conversation.id, message.id);
+                        await refreshMessages();
+                      }}
+                      onReact={async (emoji) => {
+                        const current = message.reactions?.find((reaction) => reaction.emoji === emoji);
+                        if (current?.reactedByMe) {
+                          await customerCareApi.removeReaction(conversation.id, message.id, emoji);
+                        } else {
+                          await customerCareApi.addReaction(conversation.id, message.id, emoji);
+                        }
+                        await refreshMessages();
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div ref={bottomRef} />
+          </div>
+        )}
+      </div>
+
+      <footer className="relative shrink-0 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-white/10 dark:bg-[#11151c]">
+        <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(event) => { selectFiles(event.target.files); event.target.value = ""; }} />
+        <input ref={imageInputRef} type="file" multiple accept="image/*" className="hidden" onChange={(event) => { selectFiles(event.target.files); event.target.value = ""; }} />
+        <ConversationTagBar key={conversation.id} conversation={conversation} />
+        {replyTo ? (
+          <div className="mx-3 mt-2 flex items-center gap-2 rounded-lg border-l-4 border-kedi-yellow bg-slate-50 px-3 py-2 text-xs dark:bg-white/5">
+            <MessageSquareReply className="h-4 w-4 shrink-0 text-kedi-navy" />
+            <div className="min-w-0 flex-1">
+              <div className="font-semibold text-slate-700 dark:text-slate-200">Trả lời {replyTo.senderName}</div>
+              <div className="truncate text-slate-500">{replyTo.content}</div>
+            </div>
+            <button type="button" onClick={() => setReplyTo(null)} className="rounded p-1 text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"><X className="h-4 w-4" /></button>
+          </div>
+        ) : null}
+
+        {sendError ? (
+          <div className="mx-3 mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">{sendError}</div>
+        ) : null}
+
+        {selectedFiles.length ? (
+          <div className="mx-3 mt-2 flex flex-wrap gap-2">
+            {selectedFiles.map((file, index) => (
+              <div key={`${file.name}:${file.lastModified}:${index}`} className="flex max-w-56 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs dark:border-white/10 dark:bg-white/5">
+                {file.type.startsWith("image/") ? <ImagePlus className="h-4 w-4 shrink-0 text-kedi-navy" /> : <Paperclip className="h-4 w-4 shrink-0 text-slate-500" />}
+                <span className="truncate">{file.name}</span>
+                <button type="button" onClick={() => setSelectedFiles((current) => current.filter((_, itemIndex) => itemIndex !== index))} className="rounded p-0.5 text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10" aria-label={`Bỏ ${file.name}`}><X className="h-3.5 w-3.5" /></button>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {aiSuggestion?.proposedActions?.some((action) => ["proposed", "executed", "rejected", "blocked"].includes(action.status)) ? (
+          <div className="mx-3 mt-2 space-y-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+            <div className="flex min-w-0 items-center gap-2">
+              <Sparkles className="h-4 w-4 shrink-0 text-kedi-navy" />
+              <span className="shrink-0 font-semibold text-slate-700 dark:text-slate-200">Thao tác AI đề xuất</span>
+            </div>
+            {aiSuggestion.proposedActions?.filter((action) => ["proposed", "executed", "rejected", "blocked"].includes(action.status)).slice(0, 2).map((action) => {
+              const executable = action.policyResult?.executable === true;
+              return (
+                <div key={action.id} className="flex min-w-0 items-center gap-2 border-t border-slate-200/80 pt-1.5 dark:border-white/10">
+                  <span className="truncate font-medium text-slate-600 dark:text-slate-300">{formatAiActionLabel(action.actionType)}</span>
+                  {action.status === "proposed" && executable ? (
+                    <div className="ml-auto flex shrink-0 items-center gap-1">
+                      <button type="button" disabled={aiActionBusyId !== null} onClick={() => void decideAiAction(action.id, "approve")} className="rounded-md px-2 py-1 font-semibold text-kedi-navy hover:bg-brand-100 disabled:opacity-40 dark:text-kedi-yellow dark:hover:bg-kedi-yellow/10">Duyệt</button>
+                      <button type="button" disabled={aiActionBusyId !== null} onClick={() => void decideAiAction(action.id, "reject")} className="rounded-md px-2 py-1 font-semibold text-slate-500 hover:bg-slate-200 disabled:opacity-40 dark:hover:bg-white/10">Bỏ qua</button>
+                    </div>
+                  ) : (
+                    <span className="ml-auto shrink-0 text-slate-400">{formatAiActionStatus(action.status, executable)}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+
+        <textarea
+          value={draft}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            if (event.target.value.trim()) signalTyping();
+            else stopTyping();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              void submit();
+            }
+          }}
+          rows={2}
+          placeholder={`Nhập tin nhắn cho ${conversation.customer.name}...`}
+          className="block min-h-[48px] w-full resize-none bg-transparent px-3 pt-2.5 text-base text-slate-800 outline-none placeholder:text-slate-400 sm:min-h-[62px] sm:px-4 sm:pt-3 sm:text-sm dark:text-white"
+        />
+
+        <div className="flex h-12 items-center gap-0.5 px-1.5 pb-1 text-slate-500 sm:gap-1 sm:px-2 dark:text-slate-300">
+          <CircleHelp className="mr-1 hidden h-4.5 w-4.5 text-slate-400 sm:block" />
+          <ComposerButton label={capabilities?.messages.file ? "Đính kèm file" : "Kênh hiện tại chưa hỗ trợ file"} disabled={!capabilities?.messages.file || sending} onClick={() => fileInputRef.current?.click()}><Paperclip className="h-5 w-5" /></ComposerButton>
+          <ComposerButton label={capabilities?.messages.image ? "Gửi hình ảnh" : "Kênh hiện tại chưa hỗ trợ hình ảnh"} disabled={!capabilities?.messages.image || sending} onClick={() => imageInputRef.current?.click()}><ImagePlus className="h-5 w-5" /></ComposerButton>
+          <div className="relative">
+            <ComposerButton label="Emoji" onClick={() => setEmojiOpen((value) => !value)}><Smile className="h-5 w-5" /></ComposerButton>
+            {emojiOpen ? (
+              <div className="absolute bottom-10 left-0 z-30 flex rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-[#181d25]">
+                {quickEmojis.map((emoji) => <button key={emoji} type="button" onClick={() => { setDraft(`${draft}${emoji}`); setEmojiOpen(false); }} className="rounded-lg p-1.5 text-lg hover:bg-slate-100 dark:hover:bg-white/10">{emoji}</button>)}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="ml-auto">
+            <ComposerButton label="AI gợi ý" disabled={aiBusy || sending} onClick={() => void requestAiSuggestion()}>
+              {aiBusy ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
+            </ComposerButton>
+          </div>
+
+          <div className="relative">
+            <button type="button" onClick={() => setQuickRepliesOpen((value) => !value)} className="flex h-9 items-center gap-1 rounded-lg px-2 text-xs font-medium transition hover:bg-slate-100 hover:text-kedi-navy dark:hover:bg-white/5 dark:hover:text-kedi-yellow" title="Trả lời nhanh">
+              <MoreHorizontal className="h-5 w-5" /> <span className="hidden sm:inline">Mẫu trả lời</span>
+            </button>
+            {quickRepliesOpen ? (
+              <div className="absolute bottom-11 right-0 z-30 w-[min(20rem,calc(100vw-1rem))] rounded-xl border border-slate-200 bg-white p-2 shadow-xl dark:border-white/10 dark:bg-[#181d25]">
+                {quickReplies.map((reply) => (
+                  <button key={reply} type="button" onClick={() => { setDraft(reply); setQuickRepliesOpen(false); }} className="block w-full rounded-lg px-3 py-2 text-left text-xs leading-5 text-slate-600 hover:bg-brand-50 hover:text-kedi-navy dark:text-slate-300 dark:hover:bg-kedi-yellow/10 dark:hover:text-kedi-yellow">{reply}</button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <button type="button" disabled={(!draft.trim() && selectedFiles.length === 0) || sending} onClick={() => void submit()} className="ml-1 flex h-10 min-w-11 items-center justify-center rounded-xl bg-kedi-yellow px-3 text-white shadow-sm transition hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40" title="Gửi tin nhắn">
+            {sending ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+          </button>
+        </div>
+      </footer>
+
+      {forwardMessage ? (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Chuyển tiếp tin nhắn">
+          <div className="flex max-h-[78vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#171c24]">
+            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 dark:border-white/10">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-100 text-kedi-navy dark:bg-kedi-yellow/10 dark:text-kedi-yellow"><Forward className="h-4.5 w-4.5" /></div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Chuyển tiếp tin nhắn</h3>
+                <p className="truncate text-[11px] text-slate-500">{forwardMessage.content || "Tin nhắn có tệp đính kèm"}</p>
+              </div>
+              <button type="button" disabled={forwardBusy} onClick={closeForward} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-40 dark:hover:bg-white/5 dark:hover:text-white"><X className="h-4 w-4" /></button>
+            </div>
+            <div className="border-b border-slate-100 p-3 dark:border-white/[0.07]">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input autoFocus value={forwardSearch} onChange={(event) => setForwardSearch(event.target.value)} placeholder="Tìm hội thoại nhận..." className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs outline-none focus:border-kedi-yellow dark:border-white/10 dark:bg-white/5 dark:text-white" />
+              </div>
+            </div>
+            <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
+              {forwardCandidates.length ? forwardCandidates.map((item) => (
+                <button key={item.id} type="button" onClick={() => setForwardTarget(item.id)} className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition ${forwardTarget === item.id ? "border-kedi-yellow bg-brand-50 dark:border-kedi-yellow/50 dark:bg-kedi-yellow/10" : "border-transparent hover:bg-slate-50 dark:hover:bg-white/5"}`}>
+                  <Avatar name={item.customer.name} src={item.customer.avatar} />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-xs font-semibold text-slate-800 dark:text-slate-100">{item.customer.name}</div>
+                    <div className="mt-0.5 truncate text-[10px] text-slate-400">{item.channelName ?? "Zalo cá nhân"} • {item.lastMessage || "Chưa có nội dung"}</div>
+                  </div>
+                  {forwardTarget === item.id ? <Check className="h-4 w-4 shrink-0 text-kedi-navy" /> : null}
+                </button>
+              )) : <div className="p-8 text-center text-xs text-slate-400">Không có hội thoại phù hợp để chuyển tiếp.</div>}
+            </div>
+            {forwardError ? <div className="mx-3 mb-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">{forwardError}</div> : null}
+            <div className="flex justify-end gap-2 border-t border-slate-200 p-3 dark:border-white/10">
+              <button type="button" disabled={forwardBusy} onClick={closeForward} className="h-9 rounded-xl border border-slate-200 px-4 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5">Hủy</button>
+              <button type="button" disabled={!forwardTarget || forwardBusy} onClick={() => void submitForward()} className="inline-flex h-9 items-center gap-2 rounded-xl bg-kedi-yellow px-4 text-xs font-bold text-white hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40">{forwardBusy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Forward className="h-4 w-4" />} Chuyển tiếp</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function ConversationAction({
+  label,
+  icon,
+  disabled = false,
+  danger = false,
+  onClick,
+}: {
+  label: string;
+  icon?: React.ReactNode;
+  disabled?: boolean;
+  danger?: boolean;
+  onClick: () => void | Promise<void>;
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={() => void onClick()}
+      className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${danger ? "text-red-600 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-500/10" : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"}`}
+    >
+      {icon}<span>{label}</span>
+    </button>
+  );
+}
+
+function formatAiActionLabel(actionType: string) {
+  const labels: Record<string, string> = {
+    PROPOSE_CANCEL_ORDER: "Hủy đơn",
+    PROPOSE_REFUND: "Hoàn tiền",
+    PROPOSE_CHANGE_ADDRESS: "Đổi địa chỉ",
+    PROPOSE_CHANGE_PRODUCT: "Đổi sản phẩm",
+    PROPOSE_CREATE_ORDER: "Tạo đơn",
+    PROPOSE_RESEND_PAYMENT: "Gửi lại thanh toán",
+    PROPOSE_ESCALATION: "Chuyển nhân viên xử lý",
+  };
+  return labels[actionType] ?? actionType;
+}
+
+function formatAiActionStatus(status: string, executable: boolean) {
+  if (status === "executed") return "Đã thực hiện";
+  if (status === "rejected") return "Đã bỏ qua";
+  if (status === "blocked") return "Không đủ điều kiện";
+  if (!executable) return "Xử lý thủ công";
+  return status;
+}
+
+function ComposerButton({ label, children, disabled = false, onClick }: { label: string; children: React.ReactNode; disabled?: boolean; onClick?: () => void }) {
+  return <button type="button" disabled={disabled} onClick={onClick} title={label} className="flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-slate-100 hover:text-kedi-navy disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-white/5 dark:hover:text-kedi-yellow">{children}</button>;
+}
+
+function Avatar({ name, src, size = "md" }: { name: string; src?: string; size?: "xs" | "sm" | "md" | "lg" }) {
+  const classes = size === "lg" ? "h-11 w-11 text-sm" : size === "sm" ? "h-8 w-8 text-[10px]" : size === "xs" ? "h-[18px] w-[18px] text-[7px]" : "h-9 w-9 text-xs";
+  if (src) return <img src={src} alt={name} className={`${classes} shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-white/15`} />;
+  return <div aria-label={name} className={`${classes} flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 font-bold text-white ring-1 ring-white/20`}>{initials(name)}</div>;
+}
+
+function MessageBubble({
+  message,
+  conversation,
+  capabilities,
+  currentAgent,
+  channelIdentity,
+  showSeenAvatar,
+  onReply,
+  onForward,
+  onRetry,
+  onRecall,
+  onReact,
+}: {
+  message: CustomerCareMessage;
+  conversation: CustomerCareConversation;
+  capabilities?: CustomerCareCapabilities;
+  currentAgent: { name: string; avatar?: string };
+  channelIdentity: { name: string; avatar?: string } | null;
+  showSeenAvatar: boolean;
+  onReply: () => void;
+  onForward: () => void;
+  onRetry: () => Promise<void>;
+  onRecall: () => Promise<void>;
+  onReact: (emoji: string) => Promise<void>;
+}) {
+  const outgoing = message.direction === "outgoing";
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+  // Outgoing bubbles represent the social account that owns this conversation.
+  // Use that account profile before LibreDesk author metadata because mirrored
+  // messages can carry the contact avatar as item.author.avatar_url.
+  // For outgoing social messages, the identity shown in chat is the connected
+  // Zalo/Facebook account that owns the conversation. Never fall back to
+  // message.senderAvatar here: mirrored native messages can describe the peer
+  // (customer) and would make our bubble display the customer's avatar.
+  const avatar = outgoing
+    ? channelIdentity?.avatar || conversation.assignee?.avatar || currentAgent.avatar
+    : message.senderAvatar || message.sender?.avatar || conversation.customer.avatar;
+  const senderName = outgoing
+    ? channelIdentity?.name || conversation.assignee?.name || currentAgent.name
+    : message.senderName || message.sender?.name || conversation.customer.name;
+
+  const run = async (action: () => Promise<void>) => {
+    setBusy(true);
+    setActionError(null);
+    try {
+      await action();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Không thể thực hiện thao tác này.");
+    } finally {
+      setBusy(false);
+      setActionsOpen(false);
+    }
+  };
+
+  return (
+    <div className={`group flex items-end gap-2 ${outgoing ? "justify-end" : "justify-start"}`}>
+      {!outgoing ? <Avatar name={senderName} src={avatar} /> : null}
+      <div className={`relative max-w-[88%] sm:max-w-[72%] ${outgoing ? "items-end" : "items-start"}`}>
+        <div className={`absolute top-0 z-20 flex -translate-y-1/2 items-center rounded-lg border border-slate-200 bg-white p-0.5 opacity-100 shadow-sm transition md:opacity-0 md:group-hover:opacity-100 dark:border-white/10 dark:bg-[#1b2029] ${outgoing ? "right-2" : "left-2"}`}>
+          <button type="button" onClick={onReply} title="Trả lời" className="hidden rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-kedi-navy md:block dark:hover:bg-white/10"><Reply className="h-3.5 w-3.5" /></button>
+          <button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} title="Sao chép" className="hidden rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-kedi-navy md:block dark:hover:bg-white/10"><Copy className="h-3.5 w-3.5" /></button>
+          <button type="button" onClick={() => setActionsOpen((value) => !value)} title="Thêm" className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-kedi-navy dark:hover:bg-white/10"><MoreHorizontal className="h-3.5 w-3.5" /></button>
+        </div>
+
+        {actionsOpen ? (
+          <div className={`absolute top-7 z-30 w-52 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-[#181d25] ${outgoing ? "right-0" : "left-0"}`}>
+            <div className="flex justify-between px-1 py-1">
+              {quickEmojis.map((emoji) => <button key={emoji} type="button" disabled={!capabilities?.messages.reactions.local || busy} onClick={() => void run(() => onReact(emoji))} className="rounded p-1 text-base hover:bg-slate-100 disabled:opacity-30 dark:hover:bg-white/10">{emoji}</button>)}
+            </div>
+            <ActionRow icon={<Reply className="h-4 w-4" />} label="Trả lời" onClick={() => { setActionsOpen(false); onReply(); }} />
+            <ActionRow icon={<Copy className="h-4 w-4" />} label="Sao chép" onClick={() => { void navigator.clipboard.writeText(message.content); setActionsOpen(false); }} />
+            {capabilities?.messages.forward ? <ActionRow icon={<Forward className="h-4 w-4" />} label="Chuyển tiếp" onClick={() => { setActionsOpen(false); onForward(); }} /> : null}
+            {message.status === "failed" ? <ActionRow icon={<RefreshCw className="h-4 w-4" />} label="Gửi lại" onClick={() => void run(onRetry)} /> : null}
+            {outgoing && capabilities?.messages.recall.local && !message.recalled ? <ActionRow icon={<Trash2 className="h-4 w-4" />} label="Thu hồi khỏi hệ thống" danger onClick={() => void run(onRecall)} /> : null}
+          </div>
+        ) : null}
+
+        <div className={`overflow-hidden rounded-2xl px-3.5 py-2.5 text-[13px] leading-5 shadow-sm ${outgoing ? "rounded-br-md bg-kedi-yellow text-slate-950" : "rounded-bl-md border border-slate-200 bg-white text-slate-700 dark:border-white/10 dark:bg-[#151a20] dark:text-slate-100"} ${message.status === "failed" ? "ring-1 ring-red-400" : ""}`}>
+          {!message.recalled && message.replyTo ? (
+            <button type="button" onClick={onReply} className={`mb-2 block w-full rounded-lg border-l-2 px-2 py-1 text-left text-[11px] ${outgoing ? "border-black/30 bg-black/10" : "border-kedi-yellow bg-slate-50 dark:bg-white/5"}`}>
+              <div className="font-semibold">{message.replyTo.senderName || "Tin nhắn được trả lời"}</div>
+              <div className="truncate opacity-75">{message.replyTo.content}</div>
+            </button>
+          ) : null}
+          {!message.recalled ? message.attachments?.map((attachment) => attachment.type === "image" && attachment.url ? (
+            <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer" className="mb-2 block overflow-hidden rounded-xl"><img src={attachment.thumbnailUrl || attachment.url} alt={attachment.name} className="max-h-72 w-full object-cover" /></a>
+          ) : (
+            <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer" className={`mb-2 flex min-w-48 items-center gap-2 rounded-lg p-2 ${outgoing ? "bg-black/10" : "bg-slate-50 dark:bg-white/5"}`}><Paperclip className="h-4 w-4" /><span className="truncate text-[11px] font-semibold">{attachment.name}</span></a>
+          )) : null}
+          <p className={`whitespace-pre-wrap break-words ${message.recalled ? "italic opacity-60" : ""}`}>{message.recalled ? "Tin nhắn đã được thu hồi" : message.content}</p>
+        </div>
+
+        {actionError ? (
+          <div className={`mt-1 max-w-72 rounded-lg px-2 py-1 text-[10px] leading-4 text-red-600 dark:text-red-400 ${outgoing ? "ml-auto text-right" : "mr-auto"}`}>
+            {actionError}
+          </div>
+        ) : null}
+
+        {message.reactions?.length ? (
+          <div className={`mt-1 flex flex-wrap gap-1 ${outgoing ? "justify-end" : "justify-start"}`}>
+            {message.reactions.map((reaction) => <button key={reaction.emoji} type="button" onClick={() => void onReact(reaction.emoji)} className={`rounded-full border px-2 py-0.5 text-[11px] shadow-sm transition ${reaction.reactedByMe ? "border-kedi-yellow bg-brand-50 text-kedi-navy dark:border-kedi-yellow/30 dark:bg-kedi-yellow/10 dark:text-kedi-yellow" : "border-slate-200 bg-white dark:border-white/10 dark:bg-[#181d25]"}`}>{reaction.emoji} {reaction.count}</button>)}
+          </div>
+        ) : null}
+
+        <div className={`mt-1 flex items-center gap-1 text-[10px] text-slate-400 ${outgoing ? "justify-end" : "justify-start"}`}>
+          <span>{formatTime(message.createdAt)}</span>
+          {outgoing ? <MessageStatus status={message.status} hideRead={showSeenAvatar} /> : null}
+          {message.error ? <span className="max-w-56 truncate text-red-500" title={message.error}>{message.error}</span> : null}
+        </div>
+        {outgoing && showSeenAvatar ? (
+          <div className="mt-1 flex justify-end pr-0.5">
+            <div
+              title={message.readAt ? `Đã xem lúc ${formatTime(message.readAt)}` : "Đối phương đã xem"}
+              aria-label="Đối phương đã xem tin nhắn"
+            >
+              <Avatar
+                name={conversation.customer.name}
+                src={conversation.customer.avatar}
+                size="xs"
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+      {outgoing ? <Avatar name={senderName} src={avatar} size="sm" /> : null}
+    </div>
+  );
+}
+
+function MessageStatus({ status, hideRead = false }: { status: CustomerCareMessage["status"]; hideRead?: boolean }) {
+  if (status === "queued") {
+    return <span className="whitespace-nowrap text-amber-500">Đang chờ mạng</span>;
+  }
+  if (status === "sending") {
+    return (
+      <span className="inline-flex items-center gap-1 whitespace-nowrap" title="Tin nhắn đang được gửi">
+        <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
+        <span>Đang gửi</span>
+      </span>
+    );
+  }
+  if (status === "failed") {
+    return <span className="whitespace-nowrap text-red-500">Gửi lỗi</span>;
+  }
+  if (status === "read") {
+    if (hideRead) return null;
+    return (
+      <span
+        className="inline-flex items-center gap-1 whitespace-nowrap font-medium text-blue-500"
+        title="Đối phương đã xem tin nhắn"
+        aria-label="Đối phương đã xem tin nhắn"
+      >
+        <CheckCheck className="h-3.5 w-3.5" />
+        <span>Đã xem</span>
+      </span>
+    );
+  }
+  if (status === "delivered") {
+    return (
+      <span
+        className="inline-flex items-center gap-1 whitespace-nowrap text-kedi-navy dark:text-kedi-yellow"
+        title="Tin nhắn đã được chuyển tới đối phương"
+        aria-label="Tin nhắn đã được chuyển tới đối phương"
+      >
+        <CheckCheck className="h-3.5 w-3.5" />
+        <span>Đã nhận</span>
+      </span>
+    );
+  }
+  if (status === "recalled") return <span className="whitespace-nowrap">Đã thu hồi</span>;
+  return (
+    <span
+      className="inline-flex items-center gap-1 whitespace-nowrap"
+      title="Tin nhắn đã được gửi"
+      aria-label="Tin nhắn đã được gửi"
+    >
+      <Check className="h-3.5 w-3.5" />
+      <span>Đã gửi</span>
+    </span>
+  );
+}
+
+function ActionRow({ icon, label, onClick, danger = false }: { icon: React.ReactNode; label: string; onClick: () => void; danger?: boolean }) {
+  return <button type="button" onClick={onClick} className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs ${danger ? "text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10" : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"}`}>{icon}{label}</button>;
+}
+
+function initials(name: string) {
+  const value = name.trim().split(/\s+/).filter(Boolean);
+  return `${value.at(0)?.[0] || "K"}${value.length > 1 ? value.at(-1)?.[0] || "" : ""}`.toUpperCase();
+}
