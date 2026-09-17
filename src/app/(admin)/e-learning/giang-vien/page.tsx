@@ -34,7 +34,7 @@ export default function GiangVienPage() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Quản lý Giảng viên</h1>
           <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{mockLecturers.length} giảng viên trong hệ thống</p>
         </div>
-        <button className="flex items-center gap-2 rounded-xl bg-kedi-yellow px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-kedi-yellow">
+        <button className="flex items-center gap-2 rounded-xl bg-kedi-yellow px-4 py-2.5 text-sm font-semibold text-kedi-navy shadow-sm transition hover:bg-kedi-yellow">
           <Plus className="h-4 w-4" /> Thêm giảng viên
         </button>
       </div>

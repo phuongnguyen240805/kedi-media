@@ -60,7 +60,7 @@ export default function OwncastLiveEmbed({
       </div>
 
       <div className={`grid grid-cols-1 ${compact ? "" : "lg:grid-cols-[minmax(0,1fr)_340px]"}`}>
-        <div className="bg-black">
+        <div className="bg-kedi-navy">
           <div className="aspect-video">
             <iframe
               src={videoUrl}

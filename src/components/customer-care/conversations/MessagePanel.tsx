@@ -566,7 +566,7 @@ export function MessagePanel({
             {grouped.map((group) => (
               <div key={group.key}>
                 <div className="mb-4 flex justify-center">
-                  <span className="rounded-full bg-slate-200/90 px-4 py-1 text-[11px] font-medium text-slate-600 dark:bg-black/30 dark:text-slate-300">{group.label}</span>
+                  <span className="rounded-full bg-slate-200/90 px-4 py-1 text-[11px] font-medium text-slate-600 dark:bg-kedi-navy/30 dark:text-slate-300">{group.label}</span>
                 </div>
                 <div className="space-y-3.5">
                   {group.messages.map((message) => (
@@ -713,7 +713,7 @@ export function MessagePanel({
             ) : null}
           </div>
 
-          <button type="button" disabled={(!draft.trim() && selectedFiles.length === 0) || sending} onClick={() => void submit()} className="ml-1 flex h-10 min-w-11 items-center justify-center rounded-xl bg-kedi-yellow px-3 text-white shadow-sm transition hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40" title="Gửi tin nhắn">
+          <button type="button" disabled={(!draft.trim() && selectedFiles.length === 0) || sending} onClick={() => void submit()} className="ml-1 flex h-10 min-w-11 items-center justify-center rounded-xl bg-kedi-yellow px-3 text-kedi-navy shadow-sm transition hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40" title="Gửi tin nhắn">
             {sending ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>
         </div>
@@ -751,7 +751,7 @@ export function MessagePanel({
             {forwardError ? <div className="mx-3 mb-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">{forwardError}</div> : null}
             <div className="flex justify-end gap-2 border-t border-slate-200 p-3 dark:border-white/10">
               <button type="button" disabled={forwardBusy} onClick={closeForward} className="h-9 rounded-xl border border-slate-200 px-4 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5">Hủy</button>
-              <button type="button" disabled={!forwardTarget || forwardBusy} onClick={() => void submitForward()} className="inline-flex h-9 items-center gap-2 rounded-xl bg-kedi-yellow px-4 text-xs font-bold text-white hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40">{forwardBusy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Forward className="h-4 w-4" />} Chuyển tiếp</button>
+              <button type="button" disabled={!forwardTarget || forwardBusy} onClick={() => void submitForward()} className="inline-flex h-9 items-center gap-2 rounded-xl bg-kedi-yellow px-4 text-xs font-bold text-kedi-navy hover:bg-kedi-yellow disabled:cursor-not-allowed disabled:opacity-40">{forwardBusy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Forward className="h-4 w-4" />} Chuyển tiếp</button>
             </div>
           </div>
         </div>
@@ -813,7 +813,7 @@ function ComposerButton({ label, children, disabled = false, onClick }: { label:
 function Avatar({ name, src, size = "md" }: { name: string; src?: string; size?: "xs" | "sm" | "md" | "lg" }) {
   const classes = size === "lg" ? "h-11 w-11 text-sm" : size === "sm" ? "h-8 w-8 text-[10px]" : size === "xs" ? "h-[18px] w-[18px] text-[7px]" : "h-9 w-9 text-xs";
   if (src) return <img src={src} alt={name} className={`${classes} shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-white/15`} />;
-  return <div aria-label={name} className={`${classes} flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 font-bold text-white ring-1 ring-white/20`}>{initials(name)}</div>;
+  return <div aria-label={name} className={`${classes} flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-emerald-600 font-bold text-white ring-1 ring-white/20`}>{initials(name)}</div>;
 }
 
 function MessageBubble({
@@ -897,7 +897,7 @@ function MessageBubble({
 
         <div className={`overflow-hidden rounded-2xl px-3.5 py-2.5 text-[13px] leading-5 shadow-sm ${outgoing ? "rounded-br-md bg-kedi-yellow text-slate-950" : "rounded-bl-md border border-slate-200 bg-white text-slate-700 dark:border-white/10 dark:bg-[#151a20] dark:text-slate-100"} ${message.status === "failed" ? "ring-1 ring-red-400" : ""}`}>
           {!message.recalled && message.replyTo ? (
-            <button type="button" onClick={onReply} className={`mb-2 block w-full rounded-lg border-l-2 px-2 py-1 text-left text-[11px] ${outgoing ? "border-black/30 bg-black/10" : "border-kedi-yellow bg-slate-50 dark:bg-white/5"}`}>
+            <button type="button" onClick={onReply} className={`mb-2 block w-full rounded-lg border-l-2 px-2 py-1 text-left text-[11px] ${outgoing ? "border-kedi-navy/30 bg-kedi-navy/10" : "border-kedi-yellow bg-slate-50 dark:bg-white/5"}`}>
               <div className="font-semibold">{message.replyTo.senderName || "Tin nhắn được trả lời"}</div>
               <div className="truncate opacity-75">{message.replyTo.content}</div>
             </button>
@@ -905,7 +905,7 @@ function MessageBubble({
           {!message.recalled ? message.attachments?.map((attachment) => attachment.type === "image" && attachment.url ? (
             <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer" className="mb-2 block overflow-hidden rounded-xl"><img src={attachment.thumbnailUrl || attachment.url} alt={attachment.name} className="max-h-72 w-full object-cover" /></a>
           ) : (
-            <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer" className={`mb-2 flex min-w-48 items-center gap-2 rounded-lg p-2 ${outgoing ? "bg-black/10" : "bg-slate-50 dark:bg-white/5"}`}><Paperclip className="h-4 w-4" /><span className="truncate text-[11px] font-semibold">{attachment.name}</span></a>
+            <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer" className={`mb-2 flex min-w-48 items-center gap-2 rounded-lg p-2 ${outgoing ? "bg-kedi-navy/10" : "bg-slate-50 dark:bg-white/5"}`}><Paperclip className="h-4 w-4" /><span className="truncate text-[11px] font-semibold">{attachment.name}</span></a>
           )) : null}
           <p className={`whitespace-pre-wrap break-words ${message.recalled ? "italic opacity-60" : ""}`}>{message.recalled ? "Tin nhắn đã được thu hồi" : message.content}</p>
         </div>

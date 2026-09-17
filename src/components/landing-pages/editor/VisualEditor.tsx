@@ -1350,11 +1350,11 @@ export const VisualEditor: React.FC<VisualEditorProps> = ({
         overlays={
           <>
             {isCommandOpen && (
-              <div className="absolute inset-0 z-[9998] flex items-start justify-center bg-black/30 pt-24" onClick={() => setIsCommandOpen(false)}>
+              <div className="absolute inset-0 z-[9998] flex items-start justify-center bg-kedi-navy/30 pt-24" onClick={() => setIsCommandOpen(false)}>
                 <div className="w-[520px] max-w-[calc(100vw-32px)] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
                   <div className="border-b border-gray-200 bg-gray-50 px-4 py-3">
                     <div className="text-[10px] font-extrabold uppercase tracking-widest text-gray-400">Command Palette</div>
-                    <div className="mt-1 text-sm font-bold text-gray-850">{pageName}</div>
+                    <div className="mt-1 text-sm font-bold text-gray-900">{pageName}</div>
                   </div>
                   <div className="grid grid-cols-2 gap-2 bg-white p-3">
                     {[

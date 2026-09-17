@@ -90,7 +90,7 @@ export default function StoreView() {
       {/* Top Banner and Rules Section */}
       <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-[2.8fr_1.8fr]">
         {/* Left Column: B Tool Slider Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-black aspect-[21/9] flex items-center justify-center">
+        <div className="relative overflow-hidden rounded-2xl bg-kedi-navy aspect-[21/9] flex items-center justify-center">
           <img
             src={assetUrl("/images/carousel/carousel-01.png")}
             alt="B Tool Banner"
@@ -145,7 +145,7 @@ export default function StoreView() {
           return (
             <div
               key={device.id}
-              className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-gray-150 bg-white shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-[#11121b]"
+              className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-[#11121b]"
             >
               {/* Top Sales Badge */}
               <div className="absolute left-0 top-0 z-10 rounded-br-xl bg-[#e53e3e] px-3 py-1 text-[10px] font-black text-white uppercase tracking-wider">

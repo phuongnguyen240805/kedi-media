@@ -290,7 +290,7 @@ function PreviewPanel() {
             <Play className="h-8 w-8 fill-current" />
           </button>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
+        <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 bg-gradient-to-t from-kedi-navy/80 to-transparent p-4 text-white">
           <Play className="h-4 w-4 fill-current" />
           <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/25">
             <div className="h-full w-1/3 rounded-full bg-emerald-500" />

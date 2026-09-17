@@ -68,7 +68,7 @@ function StatusBadge({ status }: { status: string }) {
     );
   }
   return (
-    <span className="px-2.5 py-0.5 text-ui-micro font-black text-slate-750 bg-slate-100 dark:text-slate-400 dark:bg-gray-800 rounded-md tracking-wider">
+    <span className="px-2.5 py-0.5 text-ui-micro font-black text-slate-800 bg-slate-100 dark:text-slate-400 dark:bg-gray-800 rounded-md tracking-wider">
       CHƯA XÁC THỰC
     </span>
   );
@@ -91,7 +91,7 @@ function SslBadge({ sslStatus }: { sslStatus: string }) {
     );
   }
   return (
-    <span className="px-2.5 py-0.5 text-ui-micro font-black text-slate-750 bg-slate-100 dark:text-slate-400 dark:bg-gray-800 rounded-md tracking-wider">
+    <span className="px-2.5 py-0.5 text-ui-micro font-black text-slate-800 bg-slate-100 dark:text-slate-400 dark:bg-gray-800 rounded-md tracking-wider">
       CHƯA BẬT
     </span>
   );
@@ -178,7 +178,7 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
   return (
     <div className="space-y-6 relative">
       {lastDnsHint ? (
-        <div className="rounded-xl border border-kedi-yellow/40 bg-brand-50 px-4 py-3 text-sm text-lime-950 dark:border-kedi-yellow/30 dark:bg-kedi-yellow/10 dark:text-lime-100">
+        <div className="rounded-xl border border-kedi-yellow/40 bg-brand-50 px-4 py-3 text-sm text-brand-950 dark:border-kedi-yellow/30 dark:bg-kedi-yellow/10 dark:text-brand-100">
           <strong>DNS:</strong> trỏ{" "}
           <code className="font-mono text-xs">{lastDnsHint}</code> rồi đợi verify (hoặc
           refresh domain).
@@ -209,7 +209,7 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
               type="button"
               onClick={handleCreateClick}
               title={canCreateDomain ? "Tạo tên miền mới" : "Nâng cấp gói để thêm tên miền"}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-kedi-navy bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
             >
               <span>+ Tạo tên miền</span>
             </button>
@@ -235,7 +235,7 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
             placeholder="Tìm kiếm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
+            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
           />
         </div>
 
@@ -268,19 +268,19 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
                       className="w-4.5 h-4.5 rounded border-gray-300 text-kedi-navy focus:ring-kedi-yellow cursor-pointer"
                     />
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Tên miền
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Trạng thái
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     DNS / CNAME
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Nền tảng
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     SSL
                   </th>
                 </tr>
@@ -330,7 +330,7 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
           </div>
         </div>
       ) : (
-        <div className="py-24 text-center border border-dashed border-gray-250 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 flex flex-col items-center justify-center space-y-4 select-none">
+        <div className="py-24 text-center border border-dashed border-gray-300 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 flex flex-col items-center justify-center space-y-4 select-none">
           <div className="w-16 h-16 rounded-full border-2 border-dashed border-kedi-yellow/40 dark:border-kedi-yellow/30 flex items-center justify-center text-kedi-yellow dark:text-kedi-yellow animate-pulse">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3" />
@@ -347,7 +347,7 @@ export const DomainsConfig: React.FC<DomainsConfigProps> = ({
               type="button"
               onClick={handleCreateClick}
               title={canCreateDomain ? "Tạo tên miền mới" : "Nâng cấp gói để thêm tên miền"}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-kedi-yellow px-4 py-2 text-xs font-bold text-white hover:bg-kedi-yellow"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-kedi-yellow px-4 py-2 text-xs font-bold text-kedi-navy hover:bg-kedi-yellow"
             >
               <span>+ Tạo tên miền</span>
             </button>

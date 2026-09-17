@@ -62,7 +62,7 @@ export default function CategoryPage() {
       </div>
 
       {showAddForm && (
-        <div className="fixed inset-0 z-[200000] flex items-center justify-center bg-black/40 backdrop-blur-xs">
+        <div className="fixed inset-0 z-[200000] flex items-center justify-center bg-kedi-navy/40 backdrop-blur-xs">
           <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 w-full max-w-md shadow-xl mx-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Thêm danh mục</h3>
             <input
@@ -144,7 +144,7 @@ export default function CategoryPage() {
                   </td>
                   <td className="px-6 py-4 text-gray-500 dark:text-gray-400">{cat.createdDate}</td>
                   <td className="px-6 py-4 text-right">
-                    <button className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-850 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                    <button className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
                       <MoreVertical className="w-4 h-4" />
                     </button>
                   </td>

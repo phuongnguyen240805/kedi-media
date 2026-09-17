@@ -50,7 +50,7 @@ export default function AdsMetaHeader({ onOpenMenu }: AdsMetaHeaderProps) {
         <div className="adsmeta-telegram-banner">
           <Bell size={15} className="shrink-0 text-blue-500" />
           <span className="min-w-0 flex-1 leading-snug">
-            Bật cảnh báo Telegram để nhận thông báo quan trọng (số dư, gói, hỗ trợ phản hồi...) — không bỏ lỡ dù không mở AdsMeta.
+            Bật cảnh báo Telegram để nhận thông báo quan trọng (số dư, gói, hỗ trợ phản hồi...) — không bỏ lỡ dù không mở Kedi Ads.
           </span>
           <button type="button" className="adsmeta-telegram-connect">
             <Send size={13} /> Kết nối Telegram
@@ -62,7 +62,7 @@ export default function AdsMetaHeader({ onOpenMenu }: AdsMetaHeaderProps) {
       )}
 
       <header className="adsmeta-top-header">
-        <button type="button" aria-label="Mở menu AdsMeta" className="adsmeta-header-icon" onClick={onOpenMenu}>
+        <button type="button" aria-label="Mở menu Kedi Ads" className="adsmeta-header-icon" onClick={onOpenMenu}>
           <Menu size={19} />
         </button>
 
@@ -163,7 +163,7 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
     },
     {
       id: "3",
-      title: "Chào mừng đến AdsMeta!",
+      title: "Chào mừng đến Kedi Ads!",
       subtitle: "Tin nhắn tự động: welcome",
       time: "5 ngày trước",
       read: false,
@@ -207,12 +207,12 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div className="bg-slate-200 dark:bg-black/20 p-1 rounded-xl flex gap-1 mt-3.5">
+        <div className="bg-slate-200 dark:bg-kedi-navy/20 p-1 rounded-xl flex gap-1 mt-3.5">
           <button
             type="button"
             onClick={() => setActiveTab("all")}
             className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-center ${
-              activeTab === "all" ? "bg-white text-lime-600 shadow-sm dark:bg-lime-500 dark:text-white" : "text-slate-500 hover:text-slate-800 dark:text-white/80 dark:hover:text-white"
+              activeTab === "all" ? "bg-white text-brand-600 shadow-sm dark:bg-brand-500 dark:text-white" : "text-slate-500 hover:text-slate-800 dark:text-white/80 dark:hover:text-white"
             }`}
           >
             Tất cả
@@ -221,7 +221,7 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
             type="button"
             onClick={() => setActiveTab("unread")}
             className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-center ${
-              activeTab === "unread" ? "bg-white text-lime-600 shadow-sm dark:bg-lime-500 dark:text-white" : "text-slate-500 hover:text-slate-800 dark:text-white/80 dark:hover:text-white"
+              activeTab === "unread" ? "bg-white text-brand-600 shadow-sm dark:bg-brand-500 dark:text-white" : "text-slate-500 hover:text-slate-800 dark:text-white/80 dark:hover:text-white"
             }`}
           >
             Chưa đọc · {unreadCount}
@@ -243,13 +243,13 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
               className="bg-slate-50 dark:bg-[#1f2937] border border-slate-200 dark:border-[#374151] hover:border-slate-300 dark:hover:border-[#4b5563] rounded-xl p-3 transition-colors relative"
             >
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white dark:bg-[#111827] text-lime-600 dark:text-lime-400 border border-slate-200 dark:border-[#374151] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-full bg-white dark:bg-[#111827] text-brand-600 dark:text-brand-400 border border-slate-200 dark:border-[#374151] flex items-center justify-center shrink-0 mt-0.5">
                   <Info size={16} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <h4 className="font-bold text-sm text-slate-800 dark:text-white truncate">{item.title}</h4>
-                    {!item.read && <span className="w-2.5 h-2.5 rounded-full bg-lime-500 shrink-0" />}
+                    {!item.read && <span className="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0" />}
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">{item.subtitle}</p>
                   <p className="text-[11px] text-slate-500 mt-1">{item.time}</p>
@@ -258,7 +258,7 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
                     <button
                       type="button"
                       onClick={() => markRead(item.id)}
-                      className="text-lime-600 dark:text-lime-500 hover:text-lime-700 dark:hover:text-lime-400 font-semibold flex items-center gap-1 transition-colors"
+                      className="text-brand-600 dark:text-brand-500 hover:text-brand-700 dark:hover:text-brand-400 font-semibold flex items-center gap-1 transition-colors"
                     >
                       Đã xem <ArrowRight size={12} />
                     </button>
@@ -280,7 +280,7 @@ function NotificationPopover({ onClose }: { onClose: () => void }) {
       <Link
         href="/facebook-ads/settings"
         onClick={onClose}
-        className="w-full py-3 bg-slate-50 dark:bg-[#111827] border-t border-slate-200 dark:border-[#374151] text-lime-600 dark:text-lime-500 hover:text-lime-700 dark:hover:text-lime-400 font-semibold text-xs flex items-center justify-center gap-1 transition-colors"
+        className="w-full py-3 bg-slate-50 dark:bg-[#111827] border-t border-slate-200 dark:border-[#374151] text-brand-600 dark:text-brand-500 hover:text-brand-700 dark:hover:text-brand-400 font-semibold text-xs flex items-center justify-center gap-1 transition-colors"
       >
         Xem tất cả thông báo <ArrowRight size={13} />
       </Link>

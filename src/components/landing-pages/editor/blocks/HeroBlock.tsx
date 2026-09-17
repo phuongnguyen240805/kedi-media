@@ -100,7 +100,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({
         />
         <a
           href={ctaUrl}
-          className="inline-flex items-center gap-2 font-semibold px-6 py-2.5 rounded-lg text-white shadow-sm border border-black/10 transition hover:opacity-90 active:scale-98"
+          className="inline-flex items-center gap-2 font-semibold px-6 py-2.5 rounded-lg text-white shadow-sm border border-kedi-navy/10 transition hover:opacity-90 active:scale-98"
           style={{ backgroundColor: ctaColor, width: "fit-content" }}
           onClick={(e) => {
             e.preventDefault();

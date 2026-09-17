@@ -4,9 +4,9 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { scheduleAdjustmentApi } from '@/features/education/api/schedule-adjustment';
 import { lecturerApi } from '@/features/education/api/lecturer';
 import { toast } from 'sonner';
-import { 
-  FileText, Loader2, Check, X, RotateCcw, Search, 
-  Calendar, AlertCircle, ChevronLeft, ChevronRight, 
+import {
+  FileText, Loader2, Check, X, RotateCcw, Search,
+  Calendar, AlertCircle, ChevronLeft, ChevronRight,
   Clock, MapPin, CheckCircle2, User, BookOpen, AlertTriangle
 } from 'lucide-react';
 import { Badge } from '@/features/education/components/ui/badge';
@@ -15,16 +15,16 @@ export default function AdminScheduleAdjustmentsPage() {
   const [requests, setRequests] = useState<any[]>([]);
   const [lecturers, setLecturers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Filters state
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLecturerId, setFilterLecturerId] = useState('ALL');
   const [filterType, setFilterType] = useState('ALL');
   const [activeTab, setActiveTab] = useState<'pending' | 'approved' | 'history'>('pending');
-  
+
   // Expanded card state
   const [expandedRequestId, setExpandedRequestId] = useState<string | null>(null);
-  
+
   // Action state (Approve/Reject/Return)
   const [actioningRequestId, setActioningRequestId] = useState<string | null>(null);
   const [actionType, setActionType] = useState<'APPROVE' | 'REJECT' | 'RETURN' | null>(null);
@@ -69,7 +69,7 @@ export default function AdminScheduleAdjustmentsPage() {
 
   const handleConfirmAction = async (requestId: string) => {
     if (!actionType) return;
-    
+
     // Ghi chú của admin bắt buộc và ít nhất 10 ký tự cho Reject và Return
     if ((actionType === 'REJECT' || actionType === 'RETURN') && adminNote.trim().length < 10) {
       toast.error('Vui lòng nhập ghi chú lý do ít nhất 10 ký tự');
@@ -88,7 +88,7 @@ export default function AdminScheduleAdjustmentsPage() {
         await scheduleAdjustmentApi.returnToInstructor(requestId, { note: adminNote });
         toast.success('Đã trả yêu cầu về cho Giảng viên chỉnh sửa');
       }
-      
+
       setActioningRequestId(null);
       setActionType(null);
       setAdminNote('');
@@ -124,17 +124,17 @@ export default function AdminScheduleAdjustmentsPage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'PENDING': 
+      case 'PENDING':
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 border border-amber-200">Chờ duyệt</span>;
-      case 'APPROVED': 
+      case 'APPROVED':
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">Đã duyệt</span>;
-      case 'REJECTED': 
+      case 'REJECTED':
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-rose-100 text-rose-800 border border-rose-200">Từ chối</span>;
-      case 'RETURNED': 
+      case 'RETURNED':
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 border border-blue-200">Yêu cầu sửa</span>;
-      case 'CONFLICT_DETECTED': 
+      case 'CONFLICT_DETECTED':
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 border border-red-200">Có xung đột</span>;
-      default: 
+      default:
         return <span className="px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-800 border border-slate-200">{status}</span>;
     }
   };
@@ -209,7 +209,7 @@ export default function AdminScheduleAdjustmentsPage() {
     // Adjust to start on Mon (0=Mon, 6=Sun)
     const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    
+
     const days = [];
     // Pad previous month days
     for (let i = 0; i < offset; i++) {
@@ -227,7 +227,7 @@ export default function AdminScheduleAdjustmentsPage() {
       // Check matching adjustments
       let dayStatus: 'absent' | 'makeup' | 'pending' | null = null;
       const dateRequests = requests.filter(r => r.absentDate === dateStr || r.proposedDate === dateStr);
-      
+
       if (dateRequests.length > 0) {
         if (dateRequests.some(r => r.proposedDate === dateStr && r.status === 'APPROVED')) {
           dayStatus = 'makeup';
@@ -335,41 +335,41 @@ export default function AdminScheduleAdjustmentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left main area (2 cols) */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           {/* Tabs header & Filters */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={() => { setActiveTab('pending'); setExpandedRequestId(null); }}
                   className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-150 flex items-center gap-2 ${
-                    activeTab === 'pending' 
-                      ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20' 
+                    activeTab === 'pending'
+                      ? 'bg-brand-500 text-kedi-navy shadow-md shadow-brand-500/20'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  ⏳ Chờ duyệt 
+                  ⏳ Chờ duyệt
                   <span className={`px-2 py-0.5 text-xs rounded-full ${
-                    activeTab === 'pending' ? 'bg-white text-brand-500' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350'
+                    activeTab === 'pending' ? 'bg-white text-brand-500' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400'
                   }`}>
                     {stats.pending + stats.conflicts}
                   </span>
                 </button>
-                <button 
+                <button
                   onClick={() => { setActiveTab('approved'); setExpandedRequestId(null); }}
                   className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-150 flex items-center gap-2 ${
-                    activeTab === 'approved' 
-                      ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20' 
+                    activeTab === 'approved'
+                      ? 'bg-brand-500 text-kedi-navy shadow-md shadow-brand-500/20'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   ✅ Đã duyệt
                 </button>
-                <button 
+                <button
                   onClick={() => { setActiveTab('history'); setExpandedRequestId(null); }}
                   className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-150 flex items-center gap-2 ${
-                    activeTab === 'history' 
-                      ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20' 
+                    activeTab === 'history'
+                      ? 'bg-brand-500 text-kedi-navy shadow-md shadow-brand-500/20'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
@@ -382,8 +382,8 @@ export default function AdminScheduleAdjustmentsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="relative">
                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   placeholder="Tìm GV, mã lớp, môn học..."
@@ -391,7 +391,7 @@ export default function AdminScheduleAdjustmentsPage() {
                 />
               </div>
 
-              <select 
+              <select
                 value={filterLecturerId}
                 onChange={e => setFilterLecturerId(e.target.value)}
                 className="w-full px-3 py-2 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20"
@@ -404,7 +404,7 @@ export default function AdminScheduleAdjustmentsPage() {
                 ))}
               </select>
 
-              <select 
+              <select
                 value={filterType}
                 onChange={e => setFilterType(e.target.value)}
                 className="w-full px-3 py-2 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20"
@@ -437,12 +437,12 @@ export default function AdminScheduleAdjustmentsPage() {
                 const isActioning = actioningRequestId === req.requestId;
 
                 return (
-                  <div 
+                  <div
                     key={req.requestId}
                     className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
                   >
                     {/* Card Header Clickable */}
-                    <div 
+                    <div
                       onClick={() => toggleDetail(req.requestId)}
                       className="p-4 flex items-center justify-between gap-4 cursor-pointer select-none hover:bg-slate-50/50 dark:hover:bg-slate-800/10"
                     >
@@ -450,11 +450,11 @@ export default function AdminScheduleAdjustmentsPage() {
                         {getTypeIcon(req.requestType)}
                         <div>
                           <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            {getTypeLabel(req.requestType)} 
+                            {getTypeLabel(req.requestType)}
                             <span className="text-xs font-normal text-slate-500">• Lớp: {req.classCode}</span>
                           </h4>
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            <span className="font-semibold text-slate-700 dark:text-slate-350 flex items-center gap-1">
+                            <span className="font-semibold text-slate-700 dark:text-slate-400 flex items-center gap-1">
                               <User size={13} /> {req.instructorName || 'Chưa rõ Gi giảng viên'}
                             </span>
                             <span className="flex items-center gap-1">
@@ -476,7 +476,7 @@ export default function AdminScheduleAdjustmentsPage() {
                     {/* Card Body (Collapsible Detail) */}
                     {isExpanded && (
                       <div className="border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 p-5 space-y-5">
-                        
+
                         {/* Timeline Comparison */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                           <div>
@@ -487,7 +487,7 @@ export default function AdminScheduleAdjustmentsPage() {
                               </div>
                               <div>
                                 <span className="font-semibold text-slate-500">Lý do điều chỉnh:</span>
-                                <div className="mt-1 p-3 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-xl italic">
+                                <div className="mt-1 p-3 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 rounded-xl italic">
                                   "{req.reason || 'Không cung cấp lý do'}"
                                 </div>
                               </div>
@@ -497,7 +497,7 @@ export default function AdminScheduleAdjustmentsPage() {
                           {/* Visual Timeline boxes */}
                           <div className="flex flex-col justify-center">
                             <div className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">⏱ Khung thời gian điều chỉnh</div>
-                            <div className="flex items-center justify-between gap-2 p-4 bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-2xl shadow-sm">
+                            <div className="flex items-center justify-between gap-2 p-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-900 rounded-2xl shadow-sm">
                               {/* Left box: Absent Session */}
                               {req.requestType !== 'EXTRA_SESSION' ? (
                                 <div className="flex-1 text-center p-3.5 bg-rose-50 dark:bg-rose-950/20 border border-dashed border-rose-300 dark:border-rose-800 rounded-xl">
@@ -538,21 +538,21 @@ export default function AdminScheduleAdjustmentsPage() {
 
                         {/* Automatic Checklist box */}
                         <div className="p-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl">
-                          <h5 className="text-xs font-bold text-slate-700 dark:text-slate-350 uppercase tracking-wide flex items-center gap-1.5 mb-3">
+                          <h5 className="text-xs font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wide flex items-center gap-1.5 mb-3">
                             🔍 Kết quả kiểm tra tự động
                           </h5>
-                          
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs">
                             <div className="flex items-center gap-2 py-1 px-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/10 text-emerald-800 dark:text-emerald-400">
                               <span className="text-sm">✓</span> <span>Giảng viên không trùng lịch khác cùng giờ đề xuất</span>
                             </div>
-                            
+
                             <div className={`flex items-center gap-2 py-1 px-2.5 rounded-lg ${
-                              req.status === 'CONFLICT_DETECTED' 
-                                ? 'bg-rose-50 dark:bg-rose-950/10 text-rose-800 dark:text-rose-400' 
+                              req.status === 'CONFLICT_DETECTED'
+                                ? 'bg-rose-50 dark:bg-rose-950/10 text-rose-800 dark:text-rose-400'
                                 : 'bg-emerald-50 dark:bg-emerald-950/10 text-emerald-800 dark:text-emerald-400'
                             }`}>
-                              <span>{req.status === 'CONFLICT_DETECTED' ? '✗' : '✓'}</span> 
+                              <span>{req.status === 'CONFLICT_DETECTED' ? '✗' : '✓'}</span>
                               <span>{req.status === 'CONFLICT_DETECTED' ? 'Phát hiện trùng phòng học hoặc trùng giờ sinh viên' : 'Phòng học đề xuất đang trống'}</span>
                             </div>
 
@@ -569,12 +569,12 @@ export default function AdminScheduleAdjustmentsPage() {
                         {/* Inline Review Action Input area */}
                         {isActioning && (
                           <div className="p-4 bg-blue-50/50 dark:bg-slate-950/50 border border-blue-200 dark:border-slate-800 rounded-2xl space-y-3 animate-in fade-in slide-in-from-top-3 duration-250">
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-350 uppercase">
-                              Ghi chú của Admin 
+                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-400 uppercase">
+                              Ghi chú của Admin
                               {(actionType === 'REJECT' || actionType === 'RETURN') && <span className="text-rose-500 ml-1">(Bắt buộc từ chối/yêu cầu sửa, tối thiểu 10 ký tự)</span>}
                             </label>
-                            
-                            <textarea 
+
+                            <textarea
                               value={adminNote}
                               onChange={e => setAdminNote(e.target.value)}
                               placeholder={
@@ -587,13 +587,13 @@ export default function AdminScheduleAdjustmentsPage() {
                             />
 
                             <div className="flex justify-end gap-2">
-                              <button 
+                              <button
                                 onClick={() => { setActioningRequestId(null); setActionType(null); }}
                                 className="px-3.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all"
                               >
                                 Hủy bỏ
                               </button>
-                              <button 
+                              <button
                                 onClick={() => handleConfirmAction(req.requestId)}
                                 disabled={isSubmitting}
                                 className={`px-4 py-1.5 text-xs font-bold text-white rounded-lg flex items-center gap-1.5 transition-all ${
@@ -634,19 +634,19 @@ export default function AdminScheduleAdjustmentsPage() {
                         {/* Action buttons footer */}
                         {(req.status === 'PENDING' || req.status === 'CONFLICT_DETECTED') && !isActioning && (
                           <div className="flex gap-2 justify-end border-t border-slate-100 dark:border-slate-800 pt-4">
-                            <button 
+                            <button
                               onClick={() => handleActionClick(req.requestId, 'RETURN')}
                               className="px-4 py-2 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-xl flex items-center gap-1.5 transition-colors border border-blue-200"
                             >
                               <RotateCcw size={14} /> Yêu cầu sửa
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleActionClick(req.requestId, 'REJECT')}
                               className="px-4 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl flex items-center gap-1.5 transition-colors border border-rose-200"
                             >
                               <X size={14} /> Từ chối
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleActionClick(req.requestId, 'APPROVE')}
                               className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl flex items-center gap-1.5 shadow-md shadow-emerald-600/10 hover:shadow-emerald-600/20 transition-all border border-emerald-700"
                             >
@@ -665,21 +665,21 @@ export default function AdminScheduleAdjustmentsPage() {
 
         {/* Right Sidebar (1 col) */}
         <div className="space-y-6">
-          
+
           {/* Mini Calendar Card */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-150 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/30">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/30">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                 <span>📅</span> {monthNames[currentMonth]} / {currentYear}
               </h3>
               <div className="flex gap-1">
-                <button 
+                <button
                   onClick={handlePrevMonth}
                   className="p-1 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
                 >
                   <ChevronLeft size={16} />
                 </button>
-                <button 
+                <button
                   onClick={handleNextMonth}
                   className="p-1 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
                 >
@@ -706,7 +706,7 @@ export default function AdminScheduleAdjustmentsPage() {
 
                   let dayClass = 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800';
                   let borderClass = 'border border-transparent';
-                  
+
                   if (dayObj.status === 'absent') {
                     dayClass = 'bg-rose-50 dark:bg-rose-950/20 text-rose-600 font-bold line-through';
                     borderClass = 'border border-rose-300 dark:border-rose-800';
@@ -723,7 +723,7 @@ export default function AdminScheduleAdjustmentsPage() {
                   }
 
                   return (
-                    <div 
+                    <div
                       key={`day-${dayObj.day}`}
                       title={dayObj.dateStr}
                       className={`aspect-square flex items-center justify-center text-xs rounded-lg cursor-pointer transition-all duration-100 ${dayClass} ${borderClass}`}
@@ -735,7 +735,7 @@ export default function AdminScheduleAdjustmentsPage() {
               </div>
 
               {/* Legends */}
-              <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-850 flex flex-wrap gap-x-4 gap-y-2 text-[10px] text-slate-500">
+              <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-900 flex flex-wrap gap-x-4 gap-y-2 text-[10px] text-slate-500">
                 <div className="flex items-center gap-1">
                   <span className="w-2.5 h-2.5 rounded bg-rose-100 dark:bg-rose-950/30 border border-rose-350" /> Nghỉ (Đã duyệt)
                 </div>
@@ -754,12 +754,12 @@ export default function AdminScheduleAdjustmentsPage() {
 
           {/* Upcoming Schedule Card */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-150 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                 📌 Buổi dạy bù sắp tới tuần này
               </h3>
             </div>
-            
+
             <div className="p-4">
               {upcomingSchedules.length === 0 ? (
                 <div className="text-center text-slate-400 text-xs py-8">
@@ -768,11 +768,11 @@ export default function AdminScheduleAdjustmentsPage() {
               ) : (
                 <div className="space-y-3">
                   {upcomingSchedules.map(sched => (
-                    <div 
-                      key={sched.requestId} 
-                      className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-850 flex flex-col gap-1 text-xs"
+                    <div
+                      key={sched.requestId}
+                      className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-900 flex flex-col gap-1 text-xs"
                     >
-                      <div className="flex justify-between items-center font-bold text-slate-700 dark:text-slate-350">
+                      <div className="flex justify-between items-center font-bold text-slate-700 dark:text-slate-400">
                         <span>{formatDateVi(sched.proposedDate)}</span>
                         <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-600 dark:bg-blue-950/30 text-[10px]">
                           P.{sched.proposedRoomCode || 'Phòng'}

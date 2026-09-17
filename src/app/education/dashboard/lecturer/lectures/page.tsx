@@ -153,7 +153,7 @@ export default function LecturerLecturesPage() {
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <section className="space-y-4">
-          <div className="overflow-hidden rounded-lg border border-slate-200 bg-black shadow-sm dark:border-slate-800">
+          <div className="overflow-hidden rounded-lg border border-slate-200 bg-kedi-navy shadow-sm dark:border-slate-800">
             <div className="aspect-video">
               <iframe
                 key={activeLesson.id}

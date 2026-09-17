@@ -211,7 +211,7 @@ export function DateFilterBar({
     <div className={`flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-2 dark:border-white/[0.08] dark:bg-[#151a18] ${compact ? "mb-4" : "mb-5"}`}>
       {showPage && (
         <button className="inline-flex h-9 items-center gap-2 rounded-lg bg-slate-100 px-3 text-xs font-medium text-slate-700 dark:bg-white/[0.06] dark:text-slate-200">
-          <span className="h-6 w-6 rounded-md bg-gradient-to-br from-lime-400 to-emerald-500" />
+          <span className="h-6 w-6 rounded-md bg-gradient-to-br from-brand-400 to-emerald-500" />
           Kedi Official
           <ChevronDown className="h-3.5 w-3.5" />
         </button>

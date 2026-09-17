@@ -320,7 +320,7 @@ export const EditorLeftDrawer: React.FC<EditorLeftDrawerProps> = ({
       <button
         type="button"
         aria-label="Đóng panel"
-        className="fixed inset-0 z-40 bg-black/20"
+        className="fixed inset-0 z-40 bg-kedi-navy/20"
         style={{ top: "64px" }}
         onClick={onClose}
       />

@@ -62,7 +62,7 @@ export const CreateDomainModal: React.FC<CreateDomainModalProps> = ({
   const displayError = localError || errorMessage;
 
   return (
-    <div className="fixed inset-0 z-999999 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs transition-opacity animate-fade-in">
+    <div className="fixed inset-0 z-999999 flex items-center justify-center p-4 bg-kedi-navy/50 backdrop-blur-xs transition-opacity animate-fade-in">
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-theme-xl max-w-md w-full p-6 space-y-4 animate-scale-up">
         <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
           <h3 className="text-lg font-bold text-slate-800 dark:text-white">
@@ -72,7 +72,7 @@ export const CreateDomainModal: React.FC<CreateDomainModalProps> = ({
             type="button"
             onClick={handleClose}
             disabled={isSubmitting}
-            className="text-slate-400 hover:text-slate-650 dark:hover:text-slate-350 p-1 cursor-pointer disabled:opacity-50"
+            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-400 p-1 cursor-pointer disabled:opacity-50"
           >
             <IconX size={16} />
           </button>
@@ -95,7 +95,7 @@ export const CreateDomainModal: React.FC<CreateDomainModalProps> = ({
             <button
               type="button"
               onClick={() => setDomainName(testHostname)}
-              className="mt-2 text-ui-caption font-bold text-kedi-navy underline hover:text-lime-900 dark:text-kedi-yellow"
+              className="mt-2 text-ui-caption font-bold text-kedi-navy underline hover:text-brand-900 dark:text-kedi-yellow"
             >
               Điền sẵn {testHostname}
             </button>
@@ -112,7 +112,7 @@ export const CreateDomainModal: React.FC<CreateDomainModalProps> = ({
               placeholder={`Ví dụ: ${testHostname || "www.mybrand.com"}`}
               value={domainName}
               onChange={(e) => setDomainName(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow focus:ring-1 focus:ring-kedi-yellow font-mono"
+              className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow focus:ring-1 focus:ring-kedi-yellow font-mono"
               required
               autoFocus
               disabled={isSubmitting}
@@ -145,14 +145,14 @@ export const CreateDomainModal: React.FC<CreateDomainModalProps> = ({
               type="button"
               onClick={handleClose}
               disabled={isSubmitting}
-              className="px-4.5 py-2 text-sm font-semibold text-slate-650 hover:bg-gray-100 rounded-lg dark:text-slate-300 dark:hover:bg-white/5 cursor-pointer disabled:opacity-50"
+              className="px-4.5 py-2 text-sm font-semibold text-slate-700 hover:bg-gray-100 rounded-lg dark:text-slate-300 dark:hover:bg-white/5 cursor-pointer disabled:opacity-50"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 text-sm font-semibold text-white bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition cursor-pointer disabled:opacity-60"
+              className="px-5 py-2 text-sm font-semibold text-kedi-navy bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition cursor-pointer disabled:opacity-60"
             >
               {isSubmitting ? "Đang tạo…" : "Tạo tên miền"}
             </button>

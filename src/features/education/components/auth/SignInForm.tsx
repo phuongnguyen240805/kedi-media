@@ -177,7 +177,7 @@ export default function SignInForm() {
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-kedi-navy/40" />
 
           <div className="absolute top-10 left-10 z-20">
             <img

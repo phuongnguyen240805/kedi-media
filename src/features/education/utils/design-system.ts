@@ -132,7 +132,7 @@ export const DROPDOWN_STYLES = {
 // Modal Styles
 export const MODAL_STYLES = {
   overlay:
-    "fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999]",
+    "fixed inset-0 bg-kedi-navy/40 dark:bg-kedi-navy/60 backdrop-blur-sm flex items-center justify-center z-[999]",
 
   content:
     "rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl dark:shadow-slate-900/50 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto",

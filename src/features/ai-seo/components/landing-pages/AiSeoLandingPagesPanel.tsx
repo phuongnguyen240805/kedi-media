@@ -33,7 +33,7 @@ export function AiSeoLandingPagesPanel({
         <div className="space-y-1">
           <Link
             href="/ai-seo"
-            className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-550 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition mb-2"
+            className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
             Quay lại Dashboard AI SEO
@@ -42,7 +42,7 @@ export function AiSeoLandingPagesPanel({
             <h1 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
               Quản lý Landing Pages
             </h1>
-            <span className="bg-brand-50 dark:bg-kedi-yellow/10 border border-lime-200 dark:border-kedi-yellow/30 text-kedi-navy dark:text-kedi-yellow text-[10px] font-semibold px-2 py-0.5 rounded-md">
+            <span className="bg-brand-50 dark:bg-kedi-yellow/10 border border-brand-200 dark:border-kedi-yellow/30 text-kedi-navy dark:text-kedi-yellow text-[10px] font-semibold px-2 py-0.5 rounded-md">
               Tích hợp Website Builder
             </span>
           </div>
@@ -54,7 +54,7 @@ export function AiSeoLandingPagesPanel({
         {/* Action Button */}
         <button
           onClick={() => setIsConnectOpen(true)}
-          className="sm:self-end bg-kedi-yellow text-white font-semibold text-xs px-4 py-2 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-1.5 shadow-xs shrink-0 cursor-pointer select-none"
+          className="sm:self-end bg-kedi-yellow text-kedi-navy font-semibold text-xs px-4 py-2 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-1.5 shadow-xs shrink-0 cursor-pointer select-none"
         >
           <Plus className="w-4 h-4" />
           Kết nối Landing Page
@@ -64,7 +64,7 @@ export function AiSeoLandingPagesPanel({
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-24 space-y-3">
           <Loader2 className="w-9 h-9 animate-spin text-kedi-navy" />
-          <span className="text-xs text-slate-500 dark:text-slate-450 font-bold">Đang tải danh sách trang liên kết...</span>
+          <span className="text-xs text-slate-500 dark:text-slate-500 font-bold">Đang tải danh sách trang liên kết...</span>
         </div>
       ) : (
         <>
@@ -82,7 +82,7 @@ export function AiSeoLandingPagesPanel({
                   placeholder="Tìm kiếm theo URL..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-850 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-850 dark:text-gray-150 placeholder:text-slate-400 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-lime-950/20 transition"
+                  className="w-full bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-900 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-900 dark:text-gray-200 placeholder:text-slate-400 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-brand-950/20 transition"
                 />
               </div>
             </div>

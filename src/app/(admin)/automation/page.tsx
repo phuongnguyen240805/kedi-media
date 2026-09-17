@@ -248,7 +248,7 @@ export default function AutomationPage() {
             </p>
             <button
               onClick={() => ladiToast.info("Tính năng gửi chiến dịch hàng loạt đang được chuẩn bị phát hành ở phiên bản tiếp theo.")}
-              className="mt-6 px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-white rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
+              className="mt-6 px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
             >
               Tìm hiểu thêm
             </button>
@@ -268,7 +268,7 @@ export default function AutomationPage() {
             </p>
             <button
               onClick={() => ladiToast.info("Tính năng chuỗi Sequence tự động đang được cập nhật.")}
-              className="mt-6 px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-white rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
+              className="mt-6 px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
             >
               Tìm hiểu thêm
             </button>
@@ -280,7 +280,7 @@ export default function AutomationPage() {
             <h2 className="text-lg font-bold text-slate-800 dark:text-white">Cài đặt chung Automation</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-350">Múi giờ làm việc</label>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-400">Múi giờ làm việc</label>
                 <CustomSelect
                   defaultValue="(GMT+07:00) Asia/Ho_Chi_Minh"
                   options={[
@@ -291,7 +291,7 @@ export default function AutomationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-350">Giờ gửi tin nhắn khuyến khích</label>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-400">Giờ gửi tin nhắn khuyến khích</label>
                 <div className="flex items-center gap-2">
                   <input type="time" defaultValue="08:00" className="bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 text-slate-700 dark:text-slate-300 p-2 rounded-lg text-sm w-full" />
                   <span>đến</span>
@@ -300,12 +300,12 @@ export default function AutomationPage() {
                 <p className="text-[10px] text-slate-400">Tránh gửi tin nhắn ngoài khung giờ này để không gây phiền nhiễu cho khách hàng.</p>
               </div>
               <div className="space-y-2 col-span-2">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-350">Giới hạn tần suất gửi tin nhắn (Rate Limit)</label>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-400">Giới hạn tần suất gửi tin nhắn (Rate Limit)</label>
                 <input type="number" defaultValue="3" className="bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 text-slate-700 dark:text-slate-300 p-2.5 rounded-lg text-sm w-full" />
                 <p className="text-[10px] text-slate-400">Số lượng tin nhắn tự động tối đa gửi cho cùng một khách hàng trong vòng 24 giờ.</p>
               </div>
               <div className="space-y-2 col-span-2 border-t border-gray-100 dark:border-gray-800 pt-4 mt-2">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-350">Địa chỉ máy chủ Flowise API</label>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-400">Địa chỉ máy chủ Flowise API</label>
                 <input 
                   type="text" 
                   value={flowiseUrl} 
@@ -316,7 +316,7 @@ export default function AutomationPage() {
                   placeholder="http://localhost:3100" 
                   className="bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 text-slate-700 dark:text-slate-300 p-2.5 rounded-lg text-sm w-full outline-hidden focus:border-kedi-yellow" 
                 />
-                <p className="text-[10px] text-slate-450">Nhập địa chỉ cổng của máy chủ Flowise (mặc định là http://localhost:3100 hoặc http://localhost:3001 nếu cổng 3000 bị chiếm).</p>
+                <p className="text-[10px] text-slate-500">Nhập địa chỉ cổng của máy chủ Flowise (mặc định là http://localhost:3100 hoặc http://localhost:3001 nếu cổng 3000 bị chiếm).</p>
               </div>
             </div>
             <button
@@ -324,7 +324,7 @@ export default function AutomationPage() {
                 fetchFlows();
                 ladiToast.success("Đã lưu thiết lập chung và cập nhật cấu hình kết nối Flowise.");
               }}
-              className="px-5 py-2.5 bg-kedi-yellow hover:bg-kedi-yellow text-white rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
+              className="px-5 py-2.5 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer"
             >
               Lưu thay đổi
             </button>
@@ -337,14 +337,14 @@ export default function AutomationPage() {
               <h2 className="text-lg font-bold text-slate-800 dark:text-white">Quản lý thẻ phân loại (Tag)</h2>
               <button
                 onClick={() => ladiToast.info("Tính năng tạo Tag mới đang được cập nhật.")}
-                className="px-4 py-2 bg-kedi-yellow text-white font-bold rounded-lg text-xs hover:bg-kedi-yellow transition"
+                className="px-4 py-2 bg-kedi-yellow text-kedi-navy font-bold rounded-lg text-xs hover:bg-kedi-yellow transition"
               >
                 + Tạo Tag mới
               </button>
             </div>
             <div className="flex flex-wrap gap-2.5">
               {["VIP_CUSTOMER", "LEAD_HOT", "LANDING_PAGE_FORM", "ABANDONED_CART", "PROMOTION_USER", "ZALO_MEMBER"].map((tag, idx) => (
-                <span key={idx} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 text-xs font-bold text-slate-750 dark:text-slate-300 rounded-lg">
+                <span key={idx} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-xs font-bold text-slate-800 dark:text-slate-300 rounded-lg">
                   <span>#{tag}</span>
                   <button className="text-slate-400 hover:text-red-500 font-bold ml-1">×</button>
                 </span>
@@ -368,7 +368,7 @@ export default function AutomationPage() {
             <div className="overflow-x-auto border border-gray-100 dark:border-gray-800 rounded-xl">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 dark:bg-gray-850/50 border-b border-gray-100 dark:border-gray-800">
+                  <tr className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-800">
                     <th className="p-3 font-bold">Thời gian</th>
                     <th className="p-3 font-bold">Kịch bản</th>
                     <th className="p-3 font-bold">Khách hàng</th>
@@ -433,7 +433,7 @@ export default function AutomationPage() {
                     options={[
                       { value: "", label: "Chọn tài khoản" },
                       { value: "zalo-1", label: "Zalo OA - Kedi Shop" },
-                      ...(isSimulated ? [{ value: "zalo-2", label: "Zalo OA - LadiSales Support" }] : []),
+                      ...(isSimulated ? [{ value: "zalo-2", label: "Zalo OA - Kedi Sales Support" }] : []),
                     ]}
                     size="xs"
                     triggerClassName="h-8 text-xs"
@@ -441,7 +441,7 @@ export default function AutomationPage() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center justify-center min-h-[90px] shadow-3xs">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center justify-center min-h-[90px] shadow-3xs">
                 {selectedZaloAccount ? (
                   <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 text-left p-2">
                     <div className="space-y-1.5">
@@ -451,7 +451,7 @@ export default function AutomationPage() {
                     <div className="space-y-1.5">
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Hạn ngạch còn lại trong tháng</span>
                       <span className="text-base font-black text-slate-800 dark:text-white">{isSimulated ? "4,820 / 5,000 tin nhắn" : "5,000 / 5,000 tin nhắn"}</span>
-                      <div className="w-full bg-gray-100 dark:bg-gray-850 h-1.5 rounded-full overflow-hidden mt-1">
+                      <div className="w-full bg-gray-100 dark:bg-gray-900 h-1.5 rounded-full overflow-hidden mt-1">
                         <div className="bg-[#FFC629] h-full rounded-full" style={{ width: isSimulated ? "3.6%" : "0%" }} />
                       </div>
                     </div>
@@ -468,13 +468,13 @@ export default function AutomationPage() {
                 <h2 className="text-sm font-bold text-slate-800 dark:text-white">Tình trạng Campaign</h2>
                 <p className="text-[11px] text-slate-400 mt-0.5">Theo dõi số tin nhắn đã được gửi trong Campaign của bạn.</p>
               </div>
-              <div className="bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl p-5 shadow-3xs space-y-3">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-3xs space-y-3">
                 <div className="flex items-center justify-between text-xs select-none">
-                  <span className="text-slate-650 dark:text-slate-350">Số tin nhắn đã gửi trong ngày</span>
+                  <span className="text-slate-700 dark:text-slate-400">Số tin nhắn đã gửi trong ngày</span>
                   <span className="text-emerald-600 dark:text-green-450 font-bold">Còn lại {isSimulated ? "98%" : "100%"} tin nhắn</span>
                 </div>
                 {/* Progress line */}
-                <div className="w-full bg-gray-100 dark:bg-gray-850 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-gray-100 dark:bg-gray-900 h-1.5 rounded-full overflow-hidden">
                   <div className="bg-emerald-500 h-full rounded-full transition-all" style={{ width: isSimulated ? "2%" : "0.5%" }} />
                 </div>
               </div>
@@ -489,27 +489,27 @@ export default function AutomationPage() {
                 </div>
                 {/* Right side metric cards */}
                 <div className="flex items-center gap-3 select-none">
-                  <div className="bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl p-3.5 w-36 shadow-3xs text-center">
+                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-3.5 w-36 shadow-3xs text-center">
                     <div className="text-lg font-black text-slate-800 dark:text-white">
                       0
                     </div>
-                    <div className="text-[10px] text-slate-450 mt-1">Số email đã Bounce</div>
+                    <div className="text-[10px] text-slate-500 mt-1">Số email đã Bounce</div>
                   </div>
-                  <div className="bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl p-3.5 w-36 shadow-3xs text-center">
+                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-3.5 w-36 shadow-3xs text-center">
                     <div className="text-lg font-black text-slate-800 dark:text-white">
                       0
                     </div>
-                    <div className="text-[10px] text-slate-450 mt-1">Số email đã Complaint</div>
+                    <div className="text-[10px] text-slate-500 mt-1">Số email đã Complaint</div>
                   </div>
                 </div>
               </div>
 
               {/* Table area with filters */}
-              <div className="bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl overflow-hidden shadow-3xs space-y-3 p-4">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-3xs space-y-3 p-4">
                 {/* Filters Row */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-3 select-none">
                   <div className="relative w-full md:w-[60%]">
-                    <span className="absolute inset-y-0 left-3 flex items-center text-slate-450">
+                    <span className="absolute inset-y-0 left-3 flex items-center text-slate-500">
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="8" />
                         <path d="m21 21-4.3-4.3" />
@@ -520,7 +520,7 @@ export default function AutomationPage() {
                       placeholder="Tìm kiếm"
                       value={bounceSearchQuery}
                       onChange={(e) => setBounceSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 text-xs bg-gray-50/50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 focus:border-kedi-yellow rounded-lg outline-hidden text-slate-800 dark:text-white"
+                      className="w-full pl-9 pr-4 py-2 text-xs bg-gray-50/50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 focus:border-kedi-yellow rounded-lg outline-hidden text-slate-800 dark:text-white"
                     />
                   </div>
                   <CustomSelect
@@ -539,14 +539,14 @@ export default function AutomationPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
-                      <tr className="border-b border-gray-150 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-850/20 font-bold select-none text-slate-700 dark:text-slate-200">
+                      <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/20 font-bold select-none text-slate-700 dark:text-slate-200">
                         <th className="py-2.5 px-4">Địa chỉ email</th>
                         <th className="py-2.5 px-4">Sự kiện</th>
                         <th className="py-2.5 px-4 w-24">Số lần</th>
                         <th className="py-2.5 px-4 w-40">Ngày tạo</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-slate-650 dark:text-slate-400">
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-slate-700 dark:text-slate-400">
                       {isSimulated && mockBounceRows.length > 0 ? (
                         mockBounceRows.map((row, idx) => (
                           <tr key={idx} className="transition hover:bg-slate-50/50 dark:hover:bg-gray-800/10">
@@ -557,7 +557,7 @@ export default function AutomationPage() {
                               </span>
                             </td>
                             <td className="py-3 px-4 font-mono">{row.count}</td>
-                            <td className="py-3 px-4 text-slate-450">{row.date}</td>
+                            <td className="py-3 px-4 text-slate-500">{row.date}</td>
                           </tr>
                         ))
                       ) : (
@@ -605,7 +605,7 @@ export default function AutomationPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs border cursor-pointer ${
                   isSimulated
                     ? "bg-amber-500 border-amber-600 text-white hover:bg-amber-600"
-                    : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-slate-650 dark:text-slate-350 hover:bg-gray-50"
+                    : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-slate-700 dark:text-slate-400 hover:bg-gray-50"
                 }`}
               >
                 {isSimulated ? "✨ Chế độ: Mô phỏng" : "📊 Chế độ: Thực tế (0đ)"}
@@ -619,7 +619,7 @@ export default function AutomationPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs border cursor-pointer ${
                   isSimulated
                     ? "bg-amber-500 border-amber-600 text-white hover:bg-amber-600"
-                    : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-slate-650 dark:text-slate-350 hover:bg-gray-50"
+                    : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-slate-700 dark:text-slate-400 hover:bg-gray-50"
                 }`}
               >
                 {isSimulated ? "✨ Chế độ: Mô phỏng" : "📊 Chế độ: Thực tế (0đ)"}
@@ -648,7 +648,7 @@ export default function AutomationPage() {
                   connectionStatus === "connected" ? "bg-emerald-500 animate-pulse" :
                   connectionStatus === "loading" ? "bg-amber-500 animate-bounce" : "bg-rose-500"
                 }`} />
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-350">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-400">
                   Trạng thái kết nối Flowise:
                 </span>
                 <span className={`text-xs font-semibold ${
@@ -660,7 +660,7 @@ export default function AutomationPage() {
                 </span>
               </div>
               {connectionStatus === "disconnected" ? (
-                <span className="text-[10px] text-slate-450 max-w-sm md:text-right">
+                <span className="text-[10px] text-slate-500 max-w-sm md:text-right">
                   Mẹo: Chạy Flowise trên máy của bạn (ví dụ: cổng 3100) để lưu kịch bản thời gian thực.
                 </span>
               ) : connectionStatus === "connected" ? (
@@ -686,7 +686,7 @@ export default function AutomationPage() {
 
       {/* 4. Sliding Toast Notification */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-55 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-850 dark:border-gray-150 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-55 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-900 dark:border-gray-200 animate-bounce">
           <div className="w-5 h-5 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-xs">
             ✓
           </div>

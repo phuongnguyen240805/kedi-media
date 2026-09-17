@@ -113,7 +113,7 @@ export function AiSeoLandingPageTable({
         <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
           {pages.length === 0 ? (
             <tr>
-              <td colSpan={12} className="py-10 text-center text-xs text-slate-400 dark:text-slate-650 font-medium">
+              <td colSpan={12} className="py-10 text-center text-xs text-slate-400 dark:text-slate-700 font-medium">
                 Chưa có Landing Page nào được kết nối với dự án SEO này.
               </td>
             </tr>
@@ -138,7 +138,7 @@ export function AiSeoLandingPageTable({
                 </td>
                 <td className="py-3.5 text-center">
                   {page.source === "internal" ? (
-                    <span className="bg-brand-50 dark:bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow border border-lime-200 dark:border-kedi-yellow/30 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">
+                    <span className="bg-brand-50 dark:bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow border border-brand-200 dark:border-kedi-yellow/30 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">
                       Builder
                     </span>
                   ) : (

@@ -85,7 +85,7 @@ export function MedusaProductDetailDrawer({
 
   return (
     <>
-      <div className="fixed inset-0 z-9999 bg-black/40" onClick={onClose} />
+      <div className="fixed inset-0 z-9999 bg-kedi-navy/40" onClick={onClose} />
       <div className="fixed inset-y-0 right-0 z-99999 w-full max-w-lg bg-white dark:bg-gray-900 shadow-2xl overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex justify-between items-start">
           <div className="flex items-start gap-3">

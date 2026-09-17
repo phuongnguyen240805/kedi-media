@@ -58,7 +58,7 @@ export function FunnelPopup({ title, description, ctaLabel = "Continue", onConve
 
   return (
     <ConditionalRender {...gate}>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/55 px-4">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-kedi-navy/55 px-4">
         <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-5 shadow-2xl dark:border-gray-800 dark:bg-gray-950">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div>

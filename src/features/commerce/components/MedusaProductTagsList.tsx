@@ -105,7 +105,7 @@ export function MedusaProductTagsList() {
           <button
             type="button"
             onClick={openCreate}
-            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
+            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
           >
             + Tag
           </button>

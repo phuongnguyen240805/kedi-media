@@ -479,7 +479,7 @@ export function ChannelAccountSubmenu({ variant = "rail" }: { variant?: "rail" |
               className="group relative flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-white/70 dark:hover:bg-white/10"
             >
               <span
-                className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full text-[11px] font-black text-white shadow-sm ring-1 ring-black/5 dark:ring-white/15"
+                className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full text-[11px] font-black text-white shadow-sm ring-1 ring-kedi-navy/5 dark:ring-white/15"
                 style={{ backgroundColor: meta.color }}
               >
                 {profile.avatarUrl && account ? (
@@ -732,7 +732,7 @@ function AccountInfoDialog({ account, onClose }: { account: CustomerCareChannelA
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white hover:bg-black/45"
+            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-kedi-navy/30 text-white hover:bg-kedi-navy/45"
           >
             <X className="h-4 w-4" />
           </button>

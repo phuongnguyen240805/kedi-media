@@ -107,7 +107,7 @@ export function MedusaCustomersList() {
           <button
             type="button"
             onClick={() => setDraft({ name: "", email: "", phone: "" })}
-            className="px-3 py-2 rounded-lg bg-kedi-yellow text-white text-xs font-semibold"
+            className="px-3 py-2 rounded-lg bg-kedi-yellow text-kedi-navy text-xs font-semibold"
           >
             + Thêm khách hàng
           </button>

@@ -33,8 +33,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
           </div>
         </div>
         {/* Active Log Bar overlay */}
-        <div className="bg-black/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="bg-kedi-navy/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">FB: Seeding group...</span>
         </div>
       </div>
@@ -42,8 +42,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
   }
   if (state === "tiktok") {
     return (
-      <div className="flex h-full flex-col bg-black text-white relative select-none">
-        <div className="absolute inset-0 bg-gradient-to-tr from-rose-950/30 via-black to-cyan-950/30" />
+      <div className="flex h-full flex-col bg-kedi-navy text-white relative select-none">
+        <div className="absolute inset-0 bg-gradient-to-tr from-rose-950/30 via-kedi-navy to-cyan-950/30" />
         
         {/* Top Header */}
         <div className="absolute top-1.5 left-0 right-0 flex items-center justify-center gap-2 text-[7px] font-bold text-white/50 z-10">
@@ -69,17 +69,17 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
         </div>
 
         {/* Tiktok Bottom Tab Bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-5.5 bg-black/90 border-t border-white/10 flex items-center justify-between px-3 text-[6px] font-bold text-white/60 shrink-0 z-10">
+        <div className="absolute bottom-0 left-0 right-0 h-5.5 bg-kedi-navy/90 border-t border-white/10 flex items-center justify-between px-3 text-[6px] font-bold text-white/60 shrink-0 z-10">
           <span>Home</span>
           <span>Shop</span>
-          <span className="bg-white text-black px-1.5 py-0.5 rounded-sm font-black">+</span>
+          <span className="bg-white text-kedi-navy px-1.5 py-0.5 rounded-sm font-black">+</span>
           <span>Inbox</span>
           <span>Profile</span>
         </div>
 
         {/* Active Log Bar overlay */}
-        <div className="absolute bottom-5.5 left-0 right-0 bg-black/95 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none z-10">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="absolute bottom-5.5 left-0 right-0 bg-kedi-navy/95 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none z-10">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">TikTok: Watching video...</span>
         </div>
       </div>
@@ -88,15 +88,15 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
   if (state === "game") {
     return (
       <div className="flex h-full flex-col bg-gradient-to-b from-sky-400 via-emerald-400 to-amber-200 relative text-slate-800 select-none">
-        <div className="absolute top-1 left-1 bg-black/35 text-white text-[6px] px-1 py-0.5 rounded font-mono scale-90">
+        <div className="absolute top-1 left-1 bg-kedi-navy/35 text-white text-[6px] px-1 py-0.5 rounded font-mono scale-90">
           LV. 42
         </div>
-        <div className="absolute top-1 right-1 bg-black/35 text-white text-[6px] px-1 py-0.5 rounded font-mono scale-90">
+        <div className="absolute top-1 right-1 bg-kedi-navy/35 text-white text-[6px] px-1 py-0.5 rounded font-mono scale-90">
           Gold: 14.8K
         </div>
         
         {/* Virtual Joystick */}
-        <div className="absolute bottom-6.5 left-2 h-7 w-7 rounded-full bg-black/20 border border-white/30 flex items-center justify-center">
+        <div className="absolute bottom-6.5 left-2 h-7 w-7 rounded-full bg-kedi-navy/20 border border-white/30 flex items-center justify-center">
           <div className="h-3 w-3 rounded-full bg-white/40" />
         </div>
 
@@ -112,8 +112,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
         </div>
 
         {/* Active Log Bar overlay */}
-        <div className="bg-black/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none z-10">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="bg-kedi-navy/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none z-10">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">Game: Hooked fish!</span>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
   }
   if (state === "shopee") {
     return (
-      <div className="flex h-full flex-col bg-slate-50 text-slate-850 select-none">
+      <div className="flex h-full flex-col bg-slate-50 text-slate-900 select-none">
         {/* Shopee Header */}
         <div className="bg-[#f53d2d] px-2 py-1 flex items-center gap-2 shrink-0">
           <span className="text-white text-[10px] font-black">S</span>
@@ -144,8 +144,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
           </div>
         </div>
         {/* Active Log Bar overlay */}
-        <div className="bg-black/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="bg-kedi-navy/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">Shopee: Bumping items...</span>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
   }
   if (state === "zalo") {
     return (
-      <div className="flex h-full flex-col bg-[#eef0f2] text-slate-850 select-none">
+      <div className="flex h-full flex-col bg-[#eef0f2] text-slate-900 select-none">
         {/* Zalo Header */}
         <div className="bg-[#0068ff] text-white px-2 py-1 text-[7px] font-black shrink-0 flex items-center justify-between">
           <span>Zalo Marketing</span>
@@ -173,8 +173,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
           </div>
         </div>
         {/* Active Log Bar overlay */}
-        <div className="bg-black/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="bg-kedi-navy/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">Zalo: Broadcast message...</span>
         </div>
       </div>
@@ -194,7 +194,7 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
             <div className="h-3 w-3 rounded-full bg-sky-500 flex items-center justify-center text-[4px] font-bold text-white">C</div>
             <div className="min-w-0">
               <div className="text-[5.5px] font-bold truncate">Crypto VN Community</div>
-              <div className="text-[4px] text-slate-450 truncate leading-none">Hi everyone...</div>
+              <div className="text-[4px] text-slate-500 truncate leading-none">Hi everyone...</div>
             </div>
           </div>
           <div className="flex items-center gap-1.5 py-0.5">
@@ -206,8 +206,8 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
           </div>
         </div>
         {/* Active Log Bar overlay */}
-        <div className="bg-black/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-lime-400 font-mono flex items-center gap-1 select-none">
-          <span className="animate-pulse h-1 w-1 rounded-full bg-lime-400 shrink-0" />
+        <div className="bg-kedi-navy/90 border-t border-slate-900 px-1.5 py-1 text-[6.5px] text-brand-400 font-mono flex items-center gap-1 select-none">
+          <span className="animate-pulse h-1 w-1 rounded-full bg-brand-400 shrink-0" />
           <span className="truncate">TG: Scraping members...</span>
         </div>
       </div>
@@ -218,7 +218,7 @@ export default function PhoneScreenMockup({ state }: PhoneScreenMockupProps) {
       <div className="flex h-full flex-col bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-950 relative text-white select-none p-2 justify-between">
         {/* Grid of app shortcuts */}
         <div className="grid grid-cols-4 gap-2.5 mt-2">
-          {["bg-blue-600", "bg-black", "bg-[#f53d2d]", "bg-emerald-500", "bg-sky-500", "bg-[#0068ff]", "bg-amber-500", "bg-slate-500"].map((color, idx) => (
+          {["bg-blue-600", "bg-kedi-navy", "bg-[#f53d2d]", "bg-emerald-500", "bg-sky-500", "bg-[#0068ff]", "bg-amber-500", "bg-slate-500"].map((color, idx) => (
             <div key={idx} className="flex flex-col items-center gap-0.5 scale-90">
               <div className={`h-3.5 w-3.5 rounded-sm ${color} shadow-sm flex items-center justify-center text-[4.5px] font-black`}>
                 {idx === 0 && "FB"}

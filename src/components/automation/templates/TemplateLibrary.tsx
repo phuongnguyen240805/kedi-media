@@ -176,7 +176,7 @@ export const TemplateLibrary: React.FC<TemplateLibraryProps> = ({ onSelectTempla
     if (t.includes("sms") || t.includes("otp")) return "bg-purple-50 text-purple-600 dark:bg-purple-950/20 dark:text-purple-400";
     if (t.includes("facebook")) return "bg-sky-50 text-sky-600 dark:bg-sky-950/20 dark:text-sky-400";
     if (t.includes("sheet")) return "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400";
-    return "bg-slate-100 text-slate-650 dark:bg-gray-800 dark:text-gray-400";
+    return "bg-slate-100 text-slate-700 dark:bg-gray-800 dark:text-gray-400";
   };
 
   const renderChannelIcon = (tag: string) => {
@@ -208,7 +208,7 @@ export const TemplateLibrary: React.FC<TemplateLibraryProps> = ({ onSelectTempla
             className={`pb-3 text-sm font-bold border-b-2 cursor-pointer transition ${
               subTab === "library"
                 ? "border-kedi-yellow text-kedi-navy dark:text-kedi-yellow dark:border-kedi-yellow"
-                : "border-transparent text-slate-450 hover:text-slate-800 dark:hover:text-white"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white"
             }`}
           >
             Kịch bản mẫu
@@ -218,7 +218,7 @@ export const TemplateLibrary: React.FC<TemplateLibraryProps> = ({ onSelectTempla
             className={`pb-3 text-sm font-bold border-b-2 cursor-pointer transition ${
               subTab === "mine"
                 ? "border-kedi-yellow text-kedi-navy dark:text-kedi-yellow dark:border-kedi-yellow"
-                : "border-transparent text-slate-450 hover:text-slate-800 dark:hover:text-white"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white"
             }`}
           >
             Kịch bản của tôi
@@ -235,7 +235,7 @@ export const TemplateLibrary: React.FC<TemplateLibraryProps> = ({ onSelectTempla
             placeholder="Tìm mẫu kịch bản..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 text-xs bg-gray-50/50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-750 focus:border-kedi-yellow rounded-lg outline-hidden text-slate-800 dark:text-white"
+            className="w-full pl-9 pr-4 py-1.5 text-xs bg-gray-50/50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 focus:border-kedi-yellow rounded-lg outline-hidden text-slate-800 dark:text-white"
           />
         </div>
       </div>
@@ -260,8 +260,8 @@ export const TemplateLibrary: React.FC<TemplateLibraryProps> = ({ onSelectTempla
                   onClick={() => setActiveCategory(cat)}
                   className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                     isActive
-                      ? "bg-kedi-yellow text-white shadow-2xs"
-                      : "bg-white dark:bg-gray-900 text-slate-650 dark:text-slate-450 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-850"
+                      ? "bg-kedi-yellow text-kedi-navy shadow-2xs"
+                      : "bg-white dark:bg-gray-900 text-slate-700 dark:text-slate-500 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900"
                   }`}
                 >
                   {cat}

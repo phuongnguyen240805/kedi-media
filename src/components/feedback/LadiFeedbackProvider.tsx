@@ -31,7 +31,7 @@ const TOAST_ICONS: Record<LadiToastType, React.ReactElement> = {
 };
 
 const TOAST_ACCENT: Record<LadiToastType, string> = {
-  success: "text-lime-500 dark:text-[#ffe08a]",
+  success: "text-brand-500 dark:text-[#ffe08a]",
   error: "text-rose-500 dark:text-rose-300",
   warning: "text-amber-500 dark:text-amber-300",
   info: "text-sky-500 dark:text-sky-300",
@@ -49,7 +49,7 @@ function ToastCard({ toast }: { toast: LadiToast }) {
   return (
     <div
       role="status"
-      className="pointer-events-auto flex items-start gap-3 w-full max-w-sm rounded-xl border border-gray-150 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3 shadow-lg animate-fadeIn"
+      className="pointer-events-auto flex items-start gap-3 w-full max-w-sm rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3 shadow-lg animate-fadeIn"
     >
       <span className={`flex-shrink-0 mt-0.5 ${TOAST_ACCENT[toast.type]}`}>
         {TOAST_ICONS[toast.type]}
@@ -111,20 +111,20 @@ function ConfirmDialog() {
   return (
     <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm animate-fadeIn"
+        className="absolute inset-0 bg-slate-900/40 dark:bg-kedi-navy/60 backdrop-blur-sm animate-fadeIn"
         onClick={() => resolveConfirm(false)}
       />
       <div
         role="alertdialog"
         aria-modal="true"
-        className="relative w-full max-w-md rounded-2xl border border-gray-150 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-2xl animate-fadeIn"
+        className="relative w-full max-w-md rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-2xl animate-fadeIn"
       >
         <div className="flex items-start gap-4">
           <span
             className={`flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full ${
               destructive
                 ? "text-rose-500 bg-rose-50 dark:text-rose-300 dark:bg-rose-950/40"
-                : "text-lime-500 bg-lime-50 dark:text-[#ffe08a] dark:bg-lime-950/30"
+                : "text-brand-500 bg-brand-50 dark:text-[#ffe08a] dark:bg-brand-950/30"
             }`}
           >
             {destructive ? (

@@ -140,7 +140,7 @@ export function ZaloAccountDock() {
               <button
                 type="button"
                 onClick={() => setProfileOpen(false)}
-                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur hover:bg-black/45"
+                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-kedi-navy/30 text-white backdrop-blur hover:bg-kedi-navy/45"
                 aria-label="Đóng hồ sơ"
               >
                 <X className="h-4 w-4" />

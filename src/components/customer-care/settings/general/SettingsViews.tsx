@@ -185,19 +185,19 @@ export function GeneralSetting() {
         <DetailConfigItem
           icon={<Workflow />}
           title="Nền tảng vận hành chính"
-          description={<>Sử dụng LadiSales nếu bạn thiên về quản lý sản phẩm, đơn hàng, kho bãi. Sử dụng CRM nếu bạn kinh doanh dịch vụ hoặc cần quản lý pipeline khách hàng.</>}
+          description={<>Sử dụng Kedi Sales nếu bạn thiên về quản lý sản phẩm, đơn hàng, kho bãi. Sử dụng CRM nếu bạn kinh doanh dịch vụ hoặc cần quản lý pipeline khách hàng.</>}
           subRows={<SubSettingRow action={<div className="flex items-center gap-2"><button type="button" className="font-semibold text-kedi-navy dark:text-kedi-yellow">Thay đổi</button><SettingsSelect value={country} options={[{ label: "🇻🇳 Việt Nam", value: "vn" }, { label: "🇸🇬 Singapore", value: "sg" }]} onChange={setCountry} /></div>}>Quốc gia kinh doanh</SubSettingRow>}
         >
-          <SettingsSelect value={mainPlatform} options={[{ label: "LadiSales", value: "ladisales" }, { label: "Ladi CRM", value: "crm" }]} onChange={setMainPlatform} />
+          <SettingsSelect value={mainPlatform} options={[{ label: "Kedi Sales", value: "ladisales" }, { label: "Kedi CRM", value: "crm" }]} onChange={setMainPlatform} />
         </DetailConfigItem>
-        <DetailConfigItem icon={<PackageOpen />} title="Tạo đơn trên LadiSales tự động" description="Đơn hàng mới sẽ được tự động tạo khi tin nhắn khách hàng có chứa số điện thoại.">
+        <DetailConfigItem icon={<PackageOpen />} title="Tạo đơn trên Kedi Sales tự động" description="Đơn hàng mới sẽ được tự động tạo khi tin nhắn khách hàng có chứa số điện thoại.">
           <SettingsToggle checked={generalSettingDraft.autoCreateLead} onChange={(value) => patchGeneralSetting({ autoCreateLead: value })} />
         </DetailConfigItem>
         <DetailConfigItem
           icon={<Bot />}
           title="Thông báo trợ lý tự động"
           description="Hiển thị thông báo khi trợ lý tự động trả lời."
-          subRows={<SubSettingRow action={<SettingsToggle checked={syncCustomerTag} onChange={setSyncCustomerTag} />}>Khi gắn hoặc gỡ thẻ khách hàng, tự động đồng bộ thẻ với Ladi CRM</SubSettingRow>}
+          subRows={<SubSettingRow action={<SettingsToggle checked={syncCustomerTag} onChange={setSyncCustomerTag} />}>Khi gắn hoặc gỡ thẻ khách hàng, tự động đồng bộ thẻ với Kedi CRM</SubSettingRow>}
           last
         >
           <SettingsToggle checked={botNotification} onChange={setBotNotification} />
@@ -465,7 +465,7 @@ export function RoundRobinSetting() {
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-4"><h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Chế độ xoay vòng</h1><SettingsButton onClick={() => toast.success("Đã lưu chế độ xoay vòng")}><Save className="h-4 w-4" />Lưu cài đặt</SettingsButton></div>
       <SettingsCard title="Cài đặt chế độ" subtitle="Chọn các chế độ chia hội thoại cho nhân viên">
-        <div className="grid gap-3 md:grid-cols-2">{modes.map(({ id, label, icon: Icon }) => <button type="button" key={id} onClick={() => setAssignmentMode(id)} className={`flex h-16 items-center gap-4 rounded-xl border px-5 text-left text-sm font-semibold transition ${assignmentMode === id ? "border-kedi-yellow bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow" : "border-transparent bg-slate-100 text-slate-700 hover:border-slate-300 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-white/15"}`}><span className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm dark:bg-black/20"><Icon className="h-5 w-5" /></span>{label}{assignmentMode === id && <Check className="ml-auto h-5 w-5 text-kedi-navy" />}</button>)}</div>
+        <div className="grid gap-3 md:grid-cols-2">{modes.map(({ id, label, icon: Icon }) => <button type="button" key={id} onClick={() => setAssignmentMode(id)} className={`flex h-16 items-center gap-4 rounded-xl border px-5 text-left text-sm font-semibold transition ${assignmentMode === id ? "border-kedi-yellow bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow" : "border-transparent bg-slate-100 text-slate-700 hover:border-slate-300 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-white/15"}`}><span className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm dark:bg-kedi-navy/20"><Icon className="h-5 w-5" /></span>{label}{assignmentMode === id && <Check className="ml-auto h-5 w-5 text-kedi-navy" />}</button>)}</div>
       </SettingsCard>
       <SettingsCard title="Cấu hình chi tiết" subtitle="Cấu hình chi tiết cho chế độ chia hội thoại được chọn">
         <DetailConfigItem icon={<Eye />} title="Quyền xem" description="Nhân viên chỉ xem được hội thoại được chia cho mình và chưa được chia cho ai." subRows={<SubSettingRow action={<SettingsToggle checked={assignFirstReply} onChange={setAssignFirstReply} />}>Tự động phân công cho nhân viên trả lời tin nhắn đầu tiên</SubSettingRow>} last><SettingsToggle checked={viewPermission} onChange={setViewPermission} /></DetailConfigItem>
@@ -493,7 +493,7 @@ export function SyncSetting() {
         <div className="mb-4 rounded-lg border border-amber-500/40 bg-amber-500/15 p-3 text-sm leading-6 text-amber-800 dark:text-amber-200"><AlertCircle className="mr-2 inline h-4 w-4" />Dữ liệu tải lên sẽ nằm trong một thư viện chung của nhóm đồng bộ.</div>
         <label className="mb-5 block"><span className="mb-2 block text-sm font-medium">Tên nhóm <span className="text-red-500">*</span></span><input value={groupName} onChange={(event) => setGroupName(event.target.value)} placeholder="Nhập tên nhóm" className="h-10 w-full rounded-lg border border-slate-300 bg-transparent px-3 text-sm outline-none focus:border-kedi-yellow dark:border-white/15" /></label>
         <div className="mb-2 text-sm font-medium">Chọn trang cần đồng bộ:</div><label className="relative mb-3 block"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input placeholder="Tìm kiếm trang" className="h-10 w-full rounded-lg border border-slate-300 bg-transparent pl-10 pr-3 text-sm outline-none dark:border-white/15" /></label>
-        <div className="min-h-[280px] rounded-xl border border-slate-300 dark:border-white/15"><div className="border-b border-slate-300 px-4 py-3 text-sm font-semibold dark:border-white/15">Tên trang</div><label className="flex items-center gap-3 px-4 py-4"><input type="checkbox" className="h-4 w-4 accent-lime-500" /><span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-300 dark:bg-white/10">PN</span><span><span className="block text-sm font-semibold">Phương Nguyễn</span><span className="text-xs text-slate-500">Zalo • pzl_39236084121558695</span></span></label></div>
+        <div className="min-h-[280px] rounded-xl border border-slate-300 dark:border-white/15"><div className="border-b border-slate-300 px-4 py-3 text-sm font-semibold dark:border-white/15">Tên trang</div><label className="flex items-center gap-3 px-4 py-4"><input type="checkbox" className="h-4 w-4 accent-brand-500" /><span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-300 dark:bg-white/10">PN</span><span><span className="block text-sm font-semibold">Phương Nguyễn</span><span className="text-xs text-slate-500">Zalo • pzl_39236084121558695</span></span></label></div>
       </SettingsModal>
     </div>
   );
@@ -873,7 +873,7 @@ export function SettingPermissions() {
       </SettingsCard>
       <SettingsModal open={permissionModalOpen} title="Thiết lập phân quyền" onClose={() => setPermissionModalOpen(false)} footer={<><SettingsButton variant="secondary" onClick={() => setPermissionModalOpen(false)}>Hủy</SettingsButton><SettingsButton onClick={() => { toast.success("Đã cập nhật phân quyền"); setPermissionModalOpen(false); }}>Lưu quyền</SettingsButton></>}>
         <SettingsSelect className="mb-5 w-full" value={selectedUser} options={users.map((user) => ({ label: user, value: user }))} onChange={setSelectedUser} />
-        <div className="space-y-2">{permissions.map((permission, index) => <label key={permission} className="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 dark:border-white/10"><span className="text-sm font-medium">{permission}</span><input type="checkbox" defaultChecked={index < 4} className="h-4 w-4 accent-lime-500" /></label>)}</div>
+        <div className="space-y-2">{permissions.map((permission, index) => <label key={permission} className="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 dark:border-white/10"><span className="text-sm font-medium">{permission}</span><input type="checkbox" defaultChecked={index < 4} className="h-4 w-4 accent-brand-500" /></label>)}</div>
       </SettingsModal>
     </div>
   );

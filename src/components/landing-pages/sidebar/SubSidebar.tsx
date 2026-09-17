@@ -92,11 +92,11 @@ export const SubSidebar: React.FC<SubSidebarProps> = ({
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition cursor-pointer relative group ${
                 isActive
                   ? "bg-brand-50 text-[#3a5680] shadow-[inset_2px_0_0_#FFC629] dark:bg-kedi-yellow/15 dark:text-[#ffe08a] dark:shadow-[inset_2px_0_0_#FFC629] font-semibold"
-                  : "text-slate-650 hover:bg-gray-200/50 dark:text-slate-400 dark:hover:bg-white/5"
+                  : "text-slate-700 hover:bg-gray-200/50 dark:text-slate-400 dark:hover:bg-white/5"
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span className={`${isActive ? "text-[#3a5680] dark:text-[#ffe08a]" : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-350"}`}>
+                <span className={`${isActive ? "text-[#3a5680] dark:text-[#ffe08a]" : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-400"}`}>
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
@@ -120,7 +120,7 @@ export const SubSidebar: React.FC<SubSidebarProps> = ({
               type="button"
               title="Tạo tag mới"
               onClick={() => setActiveSubTab("tags")}
-              className="text-slate-400 hover:text-slate-650 dark:hover:text-slate-300 cursor-pointer"
+              className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -159,7 +159,7 @@ export const SubSidebar: React.FC<SubSidebarProps> = ({
             type="button"
             onClick={() => onSelectTag(null)}
             className={`inline-flex w-fit items-center px-2.5 py-0.5 text-xs font-semibold rounded-full border transition cursor-pointer text-kedi-navy bg-brand-50 border-kedi-yellow/30/40 dark:text-kedi-yellow dark:bg-kedi-yellow/10 ${
-              selectedTagId === null ? "ring-1 ring-lime-400/60" : "opacity-80 hover:opacity-100"
+              selectedTagId === null ? "ring-1 ring-brand-400/60" : "opacity-80 hover:opacity-100"
             }`}
           >
             Tất cả
@@ -174,7 +174,7 @@ export const SubSidebar: React.FC<SubSidebarProps> = ({
                   type="button"
                   onClick={() => onSelectTag(tag.id)}
                   className={`inline-flex w-fit items-center gap-1 px-2.5 py-0.5 text-xs font-semibold rounded-full border transition cursor-pointer text-kedi-navy bg-brand-50 border-kedi-yellow/30/40 dark:text-kedi-yellow dark:bg-kedi-yellow/10 ${
-                    isActive ? "ring-1 ring-lime-400/60" : "opacity-80 hover:opacity-100"
+                    isActive ? "ring-1 ring-brand-400/60" : "opacity-80 hover:opacity-100"
                   }`}
                 >
                   <span className="truncate max-w-[120px]">{tag.name}</span>

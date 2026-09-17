@@ -67,7 +67,7 @@ export function CommerceSettingsPanel() {
               <button
                 type="button"
                 onClick={openEdit}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
               >
                 Sửa thông tin
               </button>

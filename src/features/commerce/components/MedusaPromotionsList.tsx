@@ -173,7 +173,7 @@ export function MedusaPromotionsList() {
           <button
             type="button"
             onClick={openCreate}
-            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
+            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
           >
             + Khuyến mãi
           </button>
@@ -289,7 +289,7 @@ export function MedusaPromotionsList() {
                     type: e.target.value as CommercePromotionType,
                   })
                 }
-                className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
+                className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
               >
                 <option value="percentage">Phần trăm (%)</option>
                 <option value="fixed">Số tiền cố định</option>
@@ -334,7 +334,7 @@ export function MedusaPromotionsList() {
                   status: e.target.value as CommercePromotionStatus,
                 })
               }
-              className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
+              className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
             >
               <option value="active">Đang chạy</option>
               <option value="scheduled">Đã lên lịch</option>

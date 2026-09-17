@@ -144,7 +144,7 @@ export default function SkillsGrid({
               {isHovered && (
                 <div
                   ref={tooltipRef}
-                  className="absolute z-50 left-0 right-0 top-full mt-2 bg-slate-900/95 backdrop-blur-md border border-slate-600/60 rounded-xl p-4 shadow-2xl shadow-black/40 animate-in fade-in slide-in-from-top-1 duration-200"
+                  className="absolute z-50 left-0 right-0 top-full mt-2 bg-slate-900/95 backdrop-blur-md border border-slate-600/60 rounded-xl p-4 shadow-2xl shadow-kedi-navy/40 animate-in fade-in slide-in-from-top-1 duration-200"
                   onMouseEnter={() => {
                     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                     setHoveredSkill(detailKey);

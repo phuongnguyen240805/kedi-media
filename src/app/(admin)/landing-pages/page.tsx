@@ -1348,7 +1348,7 @@ function LandingPagesManagement({ initialSubTab = "pages" }: LandingPagesManagem
       <button
         type="button"
         onClick={handleUpgradeLanding}
-        className="mt-5 rounded-xl bg-kedi-yellow px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-kedi-yellow"
+        className="mt-5 rounded-xl bg-kedi-yellow px-4 py-2 text-sm font-black text-kedi-navy shadow-sm transition hover:bg-kedi-yellow"
       >
         Nâng cấp ngay
       </button>
@@ -1475,7 +1475,7 @@ function LandingPagesManagement({ initialSubTab = "pages" }: LandingPagesManagem
 
       {/* Background Simulation Progress Overlay */}
       {activeJob && (
-        <div className="fixed inset-0 z-999999 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-999999 flex items-center justify-center bg-kedi-navy/60 p-4 backdrop-blur-xs animate-fade-in">
           <div className="w-full max-w-md rounded-2xl bg-white dark:bg-zinc-900 p-6 shadow-2xl border border-gray-200 dark:border-zinc-800 text-center space-y-5 animate-scale-up">
             <div className="h-16 w-16 mx-auto relative flex items-center justify-center">
               <div className="absolute inset-0 rounded-full border-4 border-dashed border-purple-600 animate-spin"></div>

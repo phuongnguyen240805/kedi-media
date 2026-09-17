@@ -181,7 +181,7 @@ export function MedusaOrdersList() {
       {selected && (
         <>
           <div
-            className="fixed inset-0 z-9999 bg-black/40"
+            className="fixed inset-0 z-9999 bg-kedi-navy/40"
             onClick={() => setSelected(null)}
           />
           <div className="fixed inset-y-0 right-0 z-99999 w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl p-6 overflow-y-auto">

@@ -141,7 +141,7 @@ function NavButton({
           className={`${
             isActive
               ? "text-kedi-navy dark:text-kedi-yellow"
-              : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-350"
+              : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-400"
           }`}
         >
           {item.icon}

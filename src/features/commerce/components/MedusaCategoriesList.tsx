@@ -123,7 +123,7 @@ export function MedusaCategoriesList() {
           <button
             type="button"
             onClick={openCreate}
-            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
+            className="ml-auto px-3 py-2 rounded-lg text-sm font-medium text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer whitespace-nowrap"
           >
             + Danh mục
           </button>
@@ -244,7 +244,7 @@ export function MedusaCategoriesList() {
               onChange={(e) =>
                 setDraft({ ...draft, parentId: e.target.value || null })
               }
-              className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
+              className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
             >
               <option value="">— Không có (cấp gốc) —</option>
               {categories
@@ -267,7 +267,7 @@ export function MedusaCategoriesList() {
               type="checkbox"
               checked={draft.visible}
               onChange={(e) => setDraft({ ...draft, visible: e.target.checked })}
-              className="w-4 h-4 accent-lime-500"
+              className="w-4 h-4 accent-brand-500"
             />
             Hiển thị danh mục
           </label>

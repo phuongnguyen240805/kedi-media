@@ -148,7 +148,7 @@ export default function BanHangPage() {
 
   const ComingSoon = ({ label }: { label: string }) => (
     <div className="flex flex-col items-center justify-center flex-1 py-32 select-none space-y-4">
-      <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-gray-850 flex items-center justify-center text-slate-400 dark:text-slate-500 border border-gray-200 dark:border-gray-800 text-2xl">
+      <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-gray-900 flex items-center justify-center text-slate-400 dark:text-slate-500 border border-gray-200 dark:border-gray-800 text-2xl">
         🚧
       </div>
       <h3 className="text-base font-bold text-slate-700 dark:text-slate-200">{label}</h3>

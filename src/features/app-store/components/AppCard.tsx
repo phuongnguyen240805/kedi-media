@@ -199,7 +199,7 @@ export default function AppCard({ app, onInstall, onUninstall, onOpen, onDetails
   const isUpcoming = app.upcoming === true || app.category === "upcoming";
 
   return (
-    <div className="bg-white dark:bg-[#11121e] border border-gray-150 dark:border-gray-800 rounded-2xl p-5 shadow-theme-xs flex flex-col justify-between hover:shadow-theme-md transition-all duration-200 relative group">
+    <div className="bg-white dark:bg-[#11121e] border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-theme-xs flex flex-col justify-between hover:shadow-theme-md transition-all duration-200 relative group">
       {/* Pin Icon on Top Right */}
       {app.isPinned && (
         <span className="absolute top-4 right-4 text-orange-500 text-sm cursor-help" title="Ứng dụng đã ghim">
@@ -264,7 +264,7 @@ export default function AppCard({ app, onInstall, onUninstall, onOpen, onDetails
           <button 
             type="button"
             onClick={() => onDetails(app.id)}
-            className="px-3 py-1.5 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 text-xs font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-850 hover:text-gray-900 dark:hover:text-white transition cursor-pointer"
+            className="px-3 py-1.5 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 text-xs font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white transition cursor-pointer"
           >
             Chi tiết
           </button>
@@ -294,7 +294,7 @@ export default function AppCard({ app, onInstall, onUninstall, onOpen, onDetails
             <button
               type="button"
               onClick={() => onInstall(app.id)}
-              className="px-3 py-1.5 bg-kedi-yellow hover:bg-kedi-yellow text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
+              className="px-3 py-1.5 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
             >
               + Cài đặt
             </button>

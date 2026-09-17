@@ -217,7 +217,7 @@ export const ProductCardBlock: React.FC<{ props: ProductCardProps; isSelected: b
             </span>
           )}
           {commerceProductId && (
-            <span className="absolute top-2.5 right-2.5 bg-kedi-yellow text-white font-bold text-[8px] px-1.5 py-0.5 rounded-full uppercase">
+            <span className="absolute top-2.5 right-2.5 bg-kedi-yellow text-kedi-navy font-bold text-[8px] px-1.5 py-0.5 rounded-full uppercase">
               Online
             </span>
           )}
@@ -417,13 +417,13 @@ export const CarouselBlock: React.FC<{ props: CarouselProps; isSelected: boolean
           <>
             <button
               onClick={(e) => { e.stopPropagation(); prev(); }}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center text-sm font-bold z-10 transition"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-kedi-navy/40 hover:bg-kedi-navy/60 text-white flex items-center justify-center text-sm font-bold z-10 transition"
             >
               ⟨
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); next(); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center text-sm font-bold z-10 transition"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-kedi-navy/40 hover:bg-kedi-navy/60 text-white flex items-center justify-center text-sm font-bold z-10 transition"
             >
               ⟩
             </button>
@@ -521,7 +521,7 @@ export const FrameBlock: React.FC<{ props: FrameProps; isSelected: boolean; onSe
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
             <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
             <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-            <div className="flex-1 bg-black/30 border border-white/5 rounded px-2.5 py-0.5 text-[9px] text-gray-500 font-mono truncate max-w-sm mx-auto text-center">
+            <div className="flex-1 bg-kedi-navy/30 border border-white/5 rounded px-2.5 py-0.5 text-[9px] text-gray-500 font-mono truncate max-w-sm mx-auto text-center">
               {url || "https://example.com"}
             </div>
           </div>

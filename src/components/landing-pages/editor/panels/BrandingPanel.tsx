@@ -52,7 +52,7 @@ export const BrandingPanel: React.FC<BrandingPanelProps> = ({
                   {preset.emoji}
                 </span>
                 <div className="min-w-0">
-                  <div className="text-xs font-black text-gray-850" style={{ fontFamily: preset.fonts.displayStack }}>
+                  <div className="text-xs font-black text-gray-900" style={{ fontFamily: preset.fonts.displayStack }}>
                     {preset.name}
                   </div>
                   <div className="mt-1 text-[10px] font-medium leading-relaxed text-gray-500">{preset.description}</div>
@@ -60,7 +60,7 @@ export const BrandingPanel: React.FC<BrandingPanelProps> = ({
                     <span>{preset.fonts.display}</span>
                     <span className="h-1 w-1 rounded-full bg-gray-300" />
                     <span>{preset.fonts.body}</span>
-                    <span className="ml-auto h-3 w-3 rounded-full ring-1 ring-black/10" style={{ backgroundColor: preset.theme.primaryColor }} />
+                    <span className="ml-auto h-3 w-3 rounded-full ring-1 ring-kedi-navy/10" style={{ backgroundColor: preset.theme.primaryColor }} />
                   </div>
                 </div>
               </div>

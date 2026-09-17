@@ -98,7 +98,7 @@ export const ReportsSidebar: React.FC<ReportsSidebarProps> = ({
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition cursor-pointer relative group ${
                   isActive
                     ? "bg-brand-50 text-[#3a5680] shadow-[inset_2px_0_0_#FFC629] dark:bg-kedi-yellow/15 dark:text-[#ffe08a] dark:shadow-[inset_2px_0_0_#FFC629] font-semibold"
-                    : "text-slate-650 hover:bg-gray-200/50 dark:text-slate-400 dark:hover:bg-white/5"
+                    : "text-slate-700 hover:bg-gray-200/50 dark:text-slate-400 dark:hover:bg-white/5"
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -106,7 +106,7 @@ export const ReportsSidebar: React.FC<ReportsSidebarProps> = ({
                     className={`${
                       isActive
                         ? "text-[#3a5680] dark:text-[#ffe08a]"
-                        : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-350"
+                        : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-400"
                     }`}
                   >
                     {item.icon}

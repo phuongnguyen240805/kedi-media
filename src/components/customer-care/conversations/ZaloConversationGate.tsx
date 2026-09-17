@@ -149,7 +149,7 @@ export function ZaloConversationGate() {
 
   return (
     <div className="flex h-full min-h-0 w-full items-center justify-center overflow-auto bg-[radial-gradient(circle_at_top,#eaf3ff_0,#f8fafc_48%,#eef2f7_100%)] px-4 py-8 dark:bg-[radial-gradient(circle_at_top,#172036_0,#10121a_55%,#090b11_100%)]">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl shadow-slate-300/30 dark:border-white/10 dark:bg-[#151821] dark:shadow-black/30 md:grid-cols-[1.05fr_.95fr]">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl shadow-slate-300/30 dark:border-white/10 dark:bg-[#151821] dark:shadow-kedi-navy/30 md:grid-cols-[1.05fr_.95fr]">
         <section className="flex flex-col justify-between gap-8 p-7 sm:p-10">
           <div>
             <button
@@ -210,7 +210,7 @@ export function ZaloConversationGate() {
               {statusText}
             </div>
 
-            <div className="relative mx-auto flex aspect-square w-full max-w-[310px] items-center justify-center overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white dark:shadow-black/30">
+            <div className="relative mx-auto flex aspect-square w-full max-w-[310px] items-center justify-center overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white dark:shadow-kedi-navy/30">
               {status?.qr_available && qr.url ? (
                 <img src={qr.url} alt="Mã QR đăng nhập Zalo" className="h-full w-full object-contain" />
               ) : isBusy ? (

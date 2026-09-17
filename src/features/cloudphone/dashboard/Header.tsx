@@ -7,7 +7,7 @@ interface HeaderProps {
 
 export default function Header({ title, subtitle }: HeaderProps) {
   return (
-    <div className="mb-6 flex flex-col gap-4 border-b border-black/10 pb-5 dark:border-white/5 lg:flex-row lg:items-end lg:justify-between">
+    <div className="mb-6 flex flex-col gap-4 border-b border-kedi-navy/10 pb-5 dark:border-white/5 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <div className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-500">CloudPhone · Live Control</div>
         <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white md:text-4xl">{title}</h1>

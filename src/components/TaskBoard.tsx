@@ -250,7 +250,7 @@ export function TaskBoard({
                     {column.icon} {taskStatusLabel(column.status, t)}
                   </span>
                 </div>
-                <span className="rounded-full bg-black/30 px-2 py-0.5 text-xs font-bold text-white/80">
+                <span className="rounded-full bg-kedi-navy/30 px-2 py-0.5 text-xs font-bold text-white/80">
                   {columnTasks.length}
                 </span>
               </div>

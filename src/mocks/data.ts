@@ -99,7 +99,7 @@ export const mockApplicationCatalog: MockLpApplicationRecord[] = [
   { _id: "app-1", code: "WebsiteBuilder", name: "Website Builder", price: 0, status_active: true, status_pin: true, installs_count: 10847, views_count: 42000 },
   { _id: "app-2", code: "Ecommerce", name: "Ecom Store", price: 0, status_active: true, status_pin: true, installs_count: 6873, views_count: 31000 },
   { _id: "app-5", code: "Automation", name: "Dynamic", price: 0, status_active: true, status_pin: true, installs_count: 2295, views_count: 12000 },
-  { _id: "app-4", code: "LadiWork", name: "LadiWork", price: 0, status_active: false, status_pin: false, installs_count: 1480, views_count: 7200 },
+  { _id: "app-4", code: "LadiWork", name: "Kedi Work", price: 0, status_active: false, status_pin: false, installs_count: 1480, views_count: 7200 },
   { _id: "app-6", code: "ELearning", name: "E-Learning", price: 0, status_active: true, status_pin: true, installs_count: 4218, views_count: 18000 },
   { _id: "app-10", code: "FacebookAds", name: "Facebook Ads", price: 0, status_active: true, status_pin: true, installs_count: 1520, views_count: 9000 },
   { _id: "app-14", code: "CloudPhone", name: "CloudPhone", price: 0, status_active: true, status_pin: true, installs_count: 890, views_count: 4500 },

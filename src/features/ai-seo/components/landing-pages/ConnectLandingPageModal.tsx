@@ -134,20 +134,20 @@ export function ConnectLandingPageModal({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-650 hover:bg-slate-50 dark:hover:bg-slate-800 p-2 rounded-full transition cursor-pointer"
+            className="text-slate-400 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 p-2 rounded-full transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Selector */}
-        <div className="flex p-1 bg-gray-100 dark:bg-gray-850 mx-6 mt-6 rounded-xl">
+        <div className="flex p-1 bg-gray-100 dark:bg-gray-900 mx-6 mt-6 rounded-xl">
           <button
             onClick={() => { setSourceType("internal"); setSubmitError(null); }}
             className={`flex-1 flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition duration-150 cursor-pointer select-none ${
               sourceType === "internal"
                 ? "bg-white dark:bg-gray-900 text-slate-900 dark:text-white shadow-xs"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-450 dark:hover:text-slate-200"
+                : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-200"
             }`}
           >
             <Library className="w-4 h-4" />
@@ -158,7 +158,7 @@ export function ConnectLandingPageModal({
             className={`flex-1 flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition duration-150 cursor-pointer select-none ${
               sourceType === "external"
                 ? "bg-white dark:bg-gray-900 text-slate-900 dark:text-white shadow-xs"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-450 dark:hover:text-slate-200"
+                : "text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-200"
             }`}
           >
             <Globe className="w-4 h-4" />
@@ -183,7 +183,7 @@ export function ConnectLandingPageModal({
                   Dự án Website Builder
                 </label>
                 {loadingProjects ? (
-                  <div className="flex items-center justify-center py-3 bg-gray-50 dark:bg-gray-950 border border-gray-150 dark:border-gray-800 rounded-lg">
+                  <div className="flex items-center justify-center py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg">
                     <Loader2 className="w-5 h-5 animate-spin text-kedi-navy" />
                   </div>
                 ) : projectsError ? (
@@ -191,7 +191,7 @@ export function ConnectLandingPageModal({
                     {(projectsQueryError as Error)?.message || "Không thể tải danh sách dự án Website Builder."}
                   </div>
                 ) : !websiteProjects?.length ? (
-                  <div className="bg-slate-50 dark:bg-gray-950 border border-gray-150 dark:border-gray-800 text-slate-500 dark:text-slate-400 text-xs px-4 py-3 rounded-xl">
+                  <div className="bg-slate-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-slate-500 dark:text-slate-400 text-xs px-4 py-3 rounded-xl">
                     Chưa có trang nào trong Landing Page Builder. Hãy tạo landing page tại mục Landing Pages trước.
                   </div>
                 ) : (
@@ -201,7 +201,7 @@ export function ConnectLandingPageModal({
                       setSelectedWebsiteProjectId(e.target.value);
                       setSelectedPageId("");
                     }}
-                    className="w-full bg-white dark:bg-gray-950 border border-gray-250 dark:border-gray-800 rounded-lg px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-lime-950/20 transition cursor-pointer"
+                    className="w-full bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-brand-950/20 transition cursor-pointer"
                   >
                     <option value="">-- Chọn dự án website --</option>
                     {websiteProjects.map((proj) => (
@@ -220,7 +220,7 @@ export function ConnectLandingPageModal({
                     Trang Landing Page con
                   </label>
                   {loadingPages ? (
-                    <div className="flex items-center justify-center py-3 bg-gray-50 dark:bg-gray-950 border border-gray-150 dark:border-gray-800 rounded-lg">
+                    <div className="flex items-center justify-center py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg">
                       <Loader2 className="w-5 h-5 animate-spin text-kedi-navy" />
                     </div>
                   ) : pagesError ? (
@@ -228,14 +228,14 @@ export function ConnectLandingPageModal({
                       {(pagesQueryError as Error)?.message || "Không thể tải danh sách landing page."}
                     </div>
                   ) : !websitePages?.length ? (
-                    <div className="bg-slate-50 dark:bg-gray-950 border border-gray-150 dark:border-gray-800 text-slate-500 dark:text-slate-400 text-xs px-4 py-3 rounded-xl">
+                    <div className="bg-slate-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-slate-500 dark:text-slate-400 text-xs px-4 py-3 rounded-xl">
                       Dự án này chưa có landing page nào. Tạo trang mới tại mục Landing Pages.
                     </div>
                   ) : (
                     <select
                       value={selectedPageId}
                       onChange={(e) => setSelectedPageId(e.target.value)}
-                      className="w-full bg-white dark:bg-gray-950 border border-gray-250 dark:border-gray-800 rounded-lg px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-lime-950/20 transition cursor-pointer"
+                      className="w-full bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-hidden focus:border-kedi-yellow focus:ring-2 focus:ring-kedi-yellow/20 dark:focus:ring-brand-950/20 transition cursor-pointer"
                     >
                       <option value="">-- Chọn trang con --</option>
                       {websitePages.map((page) => (
@@ -265,7 +265,7 @@ export function ConnectLandingPageModal({
                 <button
                   onClick={handleLinkInternal}
                   disabled={linkMutation.isPending || !selectedPageId}
-                  className="w-full bg-kedi-yellow text-white font-semibold text-xs py-3 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer"
+                  className="w-full bg-kedi-yellow text-kedi-navy font-semibold text-xs py-3 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer"
                 >
                   {linkMutation.isPending ? (
                     <>
@@ -293,7 +293,7 @@ export function ConnectLandingPageModal({
                     placeholder="https://example.com/landing-page"
                     {...register("pageUrl")}
                     className={`w-full bg-white dark:bg-gray-950 border ${
-                      errors.pageUrl ? "border-rose-450 focus:ring-rose-100" : "border-gray-250 dark:border-gray-800 focus:border-kedi-yellow focus:ring-kedi-yellow/20 dark:focus:ring-lime-950/20"
+                      errors.pageUrl ? "border-rose-450 focus:ring-rose-100" : "border-gray-300 dark:border-gray-800 focus:border-kedi-yellow focus:ring-kedi-yellow/20 dark:focus:ring-brand-950/20"
                     } rounded-lg px-4 py-2.5 text-xs font-medium text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:border-transparent transition`}
                   />
                 </div>
@@ -308,7 +308,7 @@ export function ConnectLandingPageModal({
                 <button
                   type="submit"
                   disabled={linkMutation.isPending}
-                  className="w-full bg-kedi-yellow text-white font-semibold text-xs py-3 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 select-none cursor-pointer"
+                  className="w-full bg-kedi-yellow text-kedi-navy font-semibold text-xs py-3 rounded-lg hover:bg-kedi-yellow transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 select-none cursor-pointer"
                 >
                   {linkMutation.isPending ? (
                     <>

@@ -122,7 +122,7 @@ export function SeoProjectCompactCard({
           )}
           <Link
             href={`/ai-seo/projects/${project.id}`}
-            className="inline-flex items-center gap-1 rounded-lg bg-kedi-yellow px-3 py-2 text-xs font-semibold text-white transition hover:bg-kedi-yellow"
+            className="inline-flex items-center gap-1 rounded-lg bg-kedi-yellow px-3 py-2 text-xs font-semibold text-kedi-navy transition hover:bg-kedi-yellow"
           >
             Chi tiết
             <ArrowRight className="h-3.5 w-3.5" />

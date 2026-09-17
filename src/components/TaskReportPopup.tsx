@@ -165,7 +165,7 @@ export default function TaskReportPopup({ report, agents, departments, uiLanguag
                     : t({ ko: "확장", en: "Expand", ja: "展開", zh: "展开" })}
                 </button>
               </div>
-              <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded bg-black/30 p-2 text-[11px] leading-relaxed text-slate-300">
+              <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded bg-kedi-navy/30 p-2 text-[11px] leading-relaxed text-slate-300">
                 {isExpanded ? doc.content : doc.text_preview}
               </pre>
             </div>
@@ -351,7 +351,7 @@ export default function TaskReportPopup({ report, agents, departments, uiLanguag
   };
 
   return (
-    <div className="fixed inset-0 z-[200000] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[200000] flex items-center justify-center bg-kedi-navy/50 backdrop-blur-sm" onClick={onClose}>
       <div
         className="relative mx-4 w-full max-w-4xl rounded-2xl border border-emerald-500/30 bg-slate-900 shadow-2xl shadow-emerald-500/10"
         onClick={(e) => e.stopPropagation()}

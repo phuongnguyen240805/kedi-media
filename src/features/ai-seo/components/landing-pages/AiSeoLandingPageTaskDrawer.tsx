@@ -89,7 +89,7 @@ export function AiSeoLandingPageTaskDrawer({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-650 hover:bg-slate-50 dark:hover:bg-slate-800 p-2 rounded-full transition cursor-pointer"
+            className="text-slate-400 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 p-2 rounded-full transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -100,10 +100,10 @@ export function AiSeoLandingPageTaskDrawer({
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 space-y-3">
               <Loader2 className="w-8 h-8 animate-spin text-kedi-navy" />
-              <span className="text-xs text-slate-500 dark:text-slate-455 font-bold">Đang tải khuyến nghị từ AI...</span>
+              <span className="text-xs text-slate-500 dark:text-slate-500 font-bold">Đang tải khuyến nghị từ AI...</span>
             </div>
           ) : !tasks || tasks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-850 rounded-xl p-6">
+            <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 rounded-xl p-6">
               <CheckCircle2 className="w-12 h-12 text-emerald-500 mb-3 animate-bounce" />
               <h4 className="text-xs font-bold text-slate-900 dark:text-white">Tuyệt vời! Không tìm thấy lỗi SEO nào</h4>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 max-w-xs leading-relaxed">
@@ -118,11 +118,11 @@ export function AiSeoLandingPageTaskDrawer({
               return (
                 <div
                   key={task.id}
-                  className="bg-white dark:bg-gray-950 border border-gray-150 dark:border-gray-805 rounded-xl p-4.5 hover:border-kedi-yellow dark:hover:border-lime-800 transition duration-150 relative overflow-hidden group shadow-xs"
+                  className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl p-4.5 hover:border-kedi-yellow dark:hover:border-brand-800 transition duration-150 relative overflow-hidden group shadow-xs"
                 >
                   {/* Priority & Category */}
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[9px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">
+                    <span className="text-[9px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-wider">
                       {getCategoryName(task.category)}
                     </span>
                     {getPriorityBadge(task.priority)}
@@ -174,7 +174,7 @@ export function AiSeoLandingPageTaskDrawer({
                           ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 cursor-default"
                           : isFixing
                           ? "bg-slate-200 text-slate-500 cursor-not-allowed"
-                          : "bg-kedi-yellow hover:bg-kedi-yellow text-white"
+                          : "bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy"
                       }`}
                     >
                       {isFixing ? (
@@ -182,7 +182,7 @@ export function AiSeoLandingPageTaskDrawer({
                       ) : isCompleted ? (
                         <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       ) : (
-                        <Sparkles className="w-3 h-3 text-lime-100" />
+                        <Sparkles className="w-3 h-3 text-brand-100" />
                       )}
                       {isCompleted ? "Đã áp dụng" : isFixing ? "Đang xử lý..." : "Tự động sửa lỗi (AI)"}
                     </button>

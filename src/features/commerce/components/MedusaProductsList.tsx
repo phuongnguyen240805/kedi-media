@@ -104,7 +104,7 @@ export function MedusaProductsList() {
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer shadow-sm"
+            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-medium text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer shadow-sm"
           >
             + Thêm sản phẩm
           </button>
@@ -164,7 +164,7 @@ export function MedusaProductsList() {
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-kedi-navy bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
             >
               Tạo sản phẩm đầu tiên
             </button>

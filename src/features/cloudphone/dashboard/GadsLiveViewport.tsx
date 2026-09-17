@@ -227,7 +227,7 @@ export default function GadsLiveViewport({
 
   return (
     <div
-      className="relative h-full w-full touch-none select-none overflow-hidden bg-black"
+      className="relative h-full w-full touch-none select-none overflow-hidden bg-kedi-navy"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => {
@@ -263,7 +263,7 @@ export default function GadsLiveViewport({
             : "Không nhận được hình ảnh. Kiểm tra provider và stream của thiết bị."}
         </div>
       )}
-      <div className="pointer-events-none absolute left-2 top-2 rounded bg-black/65 px-2 py-1 text-[8px] font-black uppercase text-white">
+      <div className="pointer-events-none absolute left-2 top-2 rounded bg-kedi-navy/65 px-2 py-1 text-[8px] font-black uppercase text-white">
         {status}
       </div>
     </div>

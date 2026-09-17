@@ -66,7 +66,7 @@ export default function ProjectFlowDialog({
   if (!open) return null;
 
   return (
-    <div className="absolute inset-0 z-[70] flex items-center justify-center bg-black/75 p-4">
+    <div className="absolute inset-0 z-[70] flex items-center justify-center bg-kedi-navy/75 p-4">
       <div className="w-full max-w-md rounded-xl border border-slate-700 bg-slate-900 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-700 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">

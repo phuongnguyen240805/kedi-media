@@ -26,11 +26,11 @@ export function CommerceModal({
   return (
     <>
       <div
-        className="fixed inset-0 z-9999 bg-black/40 backdrop-blur-xs"
+        className="fixed inset-0 z-9999 bg-kedi-navy/40 backdrop-blur-xs"
         onClick={onClose}
       />
       <div className="fixed left-1/2 top-1/2 z-99999 w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden">
-        <div className="flex items-start justify-between px-5 py-3.5 border-b border-gray-150 dark:border-gray-800">
+        <div className="flex items-start justify-between px-5 py-3.5 border-b border-gray-200 dark:border-gray-800">
           <div>
             <h3 className="text-sm font-bold text-slate-800 dark:text-white">
               {title}
@@ -64,7 +64,7 @@ export function CommerceModal({
 
         <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">{children}</div>
 
-        <div className="flex items-center justify-end gap-2 px-5 py-3.5 border-t border-gray-150 dark:border-gray-800">
+        <div className="flex items-center justify-end gap-2 px-5 py-3.5 border-t border-gray-200 dark:border-gray-800">
           <button
             type="button"
             onClick={onClose}
@@ -76,7 +76,7 @@ export function CommerceModal({
             type="button"
             onClick={onSubmit}
             disabled={submitDisabled}
-            className="px-4 py-2 text-sm font-medium text-white rounded-lg bg-kedi-yellow hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            className="px-4 py-2 text-sm font-medium text-kedi-navy rounded-lg bg-kedi-yellow hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             {submitLabel}
           </button>
@@ -113,7 +113,7 @@ export function CommerceField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
+        className="w-full px-3 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 font-medium focus:outline-none focus:border-kedi-yellow"
       />
     </div>
   );

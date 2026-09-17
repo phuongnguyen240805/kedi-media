@@ -364,18 +364,18 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-sm animate-fadeIn overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-150 dark:border-gray-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col max-h-[90vh]">
 
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-brand-50 dark:bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow border border-kedi-yellow/40/50 dark:border-lime-800/40">
+            <div className="p-2 rounded-xl bg-brand-50 dark:bg-kedi-yellow/10 text-kedi-navy dark:text-kedi-yellow border border-kedi-yellow/40/50 dark:border-brand-800/40">
               <Gauge className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
                 Phân tích hiệu suất trang
-                <span className="text-ui-micro px-2 py-0.5 font-bold uppercase rounded-md bg-brand-100 text-kedi-navy dark:bg-lime-950 dark:text-kedi-yellow">
+                <span className="text-ui-micro px-2 py-0.5 font-bold uppercase rounded-md bg-brand-100 text-kedi-navy dark:bg-brand-950 dark:text-kedi-yellow">
                   {published ? "Đã xuất bản" : "Bản nháp"}
                 </span>
               </h2>
@@ -418,7 +418,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
               <div className="relative flex items-center justify-center w-24 h-24">
                 <div className="absolute inset-0 rounded-full border-4 border-kedi-yellow/20 animate-ping" />
                 <div className="absolute inset-2 rounded-full border-4 border-kedi-yellow/40 animate-pulse" />
-                <div className="relative p-5 bg-kedi-yellow text-white rounded-full shadow-lg shadow-lime-500/30">
+                <div className="relative p-5 bg-kedi-yellow text-kedi-navy rounded-full shadow-lg shadow-brand-500/30">
                   <Gauge className="w-10 h-10 animate-spin" />
                 </div>
               </div>
@@ -453,7 +453,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   setStatus("idle");
                   void runScan(true, false);
                 }}
-                className="mt-2 inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition cursor-pointer"
+                className="mt-2 inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-kedi-navy bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition cursor-pointer"
               >
                 <RefreshCw className="w-4 h-4" />
                 Thử lại ngay
@@ -484,7 +484,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {/* FCP */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">First Contentful Paint (FCP)</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.firstContentfulPaint?.displayValue || (metrics?.firstContentfulPaint?.numericValue != null ? `${Math.round(metrics.firstContentfulPaint.numericValue)} ms` : "--")}
@@ -492,7 +492,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   </div>
 
                   {/* LCP */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">Largest Contentful Paint (LCP)</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.largestContentfulPaint?.displayValue || (metrics?.largestContentfulPaint?.numericValue != null ? `${Math.round(metrics.largestContentfulPaint.numericValue)} ms` : "--")}
@@ -500,7 +500,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   </div>
 
                   {/* TBT */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">Total Blocking Time (TBT)</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.totalBlockingTime?.displayValue || (metrics?.totalBlockingTime?.numericValue != null ? `${Math.round(metrics.totalBlockingTime.numericValue)} ms` : "--")}
@@ -508,7 +508,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   </div>
 
                   {/* CLS */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">Cumulative Layout Shift (CLS)</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.cumulativeLayoutShift?.displayValue ?? (metrics?.cumulativeLayoutShift?.numericValue != null ? metrics.cumulativeLayoutShift.numericValue : "--")}
@@ -516,7 +516,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   </div>
 
                   {/* Speed Index */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">Speed Index</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.speedIndex?.displayValue || (metrics?.speedIndex?.numericValue != null ? `${Math.round(metrics.speedIndex.numericValue)} ms` : "--")}
@@ -524,7 +524,7 @@ export const LandingPageLabModal: React.FC<LandingPageLabModalProps> = ({
                   </div>
 
                   {/* Server Response Time */}
-                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-150 dark:border-gray-800 shadow-2xs">
+                  <div className="bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-2xs">
                     <div className="text-ui-caption font-semibold text-slate-400 mb-1">Server Response Time (TTFB)</div>
                     <div className="text-base font-bold text-slate-800 dark:text-slate-100">
                       {metrics?.serverResponseTime?.displayValue || (metrics?.serverResponseTime?.numericValue != null ? `${Math.round(metrics.serverResponseTime.numericValue)} ms` : "--")}

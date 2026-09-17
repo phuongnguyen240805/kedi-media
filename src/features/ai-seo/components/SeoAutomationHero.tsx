@@ -17,7 +17,7 @@ export function SeoAutomationHero() {
 
         <Link
           href="/ai-seo/projects/create"
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-kedi-yellow px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-kedi-yellow"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-kedi-yellow px-4 py-2.5 text-xs font-semibold text-kedi-navy shadow-sm transition hover:bg-kedi-yellow"
         >
           <Plus className="w-4 h-4" />
           Tạo project

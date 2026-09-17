@@ -39,7 +39,7 @@ export default function ToolsHubPage() {
                 <Wrench size={17} />
               </span>
               <div>
-                <h1 className="text-xl font-semibold tracking-tight">Bộ công cụ AdsMeta</h1>
+                <h1 className="text-xl font-semibold tracking-tight">Bộ công cụ Kedi Ads</h1>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   32 màn hình tiện ích mock, đồng bộ giao diện chính của Kedi.
                 </p>

@@ -35,8 +35,8 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         return (
           <div className="flex flex-col h-full bg-gray-50 text-slate-800 text-xs">
             {/* Email Header */}
-            <div className="bg-white border-b border-gray-150 p-2.5 space-y-1">
-              <div className="flex justify-between items-center text-ui-micro text-slate-450">
+            <div className="bg-white border-b border-gray-200 p-2.5 space-y-1">
+              <div className="flex justify-between items-center text-ui-micro text-slate-500">
                 <span>Hộp thư đến</span>
                 <span>Vừa xong</span>
               </div>
@@ -44,7 +44,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
               <div className="text-ui-micro text-slate-500">Người gửi: support@ladipage.vn</div>
             </div>
             {/* Email Body */}
-            <div className="flex-1 p-3 overflow-y-auto bg-white m-2.5 rounded-lg border border-gray-150/60 shadow-2xs font-sans whitespace-pre-line text-ui-micro leading-relaxed">
+            <div className="flex-1 p-3 overflow-y-auto bg-white m-2.5 rounded-lg border border-gray-200/60 shadow-2xs font-sans whitespace-pre-line text-ui-micro leading-relaxed">
               {template.previewBody}
             </div>
           </div>
@@ -53,7 +53,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         return (
           <div className="flex flex-col h-full bg-[#eef3f7] text-slate-800 text-ui-caption font-sans">
             {/* Zalo Header */}
-            <div className="bg-[#FFC629] text-white p-2.5 flex items-center gap-1.5 shadow-xs">
+            <div className="bg-[#FFC629] text-kedi-navy p-2.5 flex items-center gap-1.5 shadow-xs">
               <div className="w-5 h-5 rounded-full bg-white text-kedi-navy flex items-center justify-center font-black text-ui-micro">
                 Z
               </div>
@@ -111,7 +111,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex flex-col h-full bg-white text-slate-800 font-sans text-xs">
             {/* FB Messenger Header */}
             <div className="bg-white border-b border-gray-100 p-2.5 flex items-center gap-2">
-              <div className="w-5 h-5 rounded-full bg-kedi-yellow text-white flex items-center justify-center text-ui-micro font-black">
+              <div className="w-5 h-5 rounded-full bg-kedi-yellow text-kedi-navy flex items-center justify-center text-ui-micro font-black">
                 f
               </div>
               <div>
@@ -136,12 +136,12 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
       {/* Modal Card */}
       <div className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-gray-150 dark:border-gray-800 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 bg-brand-50 text-kedi-navy dark:bg-kedi-yellow/10 dark:text-kedi-yellow rounded text-xs font-bold uppercase">
               {template.category}
             </span>
-            <span className="text-sm font-bold text-slate-450 dark:text-slate-400">
+            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
               Chi tiết kịch bản mẫu
             </span>
           </div>
@@ -161,7 +161,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
               <h2 className="text-xl font-black text-slate-800 dark:text-white leading-snug">
                 {template.name}
               </h2>
-              <p className="text-xs text-slate-550 dark:text-slate-450 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-500 leading-relaxed">
                 {template.description}
                 {" Bạn có thể cấu hình chi tiết, thêm nút hành động hoặc cài đặt lịch gửi tùy chỉnh thông qua "}
                 <a href="#doc" className="text-kedi-navy dark:text-kedi-yellow font-bold hover:underline">tài liệu hướng dẫn Kedi</a>
@@ -170,7 +170,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
               </p>
 
               {/* Activation & Conditions */}
-              <div className="space-y-2.5 bg-slate-50 dark:bg-gray-850 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+              <div className="space-y-2.5 bg-slate-50 dark:bg-gray-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
                 <div className="flex items-start gap-2 text-xs">
                   <span className="text-amber-500 mt-0.5">
                     <IconBolt size={14} />
@@ -200,7 +200,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   TƯ VẤN 1-1 MIỄN PHÍ
                 </h4>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-450 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-500 leading-relaxed">
                 Bạn cần tùy chỉnh kịch bản tự động này theo nhu cầu kinh doanh riêng của doanh nghiệp? Các chuyên gia của Kedi luôn sẵn sàng đồng hành hỗ trợ thiết lập <strong>MIỄN PHÍ</strong>.
               </p>
               <button
@@ -214,11 +214,11 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           </div>
 
           {/* Right Column: Phone Mockup (cols: 2) */}
-          <div className="lg:col-span-2 flex items-center justify-center bg-slate-50 dark:bg-slate-950/40 p-4 rounded-2xl border border-gray-150 dark:border-gray-800/80">
+          <div className="lg:col-span-2 flex items-center justify-center bg-slate-50 dark:bg-slate-950/40 p-4 rounded-2xl border border-gray-200 dark:border-gray-800/80">
             {/* Phone Mockup Frame */}
-            <div className="relative mx-auto border-gray-800 dark:border-gray-700 bg-gray-850 dark:bg-gray-800 border-[10px] rounded-[2rem] h-[460px] w-[230px] shadow-lg flex-shrink-0">
+            <div className="relative mx-auto border-gray-800 dark:border-gray-700 bg-gray-900 dark:bg-gray-800 border-[10px] rounded-[2rem] h-[460px] w-[230px] shadow-lg flex-shrink-0">
               {/* iPhone Notch/Capsule */}
-              <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-gray-850 dark:bg-gray-800 rounded-full z-30 flex items-center justify-center">
+              <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-gray-900 dark:bg-gray-800 rounded-full z-30 flex items-center justify-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-900 mr-2" />
                 <span className="w-8 h-1 rounded-full bg-slate-800" />
               </div>
@@ -249,16 +249,16 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-gray-150 dark:border-gray-800 px-6 py-4 bg-slate-50/50 dark:bg-gray-850/20">
+        <div className="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-800 px-6 py-4 bg-slate-50/50 dark:bg-gray-900/20">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-250 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-bold transition cursor-pointer"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-bold transition cursor-pointer"
           >
             Hủy bỏ
           </button>
           <button
             onClick={() => onUseTemplate(template)}
-            className="px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-white rounded-lg text-xs font-bold transition shadow-2xs hover:shadow-xs cursor-pointer"
+            className="px-5 py-2 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy rounded-lg text-xs font-bold transition shadow-2xs hover:shadow-xs cursor-pointer"
           >
             Sử dụng kịch bản này
           </button>

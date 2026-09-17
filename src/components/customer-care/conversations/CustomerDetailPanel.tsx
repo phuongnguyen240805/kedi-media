@@ -36,7 +36,7 @@ const CreateOrderModal = dynamic(
   () => import("@/components/sales/orders/CreateOrderModal").then((module) => module.CreateOrderModal),
   {
     loading: () => (
-      <div className="fixed inset-0 z-999999 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+      <div className="fixed inset-0 z-999999 flex items-center justify-center bg-kedi-navy/60 p-4 backdrop-blur-xs">
         <div className="h-9 w-9 animate-spin rounded-full border-4 border-white/30 border-t-white" />
       </div>
     ),
@@ -351,7 +351,7 @@ export function CustomerDetailPanel({ conversation, open, onClose, width }: {
       <section className="border-b border-slate-100 p-4 dark:border-white/[0.07]">
         <SectionTitle icon={<NotebookPen className="h-4 w-4" />} title="Ghi chú nội bộ" />
         <textarea value={note} onChange={(event) => setNoteState({ conversationId: conversation.id, value: event.target.value })} rows={4} placeholder="Thông tin cần nhớ về khách hàng..." className="mt-3 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 p-3 text-base leading-6 text-slate-700 outline-none focus:border-kedi-yellow sm:text-xs sm:leading-5 dark:border-white/10 dark:bg-white/5 dark:text-slate-200" />
-        <button type="button" disabled={!nativeContact || saving} onClick={() => void saveNote()} className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-900 text-xs font-semibold text-white transition hover:bg-slate-700 disabled:opacity-40 sm:h-8 dark:bg-kedi-yellow dark:text-slate-950 dark:hover:bg-kedi-yellow">
+        <button type="button" disabled={!nativeContact || saving} onClick={() => void saveNote()} className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-900 text-xs font-semibold text-kedi-navy transition hover:bg-slate-700 disabled:opacity-40 sm:h-8 dark:bg-kedi-yellow dark:text-slate-950 dark:hover:bg-kedi-yellow">
           {saving ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : null} Lưu ghi chú
         </button>
       </section>
@@ -408,7 +408,7 @@ function Avatar({ name, src }: { name: string; src?: string }) {
   if (src) return <img src={src} alt={name} className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-slate-100 dark:ring-white/5" />;
   const parts = name.trim().split(/\s+/);
   const label = `${parts[0]?.[0] || "K"}${parts.length > 1 ? parts.at(-1)?.[0] || "" : ""}`.toUpperCase();
-  return <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 text-xl font-bold text-white ring-4 ring-slate-100 dark:ring-white/5">{label}</div>;
+  return <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-emerald-600 text-xl font-bold text-white ring-4 ring-slate-100 dark:ring-white/5">{label}</div>;
 }
 
 function ControlField({ label, icon, children }: { label: string; icon?: React.ReactNode; children: React.ReactNode }) {

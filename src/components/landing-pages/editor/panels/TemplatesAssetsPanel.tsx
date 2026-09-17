@@ -75,7 +75,7 @@ export const TemplatesAssetsPanel: React.FC<TemplatesAssetsPanelProps> = ({
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.url} alt={img.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-200" />
-                <div className="absolute inset-x-0 bottom-0 bg-black/60 px-1.5 py-1 text-[9px] text-white truncate group-hover:bg-black/75">
+                <div className="absolute inset-x-0 bottom-0 bg-kedi-navy/60 px-1.5 py-1 text-[9px] text-white truncate group-hover:bg-kedi-navy/75">
                   {img.name}
                 </div>
               </div>

@@ -208,7 +208,7 @@ function CourseHeader() {
           sizes="(min-width: 1024px) 420px, 100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-kedi-navy/60 to-transparent" />
         <span className="absolute bottom-4 left-4 rounded-lg bg-emerald-600 px-3 py-1 text-xs font-bold uppercase text-white">
           {course.category}
         </span>

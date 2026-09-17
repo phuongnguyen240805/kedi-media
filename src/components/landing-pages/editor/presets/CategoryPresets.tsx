@@ -734,7 +734,7 @@ export const getCategoryPresets = (category: string): PresetItem[] => {
         element: (
           <div className="relative overflow-hidden rounded-lg border border-gray-200">
             <img src={assets.skincare} alt="" className="h-20 w-full object-cover" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+            <div className="absolute inset-0 flex items-center justify-center bg-kedi-navy/20">
               <div className="rounded-full bg-white px-3 py-1 text-[10px] font-black text-gray-950">Play</div>
             </div>
           </div>

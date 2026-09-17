@@ -33,7 +33,7 @@ export default function WorkspaceSettings() {
           </div>
           <button
             type="button"
-            className="h-10 rounded-lg bg-kedi-yellow px-4 text-sm font-bold text-white transition hover:bg-kedi-yellow"
+            className="h-10 rounded-lg bg-kedi-yellow px-4 text-sm font-bold text-kedi-navy transition hover:bg-kedi-yellow"
           >
             Lưu thay đổi
           </button>

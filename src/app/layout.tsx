@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: 'Kedi.Media',
     template: '%s | Kedi.Media',
   },
-  description: 'Nền tảng marketing và landing page của Kedi.Media',
+  description: 'Nền tảng tăng trưởng số tích hợp của Kedi.Media',
   icons: {
     icon: '/brand/kedi-app-icon.png',
     apple: '/brand/kedi-app-icon.png',
@@ -22,7 +22,7 @@ const devRouterHmrRecoveryScript = `
     "Loading chunk",
     "Failed to load chunk",
   ];
-  const reloadKey = "__ladipage_next_dev_recovery__";
+  const reloadKey = "__kedi_next_dev_recovery__";
 
   const recover = (event) => {
     const reason = event.error ?? event.reason ?? event.message;
@@ -62,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
       {process.env.NODE_ENV === "development" && (
         <head>
           <script dangerouslySetInnerHTML={{ __html: devRouterHmrRecoveryScript }} />

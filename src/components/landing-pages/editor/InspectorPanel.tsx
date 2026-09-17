@@ -504,7 +504,7 @@ const ToggleField: React.FC<{
 const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
   <div className="mb-1.5 mt-2 flex items-center gap-2 first:mt-0 select-none">
     <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#94a3b8]">{title}</span>
-    <div className="h-[0.5px] flex-1 bg-gray-150" />
+    <div className="h-[0.5px] flex-1 bg-gray-200" />
   </div>
 );
 
@@ -683,7 +683,7 @@ const FormCaptureInspector: React.FC<{ props: Record<string, unknown>; update: U
       <NumberField label="Bo góc" value={p.borderRadius as number} onChange={(v) => update("borderRadius", v)} onChangeSilent={updateSilent ? (v) => updateSilent("borderRadius", v) : undefined} max={32} unit="px" />
       <SectionHeader title={`Trường nhập (${fields.length})`} />
       {fields.map((f, i) => (
-        <div key={f.id} className="p-2.5 bg-gray-50 border border-gray-250 rounded-lg mb-2 shadow-sm">
+        <div key={f.id} className="p-2.5 bg-gray-50 border border-gray-300 rounded-lg mb-2 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-bold text-gray-500 uppercase">Trường {i + 1}</span>
             {fields.length > 1 && (

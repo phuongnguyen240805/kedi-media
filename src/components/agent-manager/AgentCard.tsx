@@ -39,7 +39,7 @@ export default function AgentCard({
   return (
     <div
       onClick={onEdit}
-      className="group rounded-xl p-4 cursor-pointer transition-all hover:scale-[1.01] hover:shadow-lg hover:shadow-black/10"
+      className="group rounded-xl p-4 cursor-pointer transition-all hover:scale-[1.01] hover:shadow-lg hover:shadow-kedi-navy/10"
       style={{ background: "var(--th-card-bg)", border: "1px solid var(--th-card-border)" }}
     >
       <div className="flex items-start gap-3">

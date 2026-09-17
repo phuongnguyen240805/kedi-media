@@ -160,7 +160,7 @@ function DiffModal({ taskId, onClose }: DiffModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[200000] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-[200000] flex items-center justify-center bg-kedi-navy/70 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="flex max-h-[85vh] w-full max-w-4xl flex-col rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
@@ -243,7 +243,7 @@ function DiffModal({ taskId, onClose }: DiffModalProps) {
                         zh: "最终分支校验",
                       })}
                     </h3>
-                    <span className="rounded-full bg-black/20 px-2 py-0.5 text-xs font-medium">
+                    <span className="rounded-full bg-kedi-navy/20 px-2 py-0.5 text-xs font-medium">
                       {verifyVerdictLabel}
                     </span>
                     {commitLabel && <span className="text-xs opacity-80">{commitLabel}</span>}
@@ -252,7 +252,7 @@ function DiffModal({ taskId, onClose }: DiffModalProps) {
                   {verifyData.files && verifyData.files.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {verifyData.files.slice(0, 6).map((filePath) => (
-                        <span key={filePath} className="rounded bg-black/20 px-2 py-0.5 text-[11px]">
+                        <span key={filePath} className="rounded bg-kedi-navy/20 px-2 py-0.5 text-[11px]">
                           {filePath}
                         </span>
                       ))}

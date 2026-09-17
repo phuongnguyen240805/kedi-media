@@ -17,7 +17,7 @@ export default function AdsMetaFloatingSupport() {
       )}
       {open && (
         <div className="adsmeta-mini-support">
-          <div><b>Hỗ trợ AdsMeta</b><button type="button" onClick={() => setOpen(false)}><X size={14} /></button></div>
+          <div><b>Hỗ trợ Kedi Ads</b><button type="button" onClick={() => setOpen(false)}><X size={14} /></button></div>
           <p>Xin chào Nguyễn Phương 👋<br />Bạn đang cần hỗ trợ thao tác nào?</p>
           <textarea placeholder="Mô tả vấn đề..." />
           <button type="button">Gửi yêu cầu</button>

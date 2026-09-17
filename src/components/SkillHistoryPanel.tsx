@@ -415,7 +415,7 @@ export default function SkillHistoryPanel({
       </div>
       {centerBonk && (
         <div className="pointer-events-none fixed inset-0 z-[120] flex items-center justify-center">
-          <div className="skill-history-center-card unlearn-center-card rounded-2xl border border-rose-400/30 bg-slate-900/90 px-6 py-4 shadow-2xl shadow-black/50 backdrop-blur-sm">
+          <div className="skill-history-center-card unlearn-center-card rounded-2xl border border-rose-400/30 bg-slate-900/90 px-6 py-4 shadow-2xl shadow-kedi-navy/50 backdrop-blur-sm">
             <div className="relative mx-auto h-20 w-20 overflow-visible">
               <div className="unlearn-avatar-hit">
                 <AgentAvatar agent={centerBonk.agent ?? undefined} agents={agents} size={80} rounded="xl" />

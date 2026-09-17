@@ -118,7 +118,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         >
           <SelectPrimitive.Popup
             ref={ref}
-            className={`z-50 max-h-72 min-w-[var(--anchor-width)] overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 text-slate-800 shadow-xl shadow-slate-900/10 dark:border-slate-800 dark:bg-[#13141f] dark:text-slate-100 dark:shadow-2xl dark:shadow-black/60 outline-none transition-all duration-100 ${className}`}
+            className={`z-50 max-h-72 min-w-[var(--anchor-width)] overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 text-slate-800 shadow-xl shadow-slate-900/10 dark:border-slate-800 dark:bg-[#13141f] dark:text-slate-100 dark:shadow-2xl dark:shadow-kedi-navy/60 outline-none transition-all duration-100 ${className}`}
             {...props}
           >
             {children}

@@ -195,7 +195,7 @@ export function LandingProductBindModal({
   return (
     <>
       <div
-        className="fixed inset-0 z-9999 bg-black/40 backdrop-blur-xs"
+        className="fixed inset-0 z-9999 bg-kedi-navy/40 backdrop-blur-xs"
         onClick={onClose}
       />
       <div className="fixed inset-0 z-99999 flex items-center justify-center p-4 pointer-events-none">
@@ -288,7 +288,7 @@ export function LandingProductBindModal({
                             onClick={() => setCtaMode(id)}
                             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold cursor-pointer border transition ${
                               ctaMode === id
-                                ? "bg-kedi-yellow text-white border-kedi-yellow"
+                                ? "bg-kedi-yellow text-kedi-navy border-kedi-yellow"
                                 : "border-gray-200 dark:border-gray-700 text-slate-600 dark:text-slate-300"
                             }`}
                           >
@@ -385,7 +385,7 @@ export function LandingProductBindModal({
               <button
                 type="button"
                 onClick={handleSave}
-                className="px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
+                className="px-4 py-2.5 text-sm font-medium text-kedi-navy rounded-lg bg-kedi-yellow hover:bg-brand-600 cursor-pointer"
               >
                 Lưu gắn SP
               </button>

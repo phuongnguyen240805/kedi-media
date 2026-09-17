@@ -225,12 +225,12 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
       case "email":
         return (
           <div className="flex flex-col h-full bg-gray-50 text-slate-800 text-ui-nano font-sans">
-            <div className="bg-white border-b border-gray-150 p-2 space-y-0.5">
-              <div className="flex justify-between text-[8px] text-slate-450">
+            <div className="bg-white border-b border-gray-200 p-2 space-y-0.5">
+              <div className="flex justify-between text-[8px] text-slate-500">
                 <span>Hộp thư đến</span>
                 <span>Bây giờ</span>
               </div>
-              <div className="font-bold text-slate-850">Xác nhận thông tin đăng ký tư vấn</div>
+              <div className="font-bold text-slate-900">Xác nhận thông tin đăng ký tư vấn</div>
               <div className="text-[7px] text-slate-400">Người gửi: support@ladipage.vn</div>
             </div>
             <div className="flex-1 p-2.5 overflow-y-auto bg-white m-2 rounded border border-gray-100/80 shadow-3xs whitespace-pre-line leading-relaxed text-[8px]">
@@ -241,7 +241,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
       case "zalo":
         return (
           <div className="flex flex-col h-full bg-[#eef3f7] text-slate-800 text-ui-micro font-sans">
-            <div className="bg-[#FFC629] text-white p-2 flex items-center gap-1.5 shadow-3xs">
+            <div className="bg-[#FFC629] text-kedi-navy p-2 flex items-center gap-1.5 shadow-3xs">
               <div className="w-4.5 h-4.5 rounded-full bg-white text-kedi-navy flex items-center justify-center font-black text-ui-nano">
                 Z
               </div>
@@ -251,11 +251,11 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
               </div>
             </div>
             <div className="flex-1 p-2.5 overflow-y-auto space-y-2">
-              <div className="bg-white p-2.5 rounded-lg border border-gray-250/60 shadow-3xs space-y-1.5">
+              <div className="bg-white p-2.5 rounded-lg border border-gray-300/60 shadow-3xs space-y-1.5">
                 <div className="font-bold text-slate-900 border-b border-gray-100 pb-1 text-ui-micro">
                   Xác nhận khách hàng VIP
                 </div>
-                <div className="text-slate-650 text-[8.5px] leading-relaxed">
+                <div className="text-slate-700 text-[8.5px] leading-relaxed">
                   {"Xin chào Quý khách,\n\nTài khoản của bạn đã được tích hợp thành công trên hệ thống tự động hóa chăm sóc khách hàng Kedi.\n\nChúc quý khách có trải nghiệm tốt nhất!"}
                 </div>
                 <button className="w-full bg-brand-50 text-kedi-navy font-bold py-1.5 rounded-md text-[8px] hover:bg-brand-50 transition">
@@ -283,7 +283,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             <div className="flex-1 p-2 space-y-2 overflow-y-auto bg-[#343541] text-left">
               <div className="bg-white/5 p-2 rounded-lg border border-white/5">
                 <span className="text-[6.5px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Prompt gửi đi</span>
-                <span className="text-slate-355 leading-normal block text-[8px]">
+                <span className="text-slate-400 leading-normal block text-[8px]">
                   {actionParams.userPrompt || "Tạo lời chào mừng gửi tới khách hàng..."}
                 </span>
               </div>
@@ -311,7 +311,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             </div>
             {/* Chat Message Box */}
             <div className="flex-1 p-2 flex flex-col justify-end text-left">
-              <div className="max-w-[90%] bg-white dark:bg-gray-850 p-2.5 rounded-xl rounded-bl-none text-[8px] leading-relaxed border border-gray-150 dark:border-gray-800/80 shadow-3xs">
+              <div className="max-w-[90%] bg-white dark:bg-gray-900 p-2.5 rounded-xl rounded-bl-none text-[8px] leading-relaxed border border-gray-200 dark:border-gray-800/80 shadow-3xs">
                 <span className="text-[7px] text-[#549cce] font-bold block mb-0.5">🔔 BÁO CÁO AUTOMATION</span>
                 Hành động kích hoạt: <strong>{selectedTrigger?.name || "Đăng ký mới"}</strong>.
                 <br />
@@ -343,7 +343,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
         );
       case "tag":
         return (
-          <div className="flex flex-col items-center justify-center h-full p-4 text-center text-slate-700 dark:text-slate-350">
+          <div className="flex flex-col items-center justify-center h-full p-4 text-center text-slate-700 dark:text-slate-400">
             <svg className="w-10 h-10 text-amber-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a1.125 1.125 0 001.59 0l4.317-4.317a1.125 1.125 0 000-1.59L9.568 3.659A2.25 2.25 0 009.568 3z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
@@ -355,7 +355,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
       case "sheet":
       default:
         return (
-          <div className="flex flex-col items-center justify-center h-full p-4 text-center text-slate-700 dark:text-slate-350 font-sans">
+          <div className="flex flex-col items-center justify-center h-full p-4 text-center text-slate-700 dark:text-slate-400 font-sans">
             <svg className="w-10 h-10 text-emerald-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0-.621-.504-1.125-1.125-1.125m1.125 2.625h-1.5a1.125 1.125 0 01-1.125-1.125m-13.5-3.75h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-.375-3.75h1.5c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125z" />
             </svg>
@@ -374,7 +374,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-850 rounded-lg transition cursor-pointer"
+            className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition cursor-pointer"
             title="Quay lại danh sách"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -396,7 +396,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") setIsEditingName(false);
                 }}
-                className="text-sm font-bold text-slate-800 dark:text-white bg-gray-50 dark:bg-gray-850 border border-kedi-yellow rounded px-2 py-0.5 outline-hidden"
+                className="text-sm font-bold text-slate-800 dark:text-white bg-gray-50 dark:bg-gray-900 border border-kedi-yellow rounded px-2 py-0.5 outline-hidden"
                 autoFocus
               />
             ) : (
@@ -443,7 +443,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
 
         {/* Right: Save & Publish */}
         <div className="flex items-center gap-3">
-          <span className={`text-xs flex items-center gap-1.5 ${isSaved ? "text-green-600 dark:text-green-450" : "text-slate-450"}`}>
+          <span className={`text-xs flex items-center gap-1.5 ${isSaved ? "text-green-600 dark:text-green-450" : "text-slate-500"}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${isSaved ? "bg-green-500 animate-pulse" : "bg-slate-400"}`} />
             <span>{isSaved ? "Đã lưu" : "Có thay đổi chưa lưu"}</span>
           </span>
@@ -453,7 +453,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer ${
               isSaved
                 ? "bg-gray-100 dark:bg-gray-800 text-slate-400 border border-gray-200 dark:border-gray-700 cursor-not-allowed"
-                : "bg-kedi-yellow hover:bg-kedi-yellow text-white"
+                : "bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy"
             }`}
           >
             Lưu nháp
@@ -469,7 +469,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             }}
             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer ${
               !selectedTrigger || !selectedAction
-                ? "bg-gray-100 dark:bg-gray-850 text-slate-400 border border-gray-200 dark:border-gray-800 cursor-not-allowed"
+                ? "bg-gray-100 dark:bg-gray-900 text-slate-400 border border-gray-200 dark:border-gray-800 cursor-not-allowed"
                 : "bg-emerald-600 hover:bg-emerald-700 text-white"
             }`}
           >
@@ -502,7 +502,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                             {selectedTrigger.name}
                           </h3>
-                          <p className="text-ui-micro text-slate-450 mt-0.5 leading-normal">
+                          <p className="text-ui-micro text-slate-500 mt-0.5 leading-normal">
                             {selectedTrigger.desc}
                           </p>
                         </div>
@@ -524,14 +524,14 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                                 type="text"
                                 readOnly
                                 value={`http://localhost:3000/api/webhook/n8n-${flowId || "new"}`}
-                                className="w-full text-ui-nano bg-slate-50 dark:bg-slate-850 border border-gray-200 dark:border-gray-700 text-slate-500 p-2 rounded-lg outline-hidden font-mono select-all"
+                                className="w-full text-ui-nano bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 text-slate-500 p-2 rounded-lg outline-hidden font-mono select-all"
                               />
                               <button
                                 onClick={() => {
                                   navigator.clipboard.writeText(`http://localhost:3000/api/webhook/n8n-${flowId || "new"}`);
                                   ladiToast.success("Đã sao chép Webhook URL vào Clipboard!");
                                 }}
-                                className="px-3 py-1 bg-kedi-yellow hover:bg-kedi-yellow text-white text-ui-micro font-bold rounded-lg transition shrink-0 cursor-pointer"
+                                className="px-3 py-1 bg-kedi-yellow hover:bg-kedi-yellow text-kedi-navy text-ui-micro font-bold rounded-lg transition shrink-0 cursor-pointer"
                               >
                                 Copy
                               </button>
@@ -570,7 +570,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                   ) : (
                     <button
                       onClick={() => setPanelMode(panelMode === "trigger" ? "none" : "trigger")}
-                      className="w-full py-4 border-2 border-dashed border-gray-250 hover:border-kedi-yellow dark:border-gray-750 dark:hover:border-kedi-yellow/80 rounded-xl text-slate-450 dark:text-slate-500 hover:text-kedi-navy dark:hover:text-kedi-yellow text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer bg-slate-50/20"
+                      className="w-full py-4 border-2 border-dashed border-gray-300 hover:border-kedi-yellow dark:border-gray-800 dark:hover:border-kedi-yellow/80 rounded-xl text-slate-500 dark:text-slate-500 hover:text-kedi-navy dark:hover:text-kedi-yellow text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer bg-slate-50/20"
                     >
                       <IconPlus size={14} />
                       <span>Thêm sự kiện Trigger</span>
@@ -579,15 +579,15 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                 </div>
 
                 {/* Flow connector arrow */}
-                <div className="w-7 h-7 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-750 rounded-full flex items-center justify-center shadow-3xs z-10">
-                  <svg className="w-4 h-4 text-slate-450" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <div className="w-7 h-7 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-full flex items-center justify-center shadow-3xs z-10">
+                  <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </svg>
                 </div>
 
                 {/* 2. Action Block */}
                 <div className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-xs relative">
-                  <div className="absolute -top-3.5 left-6 bg-kedi-yellow text-white font-black text-ui-micro uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-2xs">
+                  <div className="absolute -top-3.5 left-6 bg-kedi-yellow text-kedi-navy font-black text-ui-micro uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-2xs">
                     ⚙ HÀNH ĐỘNG
                   </div>
                   {selectedAction ? (
@@ -601,7 +601,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                             <h3 className="text-sm font-bold text-slate-800 dark:text-white">
                               {selectedAction.name}
                             </h3>
-                            <p className="text-ui-micro text-slate-450 mt-0.5 leading-normal">
+                            <p className="text-ui-micro text-slate-500 mt-0.5 leading-normal">
                               {selectedAction.desc}
                             </p>
                           </div>
@@ -643,7 +643,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                                   setIsSaved(false);
                                 }}
                                 rows={2}
-                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
+                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
                               />
                             </div>
                             <div className="space-y-1">
@@ -655,7 +655,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                                   setIsSaved(false);
                                 }}
                                 rows={2}
-                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
+                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
                               />
                             </div>
                           </>
@@ -673,7 +673,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                                   setIsSaved(false);
                                 }}
                                 placeholder="5830219502:AAFvU..."
-                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
+                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
                               />
                             </div>
                             <div className="space-y-1">
@@ -686,7 +686,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                                   setIsSaved(false);
                                 }}
                                 placeholder="-100192837465"
-                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
+                                className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
                               />
                             </div>
                           </>
@@ -698,7 +698,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                             <textarea
                               defaultValue="Xin chào Quý khách,\nTài khoản của bạn đã được tích hợp thành công..."
                               rows={2}
-                              className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
+                              className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden resize-none focus:border-kedi-yellow font-medium"
                             />
                           </div>
                         )}
@@ -709,7 +709,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                             <input
                               type="text"
                               defaultValue="Xác nhận thông tin đăng ký kịch bản tự động"
-                              className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-850 dark:border-gray-700 p-2.5 rounded-lg text-slate-750 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
+                              className="w-full text-xs bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 p-2.5 rounded-lg text-slate-800 dark:text-slate-300 outline-hidden focus:border-kedi-yellow"
                             />
                           </div>
                         )}
@@ -718,7 +718,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                   ) : (
                     <button
                       onClick={() => setPanelMode(panelMode === "action" ? "none" : "action")}
-                      className="w-full py-4 border-2 border-dashed border-gray-250 hover:border-kedi-yellow dark:border-gray-750 dark:hover:border-kedi-yellow/80 rounded-xl text-slate-450 dark:text-slate-500 hover:text-kedi-navy dark:hover:text-kedi-yellow text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer bg-slate-50/20"
+                      className="w-full py-4 border-2 border-dashed border-gray-300 hover:border-kedi-yellow dark:border-gray-800 dark:hover:border-kedi-yellow/80 rounded-xl text-slate-500 dark:text-slate-500 hover:text-kedi-navy dark:hover:text-kedi-yellow text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer bg-slate-50/20"
                     >
                       <IconPlus size={14} />
                       <span>Thêm hành động Automation</span>
@@ -731,8 +731,8 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             {/* Cột 2: Select Node Popover Menu (in the center/right side) */}
             {panelMode !== "none" && (
               <div className="w-full lg:w-80 bg-white dark:bg-gray-950 border-t lg:border-t-0 lg:border-l border-r border-gray-200 dark:border-gray-800 flex flex-col flex-shrink-0">
-                <div className="p-4 border-b border-gray-150 dark:border-gray-800 flex items-center justify-between">
-                  <h3 className="text-xs font-black text-slate-855 dark:text-slate-200 uppercase tracking-wider">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                  <h3 className="text-xs font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider">
                     {panelMode === "trigger" ? "Chọn sự kiện khởi động" : "Chọn hành động thực hiện"}
                   </h3>
                   <button
@@ -748,7 +748,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                         <button
                           key={opt.id}
                           onClick={() => handleSelectTrigger(opt)}
-                          className="w-full p-3 bg-slate-50 hover:bg-brand-50/40 dark:bg-gray-900 dark:hover:bg-lime-950/20 text-left border border-gray-200/60 dark:border-gray-800 rounded-xl transition hover:border-kedi-yellow/40 dark:hover:border-kedi-yellow/40 group cursor-pointer"
+                          className="w-full p-3 bg-slate-50 hover:bg-brand-50/40 dark:bg-gray-900 dark:hover:bg-brand-950/20 text-left border border-gray-200/60 dark:border-gray-800 rounded-xl transition hover:border-kedi-yellow/40 dark:hover:border-kedi-yellow/40 group cursor-pointer"
                         >
                           <h4 className="text-xs font-bold text-slate-800 dark:text-white group-hover:text-kedi-navy dark:group-hover:text-kedi-yellow transition">
                             {opt.name}
@@ -762,7 +762,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
                         <button
                           key={opt.id}
                           onClick={() => handleSelectAction(opt)}
-                          className="w-full p-3 bg-slate-50 hover:bg-brand-50/40 dark:bg-gray-900 dark:hover:bg-lime-950/20 text-left border border-gray-200/60 dark:border-gray-800 rounded-xl transition hover:border-kedi-yellow/40 dark:hover:border-kedi-yellow/40 flex gap-3 group cursor-pointer"
+                          className="w-full p-3 bg-slate-50 hover:bg-brand-50/40 dark:bg-gray-900 dark:hover:bg-brand-950/20 text-left border border-gray-200/60 dark:border-gray-800 rounded-xl transition hover:border-kedi-yellow/40 dark:hover:border-kedi-yellow/40 flex gap-3 group cursor-pointer"
                         >
                           <div className={`w-8 h-8 rounded-lg ${opt.color} text-white font-black flex items-center justify-center text-sm shadow-sm flex-shrink-0`}>
                             {opt.icon}
@@ -784,7 +784,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
             {/* Cột 3: iPhone Mockup Preview */}
             <div className="w-full lg:w-72 bg-slate-50 dark:bg-slate-950/40 border-l border-gray-200 dark:border-gray-800 p-6 flex items-center justify-center flex-shrink-0">
               {/* iPhone frame */}
-              <div className="relative border-gray-850 dark:border-gray-850 bg-gray-850 border-[8px] rounded-[1.8rem] h-[380px] w-[190px] shadow-md flex-shrink-0">
+              <div className="relative border-gray-900 dark:border-gray-900 bg-gray-900 border-[8px] rounded-[1.8rem] h-[380px] w-[190px] shadow-md flex-shrink-0">
                 {/* Screen inside */}
                 <div className="rounded-[1.3rem] overflow-hidden w-full h-full bg-white dark:bg-slate-900 flex flex-col justify-between">
                   <div className="h-5 bg-slate-50 dark:bg-slate-900 flex items-center justify-between px-3 text-[6px] text-slate-400 font-sans border-b border-gray-100 dark:border-gray-800/30">
@@ -806,7 +806,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
           <div className="flex-1 overflow-auto p-8 flex items-center justify-center bg-slate-50/50 dark:bg-[#0c0d12]">
             <div className="flex flex-col items-center space-y-6">
               {/* Start block */}
-              <div className="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350 text-xs font-bold rounded-full border border-gray-300 dark:border-gray-700">
+              <div className="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 text-xs font-bold rounded-full border border-gray-300 dark:border-gray-700">
                 START / SỰ KIỆN KHỞI CHẠY
               </div>
 
@@ -864,7 +864,7 @@ export const FlowBuilder: React.FC<FlowBuilderProps> = ({
               </svg>
 
               {/* End block */}
-              <div className="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350 text-xs font-bold rounded-full border border-gray-300 dark:border-gray-700">
+              <div className="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 text-xs font-bold rounded-full border border-gray-300 dark:border-gray-700">
                 KẾT THÚC LUỒNG (END)
               </div>
             </div>

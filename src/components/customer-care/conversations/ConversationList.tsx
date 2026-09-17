@@ -128,7 +128,7 @@ export function ConversationList({ conversations, loading, selectedId, onSelect 
                       onClick={() => toggleSelectedChannel(item.value)}
                       className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.06]"
                     >
-                      <span className={`flex h-5 w-5 items-center justify-center rounded-md border ${checked ? "border-kedi-yellow bg-kedi-yellow text-white" : "border-slate-200 dark:border-white/15"}`}>
+                      <span className={`flex h-5 w-5 items-center justify-center rounded-md border ${checked ? "border-kedi-yellow bg-kedi-yellow text-kedi-navy" : "border-slate-200 dark:border-white/15"}`}>
                         {checked ? <Check className="h-3.5 w-3.5" /> : null}
                       </span>
                       <span className="flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-black text-white" style={{ backgroundColor: item.color }}>{item.short}</span>
@@ -257,7 +257,7 @@ function ConversationListItem({
             />
           ) : null}
           {conversation.unreadCount > 0 ? (
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-kedi-yellow px-1 text-[9px] font-bold text-white dark:border-[#11151c]">
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-kedi-yellow px-1 text-[9px] font-bold text-kedi-navy dark:border-[#11151c]">
               {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
             </span>
           ) : null}
@@ -266,7 +266,7 @@ function ConversationListItem({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             {conversation.pinned ? (
-              <Pin className="h-3 w-3 shrink-0 fill-lime-500 text-kedi-navy" />
+              <Pin className="h-3 w-3 shrink-0 fill-brand-500 text-kedi-navy" />
             ) : null}
             <span
               className={`truncate text-sm ${
@@ -350,5 +350,5 @@ function Avatar({ name, src }: { name: string; src?: string }) {
   if (src) return <img src={src} alt={name} className="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200 dark:ring-white/15" />;
   const pieces = name.trim().split(/\s+/);
   const label = `${pieces[0]?.[0] || "K"}${pieces.length > 1 ? pieces.at(-1)?.[0] || "" : ""}`.toUpperCase();
-  return <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 text-xs font-bold text-white ring-1 ring-white/20">{label}</div>;
+  return <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-emerald-600 text-xs font-bold text-white ring-1 ring-white/20">{label}</div>;
 }

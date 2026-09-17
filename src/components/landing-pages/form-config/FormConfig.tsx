@@ -73,7 +73,7 @@ export const FormConfig: React.FC<FormConfigProps> = ({
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-kedi-navy bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
           >
             <span>+ Tạo cấu hình Form</span>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@ export const FormConfig: React.FC<FormConfigProps> = ({
 
           {/* Floating Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-1.5 w-48 bg-white dark:bg-gray-800 border border-gray-150 dark:border-gray-800 rounded-lg shadow-lg py-1.5 z-50 animate-fade-in">
+            <div className="absolute right-0 mt-1.5 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg py-1.5 z-50 animate-fade-in">
               <button
                 onClick={() => {
                   setIsDropdownOpen(false);
@@ -143,7 +143,7 @@ export const FormConfig: React.FC<FormConfigProps> = ({
             placeholder="Tìm kiếm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
+            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
           />
         </div>
 
@@ -176,19 +176,19 @@ export const FormConfig: React.FC<FormConfigProps> = ({
                       className="w-4.5 h-4.5 rounded border-gray-300 text-kedi-navy focus:ring-kedi-yellow cursor-pointer"
                     />
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Tên cấu hình Form
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Số tài khoản liên kết
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Loại cấu hình
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Trạng thái
                   </th>
-                  <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                  <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                     Ngày cập nhật
                   </th>
                   <th className="py-3 px-4 w-16 text-center"></th>
@@ -217,7 +217,7 @@ export const FormConfig: React.FC<FormConfigProps> = ({
                           {item.name}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-sm font-semibold text-slate-650 dark:text-slate-400">
+                      <td className="py-3.5 px-4 text-sm font-semibold text-slate-700 dark:text-slate-400">
                         {item.linkedAccounts}
                       </td>
                       <td className="py-3.5 px-4">
@@ -242,11 +242,11 @@ export const FormConfig: React.FC<FormConfigProps> = ({
                           </span>
                         )}
                       </td>
-                      <td className="py-3.5 px-4 text-xs font-medium text-slate-400 dark:text-slate-550">
+                      <td className="py-3.5 px-4 text-xs font-medium text-slate-400 dark:text-slate-600">
                         {item.updatedAt}
                       </td>
                       <td className="py-3.5 px-4 text-center">
-                        <button className="text-slate-400 hover:text-slate-650 dark:hover:text-gray-300 p-1 cursor-pointer">
+                        <button className="text-slate-400 hover:text-slate-700 dark:hover:text-gray-300 p-1 cursor-pointer">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                           </svg>
@@ -261,7 +261,7 @@ export const FormConfig: React.FC<FormConfigProps> = ({
         </div>
       ) : (
         /* Empty State */
-        <div className="py-24 text-center border border-dashed border-gray-250 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 flex flex-col items-center justify-center space-y-4">
+        <div className="py-24 text-center border border-dashed border-gray-300 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 flex flex-col items-center justify-center space-y-4">
           <div className="w-16 h-16 rounded-full border-2 border-dashed border-kedi-yellow/40 dark:border-kedi-yellow/30 flex items-center justify-center text-kedi-yellow dark:text-kedi-yellow animate-pulse">
             {/* Form list document icon */}
             <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

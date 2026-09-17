@@ -171,7 +171,7 @@ export const TagManagement: React.FC<TagManagementProps> = ({
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-kedi-navy bg-kedi-yellow hover:bg-kedi-yellow rounded-lg shadow-sm transition duration-150 cursor-pointer"
           >
             <span>+ Tạo Tag mới</span>
           </button>
@@ -188,7 +188,7 @@ export const TagManagement: React.FC<TagManagementProps> = ({
             placeholder="Tìm kiếm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-250 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
+            className="w-full pl-10 pr-4 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-100 placeholder-slate-400 focus:outline-hidden focus:border-kedi-yellow"
           />
         </div>
       </div>
@@ -206,19 +206,19 @@ export const TagManagement: React.FC<TagManagementProps> = ({
                     className="w-4.5 h-4.5 rounded border-gray-300 text-kedi-navy focus:ring-kedi-yellow cursor-pointer"
                   />
                 </th>
-                <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                   Tên Tag
                 </th>
-                <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                   Số lượng
                 </th>
-                <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                   Ngày tạo
                 </th>
-                <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                   Trạng thái
                 </th>
-                <th className="py-3 px-4 text-xs font-bold text-slate-855 dark:text-slate-200 tracking-wider">
+                <th className="py-3 px-4 text-xs font-bold text-slate-900 dark:text-slate-200 tracking-wider">
                   Ngày cập nhật
                 </th>
                 <th className="py-3 px-4 w-16 text-center" />
@@ -283,7 +283,7 @@ export const TagManagement: React.FC<TagManagementProps> = ({
                             e.stopPropagation();
                             setOpenMenuId((prev) => (prev === item.id ? null : item.id));
                           }}
-                          className="text-slate-400 hover:text-slate-650 dark:hover:text-gray-300 p-1 cursor-pointer"
+                          className="text-slate-400 hover:text-slate-700 dark:hover:text-gray-300 p-1 cursor-pointer"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -355,7 +355,7 @@ export const TagManagement: React.FC<TagManagementProps> = ({
       />
 
       {toast.visible && (
-        <div className="fixed bottom-5 right-5 z-999999 flex items-center gap-3.5 bg-white dark:bg-gray-850 border border-gray-150 dark:border-gray-850 rounded-2xl shadow-theme-lg px-5 py-4 min-w-[280px] animate-slide-in-right">
+        <div className="fixed bottom-5 right-5 z-999999 flex items-center gap-3.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-900 rounded-2xl shadow-theme-lg px-5 py-4 min-w-[280px] animate-slide-in-right">
           <span className="w-7 h-7 rounded-full bg-success-50 dark:bg-success-950/30 text-success-550 dark:text-success-400 flex items-center justify-center flex-shrink-0">
             <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />

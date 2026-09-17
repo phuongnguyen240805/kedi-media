@@ -480,7 +480,7 @@ export function AdsStatistic() {
   return (
     <div>
       <StatisticPageHeader title="Quảng cáo" range={rangePreset} onRangeChange={setRangePreset} />
-      <div className="mb-4 overflow-hidden rounded-xl border border-kedi-yellow/50 bg-gradient-to-r from-lime-500/20 via-emerald-500/10 to-cyan-500/10 px-5 py-4 dark:border-kedi-yellow/20">
+      <div className="mb-4 overflow-hidden rounded-xl border border-kedi-yellow/50 bg-gradient-to-r from-brand-500/20 via-emerald-500/10 to-cyan-500/10 px-5 py-4 dark:border-kedi-yellow/20">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-kedi-yellow text-slate-950"><Megaphone className="h-5 w-5" /></div>
@@ -638,7 +638,7 @@ function LegendLine({ color, label, value }: { color: string; label: string; val
 }
 
 function PlatformSummary({ label, value, change, tone }: { label: string; value: string; change: number; tone: "lime" | "cyan" | "rose" | "emerald" }) {
-  const tones = { lime: "from-lime-500 to-lime-300", cyan: "from-cyan-500 to-cyan-300", rose: "from-rose-500 to-rose-300", emerald: "from-emerald-500 to-emerald-300" };
+  const tones = { lime: "from-brand-500 to-brand-300", cyan: "from-cyan-500 to-cyan-300", rose: "from-rose-500 to-rose-300", emerald: "from-emerald-500 to-emerald-300" };
   return <div className="rounded-xl border border-slate-200 p-3 dark:border-white/[0.08]"><div className="flex items-center gap-2"><span className={`h-8 w-8 rounded-lg bg-gradient-to-br ${tones[tone]}`} /><div><div className="text-xs text-slate-500 dark:text-slate-400">{label}</div><div className="font-semibold text-slate-900 dark:text-white">{value}</div></div><span className="ml-auto text-[11px] font-semibold text-kedi-navy dark:text-kedi-yellow">+{change}%</span></div></div>;
 }
 
